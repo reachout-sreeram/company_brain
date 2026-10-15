@@ -14,8 +14,8 @@ The supplied message ends at mandatory principle 3, `Human-`. No missing text ha
 
 | Stage | Required artifact | Human gate | Current status |
 | --- | --- | --- | --- |
-| 1. Problem understanding | Problem, stakeholders, root causes, alternatives, assumptions | Are we solving the right problem? | Broader user-needs discovery in progress; no problem selected |
-| 2. Success definition | Outcomes, acceptance criteria, failure conditions | What does success mean? | Existing evaluation notes are provisional input |
+| 1. Problem understanding | Problem, stakeholders, root causes, alternatives, assumptions | Are we solving the right problem? | Concluded on 15 October 2026 at user instruction; see final brief |
+| 2. Success definition | Outcomes, acceptance criteria, failure conditions | What does success mean? | Next stage; first scenario and criteria not yet agreed |
 | 3. Solution exploration | Multiple solution directions and tradeoffs | Which direction should we pursue? | Earlier options are provisional input |
 | 4. Solution validation | Feasibility experiments and comparison evidence | Is this worth building? | Not started |
 | 5. Product design | User journey, scope, interaction states | Is this the product we want? | Earlier screen suggestions are provisional |
@@ -39,6 +39,10 @@ Do not mark Stage 9 complete solely because synthetic cases pass. Record whether
 
 Record subsequent approvals with the user's actual decision and any conditions. Do not infer approval from silence or elapsed time.
 
-Latest direction: explore the broader [Company Brain user needs](12-company-brain-user-needs.md) before requesting approval for a specific problem. The earlier Stage 1 brief remains a candidate reference.
+Latest direction: the user requested “now update stage 1 and conclude it.” Stage 1 is concluded in the [final problem brief](11-stage-1-problem-understanding.md). The focus is establishing current, supported project or system context, responsibility, and rationale across company records. The exact first workflow and solution remain open. This closes the research stage without asserting customer validation.
 
 Additional research: [Neo4j and GraphRAG implementation patterns](../research/13-neo4j-and-graphrag-implementation-research.md) and [FalkorDB transfer experiments](../research/14-falkordb-pattern-transfer-and-experiments.md) inform later solution exploration. This research does not advance or approve a stage by itself.
+
+| Stage closure | Date | Scope |
+| --- | --- | --- |
+| Stage 1 concluded at user instruction | 15 October 2026 | Consolidated problem understanding; no approval inferred for PromiseGraph, architecture, or implementation |

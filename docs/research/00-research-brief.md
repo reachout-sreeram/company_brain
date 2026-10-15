@@ -1,5 +1,7 @@
 # Research brief
 
+Status: earlier candidate analysis. The [concluded Stage 1 brief](../planning/11-stage-1-problem-understanding.md) governs current problem framing. PromiseGraph and its scores are provisional, not selected.
+
 Research checked on 15 October 2026. The event is already in its build window.
 
 ## Recommendation

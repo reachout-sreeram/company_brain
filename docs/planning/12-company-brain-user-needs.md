@@ -1,6 +1,6 @@
 # Company Brain: user needs and problem discovery
 
-Research date: 15 October 2026. Stage 1 remains open. This document broadens discovery before selecting a problem. PromiseGraph is one candidate, not the default direction.
+Research date: 15 October 2026. Discovery input to the [concluded Stage 1 brief](11-stage-1-problem-understanding.md). The taxonomy below remains research material; PromiseGraph is one candidate workflow, not the default direction.
 
 ## What people want
 
@@ -76,4 +76,4 @@ Investigate three problem families next: repeated expert interruptions, conflict
 
 For each, collect a specific recent task: what triggered it, which tools and people were needed, what delayed the work, what happened when the answer was wrong, and what the current workaround costs. Ask whether an existing tool already solves it. Use the same questions across candidate problems before ranking them.
 
-No participant interviews or private data collection have occurred. No problem direction has been approved.
+No participant interviews or private data collection have occurred. Stage 1 has since been concluded at the user's instruction; see the final brief for the consolidated problem focus and remaining assumptions.
