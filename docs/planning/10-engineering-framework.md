@@ -15,7 +15,7 @@ The supplied message ends at mandatory principle 3, `Human-`. No missing text ha
 | Stage | Required artifact | Human gate | Current status |
 | --- | --- | --- | --- |
 | 1. Problem understanding | Problem, stakeholders, root causes, alternatives, assumptions | Are we solving the right problem? | Concluded on 15 October 2026 at user instruction; see final brief |
-| 2. Success definition | Outcomes, acceptance criteria, failure conditions | What does success mean? | Next stage; first scenario and criteria not yet agreed |
+| 2. Success definition | Outcomes, acceptance criteria, failure conditions | What does success mean? | Specification prepared on 16 October 2026 for support-engineer scenario; criteria awaiting review |
 | 3. Solution exploration | Multiple solution directions and tradeoffs | Which direction should we pursue? | Earlier options are provisional input |
 | 4. Solution validation | Feasibility experiments and comparison evidence | Is this worth building? | Not started |
 | 5. Product design | User journey, scope, interaction states | Is this the product we want? | Earlier screen suggestions are provisional |
@@ -36,10 +36,12 @@ Do not mark Stage 9 complete solely because synthetic cases pass. Record whether
 | Use FalkorDB centrally for the entry | Constraint recorded | Prior event research |
 | Select release-to-customer-commitment reconciliation as the problem | Candidate only | User requested broader problem exploration first |
 | Build PromiseGraph with the earlier architecture | Not approved | Prior recommendation only |
+| Define success for the support-engineer product-behavior scenario | Authorized | User requested Stage 2 for this scenario on 16 October 2026 |
+| Adopt proposed Stage 2 thresholds and acceptance gates | Pending review | See Stage 2 success definition |
 
 Record subsequent approvals with the user's actual decision and any conditions. Do not infer approval from silence or elapsed time.
 
-Latest direction: the user requested “now update stage 1 and conclude it.” Stage 1 is concluded in the [final problem brief](11-stage-1-problem-understanding.md). The focus is establishing current, supported project or system context, responsibility, and rationale across company records. The exact first workflow and solution remain open. This closes the research stage without asserting customer validation.
+Latest direction: the user authorized Stage 2 for a support engineer answering a product-behavior question with current evidence, rationale, and ownership. The [success definition](15-stage-2-success-definition.md) is prepared for review. Stage 1 remains concluded. Solution selection and implementation remain open.
 
 Additional research: [Neo4j and GraphRAG implementation patterns](../research/13-neo4j-and-graphrag-implementation-research.md) and [FalkorDB transfer experiments](../research/14-falkordb-pattern-transfer-and-experiments.md) inform later solution exploration. This research does not advance or approve a stage by itself.
 

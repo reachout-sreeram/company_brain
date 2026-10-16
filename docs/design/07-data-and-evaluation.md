@@ -1,6 +1,6 @@
 # Data and evaluation plan
 
-Status: proposed. No dataset has been generated or ingested. No scores have been measured.
+Status: historical candidate plan for the earlier commitment-impact idea. The [Stage 2 support-engineer success definition](../planning/15-stage-2-success-definition.md) is the current proposed evaluation contract. No dataset has been generated or ingested. No scores have been measured.
 
 ## Data choice
 
