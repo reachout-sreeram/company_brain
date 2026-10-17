@@ -1,6 +1,6 @@
 # Project selection
 
-Status: earlier candidate analysis. The [concluded Stage 1 brief](11-stage-1-problem-understanding.md) governs current problem framing. PromiseGraph and its scores are provisional, not selected.
+Status: earlier candidate analysis. The [concluded Stage 1 brief](11-stage-1-problem-understanding.md) governs current problem framing. PromiseGraph and its scores are historical, not selected. The selected use case is [Stage 3 service retirement readiness](16-stage-3-solution-direction.md).
 
 Recommendation: one focused Company Brain submission, provisionally named PromiseGraph. This name has not been checked for trademark or domain availability.
 

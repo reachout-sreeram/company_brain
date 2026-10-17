@@ -1,6 +1,6 @@
 # Proposed architecture
 
-Status: design only. No client version, model provider, Cypher query, or deployment below has been runtime-tested.
+Status: historical commitment-impact design. The current build plan is [Stage 3 service retirement readiness](../planning/16-stage-3-solution-direction.md). The web UI, action tools, and commitment-specific model below are not the selected architecture. No client version, query, or deployment below has been runtime-tested.
 
 ## Keep the system small
 

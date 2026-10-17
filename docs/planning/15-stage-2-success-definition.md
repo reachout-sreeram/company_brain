@@ -1,14 +1,22 @@
 # Stage 2: Success definition
 
-Revised: 17 October 2026, IST. Status: approved by the user for the hackathon build. Supersedes the 16 October draft (support-engineer scenario with a 40-case corpus).
+Revised: 17 October 2026, IST. Status: historical approved MCP specification, now superseded in scenario and detailed tool contract by [Stage 3 service retirement readiness](16-stage-3-solution-direction.md). The user selected the retirement direction on 17 October 2026. This file preserves the earlier decision record; it is not the current implementation checklist.
 
-## What changed in this revision
+Retained principles: MCP delivery, operator-controlled ingestion, source-backed facts, deterministic server reads, explicit uncertainty, reproducible evaluation, and no mandatory USD 0.10 ingestion cap. Stage 3 adapts the checks and live-extraction requirements to one retirement workflow. The three support scenarios and their step IDs below are historical. The client may surface evidence/verdict mismatches and must distinguish suggestions from approved decisions.
+
+## Earlier revision
 
 1. **Delivery shape.** The product is a context layer, not a web app. It ingests and curates company records into FalkorDB and exposes resolved answers to existing agents (Claude Desktop first) through an MCP server. We do not build a chat UI or pay for answer generation.
 2. **Evaluation shape.** Corpus size is not a goal. Success is three scripted scenarios that replay identically from a clean database and visibly prove each capability. Each step has a golden expected verdict.
 3. **Read path is deterministic.** Answering a question requires no LLM on our side. LLM calls happen only at ingestion (extracting facts from text). The client agent writes the final prose from our verdict.
 
-## Scenario and user
+## Primary objective
+
+Clarified by the user on 17 October 2026: efficiently interpret the user's intent and retrieve the right supporting sources so the client LLM can provide grounded decisions and suggestions. Evaluate whether the evidence is relevant, current, sufficient, and traceable before optimizing its size or cost. Distinguish source-established facts and constraints from the client LLM's recommendations.
+
+Ingestion cost is a measured operating metric, not a mandatory USD 0.10 acceptance gate. A smaller context or cheaper replay is useful only if it preserves the evidence required for a correct response.
+
+## Historical scenario and user
 
 A support engineer working in Claude Desktop asks a product-behavior question. The answer depends on records spread across documents, tickets, chat, and the team roster that disagree or have changed. The engineer needs what applies now, why, who owns it, and what is unresolved.
 
@@ -123,7 +131,7 @@ For each scenario, run the same question in Claude Desktop with the scenario's r
 | Seed labeling | Seeded facts are marked `seed`; extracted facts are marked `extracted` |
 | Hard failure checks | 5 of 5 pass |
 | Tool latency | p95 under 2 seconds per MCP call (no LLM on the read path) |
-| Ingestion cost | Under USD 0.10 for a full replay of all scenarios |
+| Ingestion cost (reporting only) | Record actual cost per full replay; no mandatory USD 0.10 cap |
 | Demo replay | `make demo-reset` restores step 0 of all scenarios in under 30 seconds |
 | Claude behavior | With the skill installed, Claude's prose preserves disposition, condition, and owner from the verdict in all demo steps |
 
@@ -143,6 +151,6 @@ During the demo, one Cypher query in FalkorDB Browser shows the full evolution o
 
 Web app, Slack bot, helpdesk integration, live connectors, ChatGPT remote hosting, agent-initiated writes, real identity provider, user study. These are listed in the submission as next steps.
 
-## Approval
+## Earlier approval
 
 Approved by the user on 17 October 2026 for the hackathon build. This approval also fixes the direction for Stages 3 to 6 as a deliberate hackathon shortcut: graph resolver plus MCP server plus Claude skill. Revisit after the event.

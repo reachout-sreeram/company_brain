@@ -1,5 +1,7 @@
 # Winning strategy
 
+Status: historical strategy for the commitment-impact candidate. Use [Stage 3 service retirement readiness](../planning/16-stage-3-solution-direction.md) for the current demo and build plan. The dated schedule and product claims below are historical proposals.
+
 Build a small, credible Company Brain workflow. Winning is uncertain. There is no published numeric rubric in the reviewed event pages, and research cannot guarantee a prize.
 
 ## The proposition

@@ -83,3 +83,13 @@ No competitor has been benchmarked here. No reported customer statistic has been
 The prototype recommendation, candidate scores, architecture, cost envelope, evaluation gates, and demo schedule are original analysis based on this research. They are proposals. The repository currently contains documentation only.
 
 For follow-up research, prioritize direct trials of the exact workflow in Glean or Rovo and one configurable agent platform. Then interview likely users. More generic product browsing is less valuable than testing whether the proposed gap actually exists.
+
+## Service retirement direction, 17 October 2026
+
+| ID | Source | Used for | Evidence boundary |
+| --- | --- | --- | --- |
+| R1 | [Slack: SSH-to-REST migration](https://slack.engineering/from-ssh-to-rest-a-security-driven-modernization-of-slacks-emr-data-pipelines/) | Cross-team migration, hidden network dependencies, and decision context | Published engineering account; no claim that our system would have prevented its issues |
+| R2 | [AWS: application-retirement assessment](https://docs.aws.amazon.com/prescriptive-guidance/latest/migration-retiring-applications/introduction.html) | Dependency knowledge, stale documentation, and retirement risk | Operational guidance, not customer validation of our product |
+| R3 | [Backstage: catalog relationships](https://backstage.io/docs/features/software-catalog/well-known-relations/) | Established dependency and ownership modeling | Existing capability; no claim that relationship graphs are novel |
+
+These sources informed the [selected Stage 3 direction](../planning/16-stage-3-solution-direction.md). Lumora records remain planned synthetic fixtures, not records collected from these organizations.

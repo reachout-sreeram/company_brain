@@ -1,6 +1,6 @@
 # Research brief
 
-Status: earlier candidate analysis. The [concluded Stage 1 brief](../planning/11-stage-1-problem-understanding.md) governs current problem framing. PromiseGraph and its scores are provisional, not selected.
+Status: earlier candidate analysis. The [concluded Stage 1 brief](../planning/11-stage-1-problem-understanding.md) governs current problem framing. PromiseGraph and its scores are historical, not selected. The selected use case is [Stage 3 service retirement readiness](../planning/16-stage-3-solution-direction.md).
 
 Research checked on 15 October 2026. The event is already in its build window.
 

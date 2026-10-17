@@ -1,6 +1,6 @@
 # Data and evaluation plan
 
-Status: historical candidate plan for the earlier commitment-impact idea. The [Stage 2 support-engineer success definition](../planning/15-stage-2-success-definition.md) is the current proposed evaluation contract. No dataset has been generated or ingested. No scores have been measured.
+Status: historical candidate plan for the earlier commitment-impact idea. The current workflow and evaluation plan are in [Stage 3 service retirement readiness](../planning/16-stage-3-solution-direction.md). No dataset has been generated or ingested. No scores have been measured.
 
 ## Data choice
 

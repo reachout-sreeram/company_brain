@@ -15,11 +15,11 @@ The supplied message ends at mandatory principle 3, `Human-`. No missing text ha
 | Stage | Required artifact | Human gate | Current status |
 | --- | --- | --- | --- |
 | 1. Problem understanding | Problem, stakeholders, root causes, alternatives, assumptions | Are we solving the right problem? | Concluded on 15 October 2026 at user instruction; see final brief |
-| 2. Success definition | Outcomes, acceptance criteria, failure conditions | What does success mean? | Approved on 17 October 2026: MCP-first context layer, three scripted scenarios with golden verdicts |
-| 3. Solution exploration | Multiple solution directions and tradeoffs | Which direction should we pursue? | Shortcut for hackathon: direction fixed by Stage 2 approval |
-| 4. Solution validation | Feasibility experiments and comparison evidence | Is this worth building? | Not started |
-| 5. Product design | User journey, scope, interaction states | Is this the product we want? | Earlier screen suggestions are provisional |
-| 6. Architecture and planning | Justified components, sequence, evaluation plan | Is the design appropriate? | Earlier architecture is unapproved and untested |
+| 2. Success definition | Outcomes, acceptance criteria, failure conditions | What does success mean? | MCP and evidence principles retained; earlier scenarios superseded by the selected Stage 3 retirement workflow |
+| 3. Solution exploration | Multiple solution directions and tradeoffs | Which direction should we pursue? | Service retirement readiness selected by the user on 17 October 2026; build approach documented |
+| 4. Solution validation | Feasibility experiments and comparison evidence | Is this worth building? | Not validated; feasibility checks planned inside the first increment under the hackathon shortcut |
+| 5. Product design | User journey, scope, interaction states | Is this the product we want? | MCP retirement workflow described in Stage 3; no UI or user validation completed |
+| 6. Architecture and planning | Justified components, sequence, evaluation plan | Is the design appropriate? | Proposed graph, tool contracts, and build sequence in Stage 3; runtime untested |
 | 7. Incremental development | Small working increments and verification | Review significant milestones and changes | Not started |
 | 8. Independent evaluation | Evidence separate from implementation claims | Accept, improve, redesign, or reject? | Not started |
 | 9. Real-world validation | Realistic task and user evidence | Does it solve the problem? | Not started |
@@ -40,10 +40,14 @@ Do not mark Stage 9 complete solely because synthetic cases pass. Record whether
 | Adopt Stage 2 success definition | Approved 17 October 2026 | Revised to three scripted scenarios, golden verdicts, five hard checks |
 | Deliver as MCP context layer, not a web app | Approved 17 October 2026 | User decision: no chat UI, no answer-generation tokens; Claude Desktop is the client |
 | Skip formal Stages 3 to 6 for the hackathon | Approved as deliberate shortcut | Direction: deterministic resolver + FalkorDB + MCP server + Claude skill; revisit after the event |
+| Prioritize intent interpretation and the right supporting sources | Clarified 17 October 2026 | Direct user instruction; ingestion below USD 0.10 is not mandatory |
+| Explain Stage 3 solution choices | Requested 17 October 2026 | Revisit retrieval design within the approved MCP context-layer direction |
+| Select service retirement readiness | Approved 17 October 2026 | Direct user instruction to use service retirement and update Stage 3 |
+| Replace the three separate support scenarios | Direction selected 17 October 2026 | One retirement workflow with initial blockers, conflicting completion, and verified migration |
 
 Record subsequent approvals with the user's actual decision and any conditions. Do not infer approval from silence or elapsed time.
 
-Latest direction: Stage 2 approved on 17 October 2026. The product is an MCP context layer over FalkorDB, evaluated on three scripted scenarios (see [success definition](15-stage-2-success-definition.md)). Stages 3 to 6 are shortcut for the hackathon. Next: Stage 7 incremental development.
+Latest direction: the user selected [service retirement readiness](16-stage-3-solution-direction.md). Stage 3 now records alternatives, relationship-driven retrieval, evidence rules, MCP tools, a build sequence, and evaluation. It supersedes the earlier audit-export, SSO, and retention demonstrations. The MCP context-layer direction and cost clarification remain. Next is the first working increment with feasibility checks. No implementation or runtime validation has occurred.
 
 Additional research: [Neo4j and GraphRAG implementation patterns](../research/13-neo4j-and-graphrag-implementation-research.md) and [FalkorDB transfer experiments](../research/14-falkordb-pattern-transfer-and-experiments.md) inform later solution exploration. This research does not advance or approve a stage by itself.
 
@@ -51,3 +55,4 @@ Additional research: [Neo4j and GraphRAG implementation patterns](../research/13
 | --- | --- | --- |
 | Stage 1 concluded at user instruction | 15 October 2026 | Consolidated problem understanding; no approval inferred for PromiseGraph, architecture, or implementation |
 | Stage 2 approved | 17 October 2026 | MCP-first delivery; three scenarios; hackathon shortcut through Stage 6 |
+| Stage 3 direction selected | 17 October 2026 | Service retirement readiness; detailed plan documented, implementation and validation pending |
