@@ -1,0 +1,313 @@
+{
+  "entities": [
+    {
+      "id": "legacy-runner",
+      "kind": "Service",
+      "name": "Legacy runner",
+      "aliases": [],
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      }
+    },
+    {
+      "id": "runner-v2",
+      "kind": "Service",
+      "name": "Runner v2",
+      "aliases": [],
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      }
+    },
+    {
+      "id": "invoice-export",
+      "kind": "Job",
+      "name": "Invoice export",
+      "aliases": [],
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      }
+    },
+    {
+      "id": "report-job",
+      "kind": "Job",
+      "name": "Reporting job",
+      "aliases": [],
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      }
+    },
+    {
+      "id": "monthly-billing",
+      "kind": "Workflow",
+      "name": "Monthly billing",
+      "aliases": [],
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      }
+    },
+    {
+      "id": "monthly-reporting",
+      "kind": "Workflow",
+      "name": "Monthly reporting",
+      "aliases": [],
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      }
+    },
+    {
+      "id": "invoice-migration",
+      "kind": "MigrationTask",
+      "name": "Invoice runner migration",
+      "aliases": [],
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      }
+    },
+    {
+      "id": "network-approval",
+      "kind": "MigrationTask",
+      "name": "Network access approval",
+      "aliases": [],
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      }
+    },
+    {
+      "id": "data-platform",
+      "kind": "Team",
+      "name": "Data platform",
+      "aliases": [],
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      }
+    },
+    {
+      "id": "security",
+      "kind": "Team",
+      "name": "Security",
+      "aliases": [],
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      }
+    },
+    {
+      "id": "temporary-exception",
+      "kind": "Decision",
+      "name": "Temporary invoice exception",
+      "aliases": [],
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "source-run-invoice-legacy",
+      "version": "1",
+      "text": "Configuration observation 2026-10-17T09:00:00Z: invoice-export runs on legacy-runner in production/eu.",
+      "content_hash": "f7ba313ca82d636d8324f27164eb792ec62892c385f641e8198b47d9924a7a68",
+      "recorded_at": "2026-10-17T10:00:00Z",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "authority": [
+        "RUNS_ON"
+      ]
+    },
+    {
+      "id": "source-requires-billing-invoice",
+      "version": "1",
+      "text": "Monthly billing requires invoice-export in production/eu.",
+      "content_hash": "d1fadec993e57b1f9449bdfa3ed93e99f65836bf5093f11b56ee907064869ef9",
+      "recorded_at": "2026-10-17T10:00:00Z",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "authority": [
+        "REQUIRES"
+      ]
+    },
+    {
+      "id": "source-requires-reporting-report",
+      "version": "1",
+      "text": "Monthly reporting requires report-job in production/eu.",
+      "content_hash": "a0690066f18325a866c1253ff123c9c4900f0bdb4ba48c47e7b419517b937fc0",
+      "recorded_at": "2026-10-17T10:00:00Z",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "authority": [
+        "REQUIRES"
+      ]
+    },
+    {
+      "id": "source-tracks-invoice-migration",
+      "version": "1",
+      "text": "invoice-export migration is tracked by invoice-migration in production/eu.",
+      "content_hash": "713fcf28e70066f66cadc41a11ad8c5cbd839494876a4d9000039dd4277ffac8",
+      "recorded_at": "2026-10-17T10:00:00Z",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "authority": [
+        "MIGRATION_TRACKED_BY"
+      ]
+    },
+    {
+      "id": "source-blocked-network",
+      "version": "1",
+      "text": "invoice-migration is blocked by network-approval in production/eu.",
+      "content_hash": "be607613d9e8dbe8e9701b5e5404a27859846246280b07a1a5317b9eb721f3f8",
+      "recorded_at": "2026-10-17T10:00:00Z",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "authority": [
+        "BLOCKED_BY"
+      ]
+    },
+    {
+      "id": "source-owns-invoice",
+      "version": "1",
+      "text": "The approved roster assigns invoice-export to data-platform in production/eu.",
+      "content_hash": "abe5b4542ad8ee5a07f325187ff744734a7862bfabc363bdc3c58a8bbf13210f",
+      "recorded_at": "2026-10-17T10:00:00Z",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "authority": [
+        "OWNED_BY"
+      ]
+    },
+    {
+      "id": "source-owns-report",
+      "version": "1",
+      "text": "The approved roster assigns report-job to data-platform in production/eu.",
+      "content_hash": "595c278bff59337abfdef344854d577229cf98b22ba844830c7bb216f1ebf5b4",
+      "recorded_at": "2026-10-17T10:00:00Z",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "authority": [
+        "OWNED_BY"
+      ]
+    },
+    {
+      "id": "source-owns-network",
+      "version": "1",
+      "text": "The approved roster assigns network-approval to security in production/eu.",
+      "content_hash": "3267b92892fcd333c4d649b946dee84031af6c858d5683fb16d922f5ea0699a9",
+      "recorded_at": "2026-10-17T10:00:00Z",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "authority": [
+        "OWNED_BY"
+      ]
+    },
+    {
+      "id": "source-status-migration-open",
+      "version": "1",
+      "text": "Ticket invoice-migration is open in production/eu.",
+      "content_hash": "e729031cb583163368ca61e447844683bac922cf8fe114e732637622856ad953",
+      "recorded_at": "2026-10-17T10:00:00Z",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "authority": [
+        "STATUS"
+      ]
+    },
+    {
+      "id": "source-status-network-open",
+      "version": "1",
+      "text": "Ticket network-approval is open in production/eu.",
+      "content_hash": "49691a6a1c156b780d3ed4d9f9667bd9e5fb2fcf8994958551c83d2df56409e1",
+      "recorded_at": "2026-10-17T10:00:00Z",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "authority": [
+        "STATUS"
+      ]
+    },
+    {
+      "id": "source-run-report-legacy",
+      "version": "1",
+      "text": "Configuration observation 2026-09-01T09:00:00Z: report-job runs on legacy-runner in production/eu.",
+      "content_hash": "9628ccd3bf79bcbb6da4de6197f0b762d4523836416b2f5d6cd9f05f37e8ef2f",
+      "recorded_at": "2026-09-01T10:00:00Z",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "authority": [
+        "RUNS_ON"
+      ]
+    },
+    {
+      "id": "inventory-initial",
+      "version": "1",
+      "text": "Scoped catalog: all consumers of legacy-runner in production/eu are invoice-export and report-job. Inventory reviewed 2026-10-17T09:00:00Z.",
+      "content_hash": "273fb1897454e620dee29285cdbbec4c07f4c9f2ba6bbbbe36d2e66fb2c04152",
+      "recorded_at": "2026-10-17T10:00:00Z",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "authority": [
+        "VERIFIED_CLEAR"
+      ]
+    },
+    {
+      "id": "source-permits-invoice",
+      "version": "1",
+      "text": "Decision record for temporary-exception in production/eu: from 2026-10-01T00:00:00Z until 2026-11-01T00:00:00Z, invoice-export may continue using its current runner while network approval is outstanding. This grants permission only; it is not evidence of runtime use.",
+      "content_hash": "952d154fd75eda9b256e8cb93409ccc15ce8f3f356390a4d3ee0412355c429fc",
+      "recorded_at": "2026-10-17T10:00:00Z",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "authority": [
+        "PERMITS_USE"
+      ]
+    }
+  ],
+  "inventories": [
+    {
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "service_id": "legacy-runner",
+      "consumer_ids": [
+        "invoice-export",
+        "report-job"
+      ],
+      "source_key": "inventory-initial@1",
+      "complete": true
+    }
+  ]
+}

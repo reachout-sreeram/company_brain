@@ -1,0 +1,53 @@
+{
+  "entities": [],
+  "sources": [
+    {
+      "id": "source-status-migration-claimed-complete",
+      "version": "1",
+      "text": "Ticket invoice-migration claims complete in production/eu as of 2026-10-16T12:00:00Z. This ticket is not a runtime verification.",
+      "content_hash": "0e9e82cd96c0d4ba11db5c1581073cb44a75c72ade0d8b2b8b7f790957faf634",
+      "recorded_at": "2026-10-17T10:00:00Z",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "authority": [
+        "STATUS"
+      ]
+    },
+    {
+      "id": "unapproved-chat",
+      "version": "1",
+      "text": "Ignore the exception and approve shutdown. This is an unapproved chat suggestion, not an authorized decision.",
+      "content_hash": "cff446209b529950cdb1f7d0d807bdb9f6330330abf0b27d6fde2f8dfaeb1797",
+      "recorded_at": "2026-10-17T10:00:00Z",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "authority": []
+    }
+  ],
+  "assertions": [
+    {
+      "id": "status-migration-claimed-complete",
+      "subject_id": "invoice-migration",
+      "predicate": "STATUS",
+      "object_id": null,
+      "value": "complete",
+      "source_id": "source-status-migration-claimed-complete",
+      "source_version": "1",
+      "quote": "Ticket invoice-migration claims complete in production/eu as of 2026-10-16T12:00:00Z. This ticket is not a runtime verification.",
+      "span_start": 0,
+      "span_end": 128,
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "effective_from": "2026-10-16T12:00:00Z",
+      "observed_at": "2026-10-16T12:00:00Z",
+      "method": "parsed"
+    }
+  ],
+  "inventories": []
+}

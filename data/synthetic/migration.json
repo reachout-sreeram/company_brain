@@ -1,0 +1,117 @@
+{
+  "entities": [],
+  "sources": [
+    {
+      "id": "source-run-invoice-v2",
+      "version": "1",
+      "text": "Verified deployment observation 2026-10-17T11:00:00Z: invoice-export runs on runner-v2 in production/eu; the legacy-runner binding was removed.",
+      "content_hash": "34cfb8335bae566889608a84f85d678d4e96a13756133119d2956ac82c3d64ea",
+      "recorded_at": "2026-10-17T11:05:00Z",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "authority": [
+        "RUNS_ON"
+      ]
+    },
+    {
+      "id": "source-status-migration-verified",
+      "version": "1",
+      "text": "Verified ticket invoice-migration is complete in production/eu as of 2026-10-17T11:00:00Z.",
+      "content_hash": "ea17b1b0669fc2b59d5c10c794aed3e07b5778f4ced5b1558b7445dea4d0dd04",
+      "recorded_at": "2026-10-17T11:05:00Z",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "authority": [
+        "STATUS"
+      ]
+    },
+    {
+      "id": "source-status-network-complete",
+      "version": "1",
+      "text": "Verified ticket network-approval is complete in production/eu as of 2026-10-17T11:00:00Z.",
+      "content_hash": "2be81e1463fd323a73ec615e0472845282ba84fbc1db0d844f30a79b1d3cc3d6",
+      "recorded_at": "2026-10-17T11:05:00Z",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "authority": [
+        "STATUS"
+      ]
+    }
+  ],
+  "assertions": [
+    {
+      "id": "run-invoice-v2",
+      "subject_id": "invoice-export",
+      "predicate": "RUNS_ON",
+      "object_id": "runner-v2",
+      "value": null,
+      "source_id": "source-run-invoice-v2",
+      "source_version": "1",
+      "quote": "Verified deployment observation 2026-10-17T11:00:00Z: invoice-export runs on runner-v2 in production/eu; the legacy-runner binding was removed.",
+      "span_start": 0,
+      "span_end": 143,
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "effective_from": "2026-10-17T11:00:00Z",
+      "observed_at": "2026-10-17T11:00:00Z",
+      "method": "parsed",
+      "supersedes": [
+        "run-invoice-legacy"
+      ]
+    },
+    {
+      "id": "status-migration-verified",
+      "subject_id": "invoice-migration",
+      "predicate": "STATUS",
+      "object_id": null,
+      "value": "complete",
+      "source_id": "source-status-migration-verified",
+      "source_version": "1",
+      "quote": "Verified ticket invoice-migration is complete in production/eu as of 2026-10-17T11:00:00Z.",
+      "span_start": 0,
+      "span_end": 90,
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "effective_from": "2026-10-17T11:00:00Z",
+      "observed_at": "2026-10-17T11:00:00Z",
+      "method": "parsed",
+      "supersedes": [
+        "status-migration-open",
+        "status-migration-claimed-complete"
+      ]
+    },
+    {
+      "id": "status-network-complete",
+      "subject_id": "network-approval",
+      "predicate": "STATUS",
+      "object_id": null,
+      "value": "complete",
+      "source_id": "source-status-network-complete",
+      "source_version": "1",
+      "quote": "Verified ticket network-approval is complete in production/eu as of 2026-10-17T11:00:00Z.",
+      "span_start": 0,
+      "span_end": 89,
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "effective_from": "2026-10-17T11:00:00Z",
+      "observed_at": "2026-10-17T11:00:00Z",
+      "method": "parsed",
+      "supersedes": [
+        "status-network-open"
+      ]
+    }
+  ],
+  "inventories": []
+}

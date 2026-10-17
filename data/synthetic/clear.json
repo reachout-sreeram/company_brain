@@ -1,0 +1,73 @@
+{
+  "entities": [],
+  "sources": [
+    {
+      "id": "source-clear-report",
+      "version": "1",
+      "text": "Scoped verification 2026-10-17T11:30:00Z: report-job no longer depends on legacy-runner in production/eu. The monthly reporting execution uses its replacement and the legacy binding is removed.",
+      "content_hash": "3c21dd1f6f104efce96d56212ce504ec8a4b95a539f523bdc7789d372f22e3fc",
+      "recorded_at": "2026-10-17T11:35:00Z",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "authority": [
+        "VERIFIED_CLEAR"
+      ]
+    },
+    {
+      "id": "inventory-clear",
+      "version": "1",
+      "text": "Scoped catalog verification: the complete legacy-runner consumer inventory in production/eu remains invoice-export and report-job, both checked on 2026-10-17T11:30:00Z.",
+      "content_hash": "faa2f15a46321a1913ecd7f7351369561edc3150b83a3d7946aee79d86b6ef27",
+      "recorded_at": "2026-10-17T11:35:00Z",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "authority": [
+        "VERIFIED_CLEAR"
+      ]
+    }
+  ],
+  "assertions": [
+    {
+      "id": "clear-report",
+      "subject_id": "report-job",
+      "predicate": "VERIFIED_CLEAR",
+      "object_id": null,
+      "value": "verified",
+      "source_id": "source-clear-report",
+      "source_version": "1",
+      "quote": "Scoped verification 2026-10-17T11:30:00Z: report-job no longer depends on legacy-runner in production/eu. The monthly reporting execution uses its replacement and the legacy binding is removed.",
+      "span_start": 0,
+      "span_end": 193,
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "effective_from": "2026-10-17T11:30:00Z",
+      "observed_at": "2026-10-17T11:30:00Z",
+      "method": "parsed",
+      "supersedes": [
+        "run-report-legacy"
+      ],
+      "target_service_id": "legacy-runner"
+    }
+  ],
+  "inventories": [
+    {
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "service_id": "legacy-runner",
+      "consumer_ids": [
+        "invoice-export",
+        "report-job"
+      ],
+      "source_key": "inventory-clear@1",
+      "complete": true
+    }
+  ]
+}

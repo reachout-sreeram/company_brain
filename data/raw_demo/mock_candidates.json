@@ -1,0 +1,208 @@
+{
+  "source-run-invoice-legacy@1": [
+    {
+      "subject_id": "invoice-export",
+      "predicate": "RUNS_ON",
+      "object_id": "legacy-runner",
+      "value": null,
+      "quote": "Configuration observation 2026-10-17T09:00:00Z: invoice-export runs on legacy-runner in production/eu.",
+      "span_start": 0,
+      "span_end": 102,
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "effective_from": "2026-10-01T00:00:00Z",
+      "observed_at": "2026-10-17T09:00:00Z"
+    }
+  ],
+  "source-requires-billing-invoice@1": [
+    {
+      "subject_id": "monthly-billing",
+      "predicate": "REQUIRES",
+      "object_id": "invoice-export",
+      "value": null,
+      "quote": "Monthly billing requires invoice-export in production/eu.",
+      "span_start": 0,
+      "span_end": 57,
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "effective_from": "2026-10-01T00:00:00Z",
+      "observed_at": "2026-10-17T09:00:00Z"
+    }
+  ],
+  "source-requires-reporting-report@1": [
+    {
+      "subject_id": "monthly-reporting",
+      "predicate": "REQUIRES",
+      "object_id": "report-job",
+      "value": null,
+      "quote": "Monthly reporting requires report-job in production/eu.",
+      "span_start": 0,
+      "span_end": 55,
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "effective_from": "2026-10-01T00:00:00Z",
+      "observed_at": "2026-10-17T09:00:00Z"
+    }
+  ],
+  "source-tracks-invoice-migration@1": [
+    {
+      "subject_id": "invoice-export",
+      "predicate": "MIGRATION_TRACKED_BY",
+      "object_id": "invoice-migration",
+      "value": null,
+      "quote": "invoice-export migration is tracked by invoice-migration in production/eu.",
+      "span_start": 0,
+      "span_end": 74,
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "effective_from": "2026-10-01T00:00:00Z",
+      "observed_at": "2026-10-17T09:00:00Z"
+    }
+  ],
+  "source-blocked-network@1": [
+    {
+      "subject_id": "invoice-migration",
+      "predicate": "BLOCKED_BY",
+      "object_id": "network-approval",
+      "value": null,
+      "quote": "invoice-migration is blocked by network-approval in production/eu.",
+      "span_start": 0,
+      "span_end": 66,
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "effective_from": "2026-10-01T00:00:00Z",
+      "observed_at": "2026-10-17T09:00:00Z"
+    }
+  ],
+  "source-owns-invoice@1": [
+    {
+      "subject_id": "invoice-export",
+      "predicate": "OWNED_BY",
+      "object_id": "data-platform",
+      "value": null,
+      "quote": "The approved roster assigns invoice-export to data-platform in production/eu.",
+      "span_start": 0,
+      "span_end": 77,
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "effective_from": "2026-10-01T00:00:00Z",
+      "observed_at": "2026-10-17T09:00:00Z"
+    }
+  ],
+  "source-owns-report@1": [
+    {
+      "subject_id": "report-job",
+      "predicate": "OWNED_BY",
+      "object_id": "data-platform",
+      "value": null,
+      "quote": "The approved roster assigns report-job to data-platform in production/eu.",
+      "span_start": 0,
+      "span_end": 73,
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "effective_from": "2026-10-01T00:00:00Z",
+      "observed_at": "2026-10-17T09:00:00Z"
+    }
+  ],
+  "source-owns-network@1": [
+    {
+      "subject_id": "network-approval",
+      "predicate": "OWNED_BY",
+      "object_id": "security",
+      "value": null,
+      "quote": "The approved roster assigns network-approval to security in production/eu.",
+      "span_start": 0,
+      "span_end": 74,
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "effective_from": "2026-10-01T00:00:00Z",
+      "observed_at": "2026-10-17T09:00:00Z"
+    }
+  ],
+  "source-status-migration-open@1": [
+    {
+      "subject_id": "invoice-migration",
+      "predicate": "STATUS",
+      "object_id": null,
+      "value": "open",
+      "quote": "Ticket invoice-migration is open in production/eu.",
+      "span_start": 0,
+      "span_end": 50,
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "effective_from": "2026-10-01T00:00:00Z",
+      "observed_at": "2026-10-17T09:00:00Z"
+    }
+  ],
+  "source-status-network-open@1": [
+    {
+      "subject_id": "network-approval",
+      "predicate": "STATUS",
+      "object_id": null,
+      "value": "open",
+      "quote": "Ticket network-approval is open in production/eu.",
+      "span_start": 0,
+      "span_end": 49,
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "effective_from": "2026-10-01T00:00:00Z",
+      "observed_at": "2026-10-17T09:00:00Z"
+    }
+  ],
+  "source-run-report-legacy@1": [
+    {
+      "subject_id": "report-job",
+      "predicate": "RUNS_ON",
+      "object_id": "legacy-runner",
+      "value": null,
+      "quote": "Configuration observation 2026-09-01T09:00:00Z: report-job runs on legacy-runner in production/eu.",
+      "span_start": 0,
+      "span_end": 98,
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "effective_from": "2026-09-01T09:00:00Z",
+      "observed_at": "2026-09-01T09:00:00Z"
+    }
+  ],
+  "inventory-initial@1": [],
+  "source-permits-invoice@1": [
+    {
+      "subject_id": "temporary-exception",
+      "predicate": "PERMITS_USE",
+      "object_id": "invoice-export",
+      "value": null,
+      "quote": "Decision record for temporary-exception in production/eu: from 2026-10-01T00:00:00Z until 2026-11-01T00:00:00Z, invoice-export may continue using its current runner while network approval is outstanding. This grants permission only; it is not evidence of runtime use.",
+      "span_start": 0,
+      "span_end": 267,
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "effective_from": "2026-10-01T00:00:00Z",
+      "observed_at": "2026-10-17T09:00:00Z",
+      "effective_until": "2026-11-01T00:00:00Z"
+    }
+  ]
+}
