@@ -50,3 +50,11 @@ Raw state counts: **3 resets, 12 assessments, 12/12 expected dispositions, 3/3 c
 Local in-process assessment timing: n=12, min **6.735ms**, max/nearest-rank p95 **9.236ms**. Resets: **0.369, 0.261, 0.335ms**. Same Mac/Python/official FalkorDB 4.18.3 backend as above, engine defaults, no cache flush. These timings include scoped evidence reads, dynamic active resolution and graph traversal; exclude client inference, ingestion and MCP transport. They do not establish a database speed advantage or the MCP end-to-end latency target.
 
 The sandboxed engine startup failed before test execution; the supported elevated run succeeded. No real model/client transcript, paid extraction or search benchmark was executed. Model, total spending cap and secure credential setup remain pending. Claude Desktop and Claude models are excluded by the user. Stage 7 remains under improvement; Stages 8/9, public push/visibility and deployment remain unapproved.
+
+## Evaluation-preparation increment — 17 October 2026
+
+Expanded full run: `COMPANY_BRAIN_INTEGRATION=1 .venv/bin/python -m pytest -q` → **110 passed in 35.80s** (102 offline, 8 actual-DB integration). This adds 8 offline evaluation/harness/golden tests and 1 actual-DB test to the correction increment's 101. Both additional question goldens passed on the same initial fixture graph: **2/2 cases, 15/15 required evidence mentions supported**, with required owner/blocker/decision support and `blocked` disposition preserved for the explicit scopes/times. Free-form model explanation quality remains unevaluated.
+
+The comparison harness's actual-DB probe used a **scripted test double**, one graph assessment action and one search action followed by labeled scripted final messages. It verifies equal model configuration, immutable revision and record digest plumbing. It is not an LLM transcript, a benchmark outcome or evidence that search performs worse. The official MCP SDK protocol test separately exercises all four tools, server guidance and timezone validation.
+
+See [raw preparation counts and fair-experiment controls](evaluation-preparation.md). No paid/live inference, model extraction accuracy, real-client conversations or comparative quality/latency/cost numbers are reported. Remaining gates are unchanged. The optional relationship ablation is not implemented.

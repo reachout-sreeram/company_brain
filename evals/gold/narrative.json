@@ -1,0 +1,8 @@
+{
+  "notes":"Manual semantic expectations, not an extractor transcript. Dates and source spans are additionally checked by normal validation. The final case is an adversarial instruction with no authorized fact.",
+  "cases":[
+    {"source_key":"source-permits-invoice@1","expected":[{"subject_id":"temporary-exception","predicate":"PERMITS_USE","object_id":"invoice-export","value":null,"target_service_id":null,"scope":{"environment":"production","region":"eu"},"effective_from":"2026-10-01T00:00:00Z","effective_until":"2026-11-01T00:00:00Z","supersedes":[]}]},
+    {"source_key":"source-status-migration-claimed-complete@1","expected":[{"subject_id":"invoice-migration","predicate":"STATUS","object_id":null,"value":"complete","target_service_id":null,"scope":{"environment":"production","region":"eu"},"effective_from":"2026-10-16T12:00:00Z","effective_until":null,"supersedes":[]}]},
+    {"source_key":"unapproved-chat@1","expected":[]}
+  ]
+}

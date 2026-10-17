@@ -1,0 +1,106 @@
+{
+  "scope": {
+    "environment": "production",
+    "region": "eu"
+  },
+  "known_at": "2026-10-17T12:00:00+00:00",
+  "service_id": "legacy-runner",
+  "fixture": "initial",
+  "cases": [
+    {
+      "id": "invoice-owner-rationale",
+      "question": "Who owns invoice export, and why is it still on the old runner?",
+      "planned_at": "2026-10-17T12:00:00+00:00",
+      "disposition": "blocked",
+      "affected_workflows": [
+        "monthly-billing"
+      ],
+      "blocker_entities": [
+        "invoice-export",
+        "network-approval"
+      ],
+      "owner_pairs": [
+        [
+          "invoice-export",
+          "data-platform"
+        ],
+        [
+          "network-approval",
+          "security"
+        ]
+      ],
+      "required_assertions": [
+        "owns-invoice",
+        "run-invoice-legacy",
+        "tracks-invoice-migration",
+        "blocked-network",
+        "status-network-open",
+        "owns-network",
+        "permits-invoice",
+        "requires-billing-invoice"
+      ],
+      "required_decisions": [
+        "temporary-exception"
+      ],
+      "requires_gap": true,
+      "golden_answer": "Data Platform owns invoice-export [owns-invoice]. It is observed on legacy-runner [run-invoice-legacy]; its migration ticket depends on open network approval, owned by Security [tracks-invoice-migration, blocked-network, status-network-open, owns-network]. Decision temporary-exception permits continued use until 2026-11-01T00:00:00Z [permits-invoice]. This is permission, not proof that continued use is mandatory. Billing requires invoice export [requires-billing-invoice]. Retirement is blocked; reporting coverage also remains stale.",
+      "allowed_workflows": [
+        "monthly-billing",
+        "monthly-reporting"
+      ],
+      "allowed_blockers": [
+        "invoice-export",
+        "monthly-billing",
+        "invoice-migration",
+        "network-approval"
+      ]
+    },
+    {
+      "id": "network-slip-billing",
+      "question": "What breaks for billing if the network approval slips a week?",
+      "planned_at": "2026-10-24T12:00:00+00:00",
+      "disposition": "blocked",
+      "affected_workflows": [
+        "monthly-billing"
+      ],
+      "blocker_entities": [
+        "invoice-export",
+        "network-approval"
+      ],
+      "owner_pairs": [
+        [
+          "invoice-export",
+          "data-platform"
+        ],
+        [
+          "network-approval",
+          "security"
+        ]
+      ],
+      "required_assertions": [
+        "requires-billing-invoice",
+        "run-invoice-legacy",
+        "tracks-invoice-migration",
+        "blocked-network",
+        "status-network-open",
+        "owns-network",
+        "permits-invoice"
+      ],
+      "required_decisions": [
+        "temporary-exception"
+      ],
+      "requires_gap": true,
+      "golden_answer": "Assume the one-week slip moves the proposed decision point from 17 to 24 October 2026. Based on evidence known on 17 October, network approval still blocks invoice migration [blocked-network, status-network-open]. Retiring legacy-runner while this dependency remains would affect invoice export and therefore monthly billing [run-invoice-legacy, requires-billing-invoice]. The slip alone does not prove a billing outage or missed invoice deadline: there is no billing execution calendar or future verification in these records. Continued use is permitted through 1 November by temporary-exception [permits-invoice], so 24 October is inside that permission interval; this does not authorize retirement. Security owns approval [owns-network]. Reverify usage and reporting coverage before acting; do not predict that future work completes.",
+      "allowed_workflows": [
+        "monthly-billing",
+        "monthly-reporting"
+      ],
+      "allowed_blockers": [
+        "invoice-export",
+        "monthly-billing",
+        "invoice-migration",
+        "network-approval"
+      ]
+    }
+  ]
+}

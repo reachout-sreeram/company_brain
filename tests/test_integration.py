@@ -78,7 +78,8 @@ def test_persistence_reconnect(store):
     assert Brain(store).assess_retirement("legacy-runner",SCOPE,AT,known_at=AT)["disposition"]=="blocked"
 
 
-async def test_real_mcp_tools_and_raw_mock_pipeline(store):
+async def test_real_mcp_tools_and_raw_mock_pipeline(store,monkeypatch):
+    monkeypatch.setenv("COMPANY_BRAIN_KNOWN_AT",AT.isoformat())
     from company_brain.extraction import MockExtractor
     from company_brain.server import create_server
     raw=json.loads((ROOT/"data/raw_demo/mock_candidates.json").read_text())
@@ -95,6 +96,9 @@ async def test_real_mcp_tools_and_raw_mock_pipeline(store):
     async with create_connected_server_and_client_session(server) as session:
         listed=await session.list_tools()
         assert len(listed.tools)==4
+        assert 'Never override its disposition' in server.instructions
+        invalid=await session.call_tool("assess_retirement",{"service_id":"legacy-runner","scope":SCOPE.model_dump(),"planned_at":"2026-10-17T12:00:00"})
+        assert invalid.isError
         async def call(name,args):
             response=await session.call_tool(name,args)
             assert not response.isError
@@ -182,3 +186,15 @@ def test_demo_replay_at_future_wallclock_and_historical_projection(store,monkeyp
     assert store.query('MATCH (e:HistoricalEntity) RETURN count(e)')[0][0]>0
     monkeypatch.delenv('COMPANY_BRAIN_KNOWN_AT')
     assert Brain(store).assess_retirement('legacy-runner',SCOPE,AT)['disposition']=='needs_verification'
+
+
+def test_additional_question_goldens_and_provider_neutral_harness(store):
+    from test_evaluation import verify_questions, ScriptedClient
+    from company_brain.evaluation import Experiment, Toolbox, run_pair
+    store.ingest(fixture('initial'))
+    assert len(verify_questions(Brain(store)))==2
+    result=run_pair(ScriptedClient(),Experiment('scripted/offline'),Toolbox(Brain(store),SCOPE,AT),
+                    'Who owns invoice export, and why is it still on the old runner?',AT)
+    assert result['graph']['revision']==result['search']['revision']
+    assert result['graph']['records_digest']==result['search']['records_digest']
+    assert all(arm['status']=='completed' for arm in result.values())
