@@ -15,3 +15,11 @@ Scope: foundational validation is executable. Quote equality is not semantic pro
 Each increment is committed locally with descriptive stage/test evidence. Existing planning edits are preserved outside these implementation commits. No pushes or history rewrites are authorized. The configured Git author email matches the authenticated `reachout-sreeram` account's public email.
 
 Stage 7 remains in progress until the complete demo and its limits are reviewed. Stage 8 independent evaluation and Stage 9 real-world validation must not be marked complete from synthetic tests. Paid extraction requires a chosen model, spending limit, and secure credential setup before a live run.
+
+## Increment 2: first complete retirement loop
+
+Implemented FalkorDB assertion nodes and evidence edges, bounded graph queries, scoped deterministic resolution, conservative coverage, immutable revisions and compare-and-set publication, operator CLI, four read-only MCP tools, restart persistence, repeatable isolated reset/replay, and separate raw-source mock extraction into the actual graph. Added explicit target-service clearance and newer-observation requirements after review exposed unsafe clearance cases.
+
+Verified: the final full suite at this milestone passed 88 tests (84 offline, 4 opt-in real FalkorDB integration), followed by 3 additional CLI guard tests. Three clean four-state replays produced identical canonical results. The raw-source CLI completed with `extraction_method: mock`. Actual MCP protocol round-trips and an ephemeral read-only database role were exercised. No live OpenRouter call or real Claude session occurred. See [local run instructions](18-local-development.md) and [the measured verification report](../../evals/results/verification.md).
+
+Stage 7 now has a runnable first complete slice for human review. Stage 8 benchmark/independent scenario work and Stage 9 user validation remain open. No formal architecture or product validation is inferred from the hackathon shortcut or these tests.

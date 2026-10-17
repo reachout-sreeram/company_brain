@@ -1,0 +1,11 @@
+{
+  "assessment_time": "2026-10-17T12:00:00+00:00",
+  "scope": {"environment":"production","region":"eu"},
+  "service_id":"legacy-runner",
+  "states": [
+    {"fixture":"initial","disposition":"blocked","required_workflows":["monthly-billing"],"required_conflicts":[],"requires_gaps":true},
+    {"fixture":"completion","disposition":"blocked","required_workflows":["monthly-billing"],"required_conflicts":["completion_vs_usage"],"requires_gaps":true},
+    {"fixture":"migration","disposition":"needs_verification","required_workflows":[],"required_conflicts":[],"requires_gaps":true},
+    {"fixture":"clear","disposition":"no_known_blockers","required_workflows":[],"required_conflicts":[],"requires_gaps":false}
+  ]
+}

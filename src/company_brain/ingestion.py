@@ -69,6 +69,8 @@ def validate_bundle(bundle: Bundle) -> None:
             allowed = prior.predicate == a.predicate or (a.predicate == "VERIFIED_CLEAR" and prior.predicate in {"RUNS_ON", "DEPENDS_ON"})
             if not allowed or prior.subject_id != a.subject_id or prior.scope != a.scope or prior.effective_from > a.effective_from:
                 raise ValueError(f"invalid scoped supersession in {a.id}")
+            if a.predicate in {"RUNS_ON", "DEPENDS_ON", "REQUIRES"} and (not a.observed_at or a.observed_at <= (prior.observed_at or prior.effective_from)):
+                raise ValueError("dependency replacement must have newer observed evidence")
             if a.status != "approved":
                 raise ValueError("proposals cannot supersede active facts")
             if a.predicate == "VERIFIED_CLEAR" and prior.object_id != a.target_service_id:

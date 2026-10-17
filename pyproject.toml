@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling>=1.26,<2"]
+requires = ["hatchling>=1.26,<2", "editables>=0.5,<1"]
 build-backend = "hatchling.build"
 
 [project]
@@ -10,6 +10,7 @@ requires-python = ">=3.11"
 dependencies = ["pydantic>=2.10,<3", "falkordb>=1.2,<2", "mcp>=1.20,<2", "httpx>=0.28,<1"]
 
 [project.optional-dependencies]
+lite = ["falkordblite==0.10.0; python_version >= '3.12'"]
 dev = ["pytest>=8,<10", "pytest-asyncio>=0.24,<2"]
 
 [project.scripts]
