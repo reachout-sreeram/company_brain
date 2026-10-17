@@ -2,9 +2,9 @@
 
 Research date: 15 October 2026, IST.
 
-Current process: follow the [ten-stage engineering framework](docs/planning/10-engineering-framework.md). [Stage 1 is concluded](docs/planning/11-stage-1-problem-understanding.md). [Stage 2 success criteria](docs/planning/15-stage-2-success-definition.md) are prepared for review for a support engineer resolving a product-behavior question with current evidence, rationale, and ownership. Solution selection remains open.
+Current process: follow the [ten-stage engineering framework](docs/planning/10-engineering-framework.md). [Stage 1 is concluded](docs/planning/11-stage-1-problem-understanding.md). [Stage 2 is approved](docs/planning/15-stage-2-success-definition.md): an MCP context layer over FalkorDB that tells agents like Claude what is true now, why, and who owns it, proven on three scripted scenarios. Next step is implementation.
 
-Earlier candidate: **PromiseGraph**, a customer-commitment impact agent. It is not the selected first scenario. No product name, SDK, or architecture has been selected.
+Earlier candidate: **PromiseGraph**, a customer-commitment impact agent. It is not the selected scenario. No product name has been selected.
 
 This is a research and design package. No application, database integration, evaluation, or deployment has been implemented. The name and scope are proposals for discussion. Future application code and project assets should stay in this directory.
 
