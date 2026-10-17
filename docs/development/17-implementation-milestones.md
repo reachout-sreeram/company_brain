@@ -43,3 +43,9 @@ Raw preparation counts are reproducible with `.venv/bin/python -m company_brain.
 The expanded full suite passed **110 tests in 35.80s** (102 offline + 8 actual FalkorDB integration). The new real-DB test supports both extra question goldens and a clearly labeled scripted comparison-harness probe; it does not simulate a real-client transcript. The existing official MCP protocol test now also pins demo time, checks instructions against disposition override, and rejects timezone-naive dates. A targeted rerun verifies these added protocol assertions. See [evaluation preparation](../../evals/results/evaluation-preparation.md) and [submission plan](19-submission-plan.md).
 
 No live benchmark, real extraction, relationship ablation, push, visibility change or deployment occurred. Later framework gates remain open. Publishing authorization and paid model/cap/secure-setup gates remain pending.
+
+### Final review follow-up
+
+Tightened partial-response consistency: when the evidence budget omits supporting citations, remove nested permission references and workflow findings whose paths were omitted. Added checks across budgets 1/4/8/12 and an actual-DB bounded-response check. Full suite: **110 passed in 39.91s**. Final offline run after the evaluator correction: **102 passed, 8 skipped in 0.35s**.
+
+The generated mock-narrative report exposed a scorer default-normalization defect (`supersedes` omitted versus `[]`); fixed it, added a regression, and regenerated the raw report. The available permission mock now scores 1 TP / 0 FP / 0 FN; this remains a curated deterministic mock, never live extraction accuracy. Earlier intermediate mock counts were not valid evaluation evidence. No framework gate has been closed.

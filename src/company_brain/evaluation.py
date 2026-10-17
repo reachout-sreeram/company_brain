@@ -196,7 +196,7 @@ def score_narrative(candidates, expected):
     """Exact semantic-field matching against independently authored expected facts."""
     def signature(row, keys):
         fields=row.model_dump(mode='json') if hasattr(row,'model_dump') else row
-        values={k:fields.get(k) for k in keys}
+        values={k:fields.get(k, [] if k=='supersedes' else None) for k in keys}
         for key in ('effective_from','effective_until'):
             if values.get(key): values[key]=datetime.fromisoformat(values[key].replace('Z','+00:00')).isoformat()
         return encoded(values)

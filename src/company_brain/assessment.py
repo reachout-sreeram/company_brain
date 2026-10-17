@@ -192,7 +192,11 @@ class Brain:
         for key in ("dependency_paths","blockers","conflicts","owners","decisions"):
             result[key] = [row for row in result[key] if
                 set(row.get("assertion_ids",[row["assertion_id"]] if "assertion_id" in row else [])) <= kept][:self.max_results]
-        result["affected_workflows"] = result["affected_workflows"][:self.max_results]
+        for blocker in result["blockers"]:
+            if "permissions" in blocker:
+                blocker["permissions"] = [p for p in blocker["permissions"] if p["assertion_id"] in kept]
+        supported_consumers = {p["consumer_id"] for p in result["dependency_paths"]}
+        result["affected_workflows"] = [w for w in result["affected_workflows"] if w in supported_consumers][:self.max_results]
         result["coverage"]["gaps"] = gaps[:self.max_results]
         for aid in sorted(kept):
             a=active[aid]; source=sources[a.source_key]

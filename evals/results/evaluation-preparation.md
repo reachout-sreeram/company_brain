@@ -56,9 +56,9 @@ they do not measure model extraction accuracy or graph-versus-search improvement
       "source_key": "source-permits-invoice@1",
       "expected": 1,
       "proposed": 1,
-      "true_positive": 0,
-      "false_positive": 1,
-      "false_negative": 1
+      "true_positive": 1,
+      "false_positive": 0,
+      "false_negative": 0
     }
   ]
 }

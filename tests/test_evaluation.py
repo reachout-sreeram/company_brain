@@ -83,6 +83,8 @@ def test_narrative_scoring_detects_wrong_subject_and_duplicates():
     correct=expected[0]
     wrong={**correct,'subject_id':'report-job'}
     assert score_narrative([wrong],expected)=={'expected':1,'proposed':1,'true_positive':0,'false_positive':1,'false_negative':1}
+    omitted_default={k:v for k,v in correct.items() if k!='supersedes'}
+    assert score_narrative([omitted_default],expected)['true_positive']==1
     result=score_narrative([correct,correct],expected)
     assert result['true_positive']==1 and result['false_positive']==1
 

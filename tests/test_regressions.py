@@ -127,6 +127,18 @@ def assert_budget(store):
 
 def test_inventory_verification_respects_evidence_budget():
     assert_budget(InMemoryAssessmentTestDouble(budget_bundle()))
+    for budget in (1,4,8,12):
+        result=Brain(InMemoryAssessmentTestDouble(scenario()),max_results=budget).assess_retirement('legacy-runner',SCOPE,NOW,known_at=NOW)
+        evidence={e['assertion_id'] for e in result['evidence']}
+        def check(value):
+            if isinstance(value,dict):
+                if 'assertion_id' in value: assert value['assertion_id'] in evidence
+                if 'assertion_ids' in value: assert set(value['assertion_ids'])<=evidence
+                for row in value.values(): check(row)
+            elif isinstance(value,list):
+                for row in value: check(row)
+        check(result)
+        assert set(result['affected_workflows'])<={p['consumer_id'] for p in result['dependency_paths']}
 
 
 def test_demo_known_time_is_stable_thirty_days_later(monkeypatch):

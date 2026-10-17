@@ -157,6 +157,12 @@ def test_graph_native_paths_without_revision_payload_reads(store):
     assert len(path_queries)==1
     assert 'SUPERSEDES' in path_queries[0] and 'RETURN p,' in path_queries[0]
     assert any(b['entity_id']=='network-approval' for b in result['blockers'])
+    limited=Brain(store,max_results=8).assess_retirement('legacy-runner',SCOPE,AT,known_at=AT)
+    evidence={e['assertion_id'] for e in limited['evidence']}
+    assert limited['coverage']['truncated']
+    for blocker in limited['blockers']:
+        assert all(p['assertion_id'] in evidence for p in blocker.get('permissions',[]))
+    assert set(limited['affected_workflows'])<={p['consumer_id'] for p in limited['dependency_paths']}
 
 
 def test_demo_replay_at_future_wallclock_and_historical_projection(store,monkeypatch):
