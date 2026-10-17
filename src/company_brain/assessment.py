@@ -1,7 +1,7 @@
 """Deterministic, scoped resolution; every finding retains assertion/source IDs."""
 from __future__ import annotations
 
-from collections import deque
+import os
 from datetime import datetime, timedelta, timezone
 from .models import Caller, Scope, aware
 
@@ -16,23 +16,23 @@ class Brain:
         self.max_depth, self.max_results = max_depth, max_results
         self.freshness = timedelta(days=freshness_days)
 
-    def view(self):
-        rev, bundle = self.store.snapshot()
+    def view(self, scope=None):
+        rev, bundle, hidden = self.store.read_view(self.caller.groups, scope)
         entities = {e.id:e for e in bundle.entities if self.caller.can_read(e.visibility)}
         sources = {s.key:s for s in bundle.sources if not s.revoked and self.caller.can_read(s.visibility)}
         assertions = {a.id:a for a in bundle.assertions if a.source_key in sources and a.subject_id in entities and (not a.object_id or a.object_id in entities) and (not a.target_service_id or a.target_service_id in entities)}
-        return rev, bundle, entities, sources, assertions
+        return rev, bundle, entities, sources, assertions, hidden
 
     def find_entities(self, query: str, kind: str | None = None):
         if not query.strip() or len(query) > 200:
             raise ValueError("query must contain 1–200 characters")
-        rev, _, entities, _, _ = self.view()
+        rev, _, entities, _, _, _ = self.view()
         q = query.strip().casefold()
         matches = [e.model_dump(mode="json") for e in entities.values() if (not kind or e.kind == kind) and any(q in x.casefold() for x in [e.id,e.name,*e.aliases])]
         return {"graph_revision":rev,"candidates":sorted(matches,key=lambda e:e["id"])[:self.max_results],"ambiguous":len(matches)>1,"truncated":len(matches)>self.max_results}
 
     def get_evidence(self, source_id: str, version: str, span_id: str | None = None):
-        rev, _, _, sources, assertions = self.view()
+        rev, _, _, sources, assertions, _ = self.view()
         source = sources.get(f"{source_id}@{version}")
         if not source:
             raise ValueError("source unavailable")
@@ -45,7 +45,7 @@ class Brain:
         return result
 
     def get_history(self, entity_id: str, scope: Scope):
-        rev, _, entities, _, assertions = self.view()
+        rev, _, entities, _, assertions, _ = self.view(scope)
         if entity_id not in entities or entities[entity_id].scope != scope:
             raise ValueError("entity unavailable")
         rows = []
@@ -58,16 +58,15 @@ class Brain:
 
     def assess_retirement(self, service_id: str, scope: Scope, planned_at: datetime, *, known_at: datetime | None = None):
         planned_at = aware(planned_at)
-        known_at = aware(known_at or datetime.now(timezone.utc))
-        rev, bundle, entities, sources, visible = self.view()
+        demo_time = os.getenv("COMPANY_BRAIN_KNOWN_AT")
+        known_at = aware(known_at or (datetime.fromisoformat(demo_time.replace("Z", "+00:00")) if demo_time else datetime.now(timezone.utc)))
+        rev, bundle, entities, sources, visible, hidden = self.view(scope)
         result = {"service_id":service_id,"scope":scope.model_dump(),"planned_at":planned_at.isoformat(),"known_at":known_at.isoformat(),"graph_revision":rev,"disposition":"clarification_needed","affected_workflows":[],"dependency_paths":[],"blockers":[],"conflicts":[],"owners":[],"decisions":[],"coverage":{"gaps":[],"truncated":False},"evidence":[]}
         service = entities.get(service_id)
         if not service or service.kind != "Service" or service.scope != scope:
             result["coverage"]["gaps"].append("service and scope require clarification")
             return result
-        applicable = {a.id:a for a in visible.values() if a.scope == scope and a.status == "approved" and a.effective_from <= planned_at and (a.predicate not in DEPENDENCIES|{"VERIFIED_CLEAR"} or a.effective_from <= known_at) and (not a.effective_until or planned_at < a.effective_until) and sources[a.source_key].recorded_at <= known_at and (not a.observed_at or a.observed_at <= known_at)}
-        superseded = {old for a in applicable.values() for old in a.supersedes}
-        active = {i:a for i,a in applicable.items() if i not in superseded}
+        active = self.store.resolved(rev, scope, planned_at, known_at, self.caller.groups)
         def fresh(a):
             return bool(a.observed_at and timedelta(0) <= known_at-a.observed_at <= self.freshness)
         evidence_ids = set()
@@ -80,59 +79,48 @@ class Brain:
         by_subject = {}
         for a in active.values():
             by_subject.setdefault(a.subject_id,[]).append(a)
-        allowed = sorted(i for i,a in active.items() if a.predicate in DEPENDENCIES)
-        queue = deque([(service_id,[],frozenset({service_id}))])
-        affected = set()
-        reached = set()
-        confirmed_dependencies = []
-        steps = 0
-        while queue:
-            target,path,seen = queue.popleft()
-            ids = self.store.incoming(rev,target,allowed,self.max_results+1)
-            if len(ids)>self.max_results or (len(path)>=self.max_depth and ids):
+        paths = self.store.dependency_paths(rev, service_id, scope, planned_at, known_at,
+                                            self.caller.groups, self.max_depth, self.max_results+1)
+        affected, reached, confirmed_dependencies = set(), set(), []
+        if len(paths)>self.max_results:
+            result["coverage"]["truncated"] = True
+            gap("dependency traversal budget exhausted")
+        for path in paths[:self.max_results]:
+            ids, nodes = path["assertion_ids"], path["entity_ids"]
+            if len(ids)>self.max_depth:
                 result["coverage"]["truncated"] = True
                 gap("dependency traversal budget exhausted")
-                if len(path)>=self.max_depth:
-                    continue
-            for aid in ids[:self.max_results]:
-                steps += 1
-                if steps>self.max_results:
-                    result["coverage"]["truncated"] = True
-                    gap("dependency traversal budget exhausted")
-                    queue.clear()
-                    break
-                a = active[aid]
-                new_path = [aid,*path]
-                record(a)
-                reached.add(a.subject_id)
-                if a.subject_id in seen:
-                    gap("dependency cycle requires verification")
-                    continue
-                path_fresh = all(fresh(active[i]) for i in new_path)
-                result["dependency_paths"].append({"consumer_id":a.subject_id,"assertion_ids":new_path,"fresh":path_fresh})
-                if not path_fresh:
-                    gap(f"stale dependency evidence: {a.subject_id}")
-                elif entities[a.subject_id].kind in {"Job","Service","Workflow"}:
-                    confirmed_dependencies.append(a.id)
-                if entities[a.subject_id].kind == "Workflow":
-                    affected.add(a.subject_id)
-                queue.append((a.subject_id,new_path,seen|{a.subject_id}))
+                continue
+            if len(nodes)!=len(set(nodes)):
+                gap("dependency cycle requires verification")
+                continue
+            consumer = nodes[0]
+            reached.add(consumer)
+            for aid in ids: record(active[aid])
+            path_fresh = all(fresh(active[i]) for i in ids)
+            result["dependency_paths"].append({"consumer_id":consumer,"assertion_ids":ids,"fresh":path_fresh})
+            if not path_fresh:
+                gap(f"stale dependency evidence: {consumer}")
+            elif entities[consumer].kind in {"Job","Service","Workflow"}:
+                confirmed_dependencies.append(ids[0])
+            if entities[consumer].kind == "Workflow": affected.add(consumer)
         result["affected_workflows"] = sorted(affected)
         result["blockers"] = [{"kind":"active_dependency","assertion_ids":[aid],"entity_id":active[aid].subject_id} for aid in sorted(set(confirmed_dependencies))]
         related = set(reached)
-        task_queue = deque()
-        for entity_id in sorted(reached):
-            for a in by_subject.get(entity_id,[]):
-                if a.predicate == "MIGRATION_TRACKED_BY":
-                    record(a); task_queue.append(a.object_id); related.add(a.object_id)
-        visited_tasks = set()
-        while task_queue:
-            task = task_queue.popleft()
-            if task in visited_tasks:
+        context_paths = [(nodes, aids) for path in paths[:self.max_results]
+                         for nodes, aids in zip(path.get("context_nodes",[]),path.get("context_assertions",[]))]
+        tasks = set()
+        for nodes, aids in context_paths:
+            if len(aids)>self.max_depth:
+                gap("migration traversal budget exhausted"); result["coverage"]["truncated"]=True
                 continue
-            if len(visited_tasks)>=self.max_results:
-                gap("migration traversal budget exhausted"); result["coverage"]["truncated"]=True; break
-            visited_tasks.add(task)
+            if len(nodes)!=len(set(nodes)):
+                gap("migration cycle requires verification")
+            for aid in aids: record(active[aid])
+            tasks.update(nodes[1:]); related.update(nodes[1:])
+        if len(tasks)>self.max_results:
+            gap("migration traversal budget exhausted"); result["coverage"]["truncated"]=True
+        for task in sorted(tasks)[:self.max_results]:
             facts = by_subject.get(task,[])
             statuses = [a for a in facts if a.predicate == "STATUS"]
             for a in statuses: record(a)
@@ -143,9 +131,6 @@ class Brain:
                 gap(f"missing migration state: {task}")
             if statuses and ("complete" not in values or len(values)>1):
                 result["blockers"].append({"kind":"migration_prerequisite","entity_id":task,"assertion_ids":sorted(a.id for a in statuses)})
-            for a in facts:
-                if a.predicate=="BLOCKED_BY":
-                    record(a); task_queue.append(a.object_id); related.add(a.object_id)
             for status in statuses:
                 if status.value != "complete": continue
                 for consumer in reached:
@@ -164,7 +149,12 @@ class Brain:
                 result["conflicts"].append({"kind":"ownership_conflict","entity_id":entity_id,"assertion_ids":sorted(a.id for a in owner_facts)})
         for a in active.values():
             if a.predicate=="PERMITS_USE" and a.object_id in reached:
-                record(a); result["decisions"].append({"decision_id":a.subject_id,"assertion_id":a.id,"permits_consumer_id":a.object_id})
+                record(a); result["decisions"].append({"decision_id":a.subject_id,"assertion_id":a.id,"permits_consumer_id":a.object_id,
+                    "effective_until":a.effective_until.isoformat() if a.effective_until else None})
+                for blocker in result["blockers"]:
+                    if blocker["kind"]=="active_dependency" and blocker["entity_id"]==a.object_id:
+                        blocker.setdefault("permissions", []).append({"decision_id":a.subject_id,"assertion_id":a.id,
+                            "until":a.effective_until.isoformat() if a.effective_until else None})
         inventories = [i for i in bundle.inventories if i.service_id==service_id and i.scope==scope and i.source_key in sources and sources[i.source_key].recorded_at<=known_at]
         if not inventories:
             gap("inventory coverage cannot be established")
@@ -188,10 +178,23 @@ class Brain:
                 if not checks:
                     gap(f"consumer verification missing or stale: {consumer}")
                 for a in checks: record(a)
+        if hidden:
+            gap("assessment coverage is incomplete for this caller")
         if result["conflicts"]:
             gap("conflicting evidence requires verification")
         result["disposition"] = "blocked" if result["blockers"] else "needs_verification" if gaps else "no_known_blockers"
-        for aid in sorted(evidence_ids):
+        if len(evidence_ids)>self.max_results or any(len(result[key])>self.max_results for key in
+                ("dependency_paths","blockers","conflicts","owners","decisions","affected_workflows")):
+            result["coverage"]["truncated"] = True
+            gap("response evidence budget exhausted")
+            if result["disposition"]=="no_known_blockers": result["disposition"]="needs_verification"
+        kept = set(sorted(evidence_ids)[:self.max_results])
+        for key in ("dependency_paths","blockers","conflicts","owners","decisions"):
+            result[key] = [row for row in result[key] if
+                set(row.get("assertion_ids",[row["assertion_id"]] if "assertion_id" in row else [])) <= kept][:self.max_results]
+        result["affected_workflows"] = result["affected_workflows"][:self.max_results]
+        result["coverage"]["gaps"] = gaps[:self.max_results]
+        for aid in sorted(kept):
             a=active[aid]; source=sources[a.source_key]
             result["evidence"].append({"assertion_id":aid,"source_id":source.id,"version":source.version,"content_hash":source.content_hash,"span_start":a.span_start,"span_end":a.span_end,"quote":a.quote,"method":a.method,"observed_at":a.observed_at.isoformat() if a.observed_at else None})
         return result

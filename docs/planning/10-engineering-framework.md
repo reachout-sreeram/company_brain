@@ -20,7 +20,7 @@ The supplied message ends at mandatory principle 3, `Human-`. No missing text ha
 | 4. Solution validation | Feasibility experiments and comparison evidence | Is this worth building? | Not validated; feasibility checks planned inside the first increment under the hackathon shortcut |
 | 5. Product design | User journey, scope, interaction states | Is this the product we want? | MCP retirement workflow described in Stage 3; no UI or user validation completed |
 | 6. Architecture and planning | Justified components, sequence, evaluation plan | Is the design appropriate? | Proposed graph, tool contracts, and build sequence in Stage 3; runtime untested |
-| 7. Incremental development | Small working increments and verification | Review significant milestones and changes | Not started |
+| 7. Incremental development | Small working increments and verification | Review significant milestones and changes | In progress; review corrections and verification in implementation milestones |
 | 8. Independent evaluation | Evidence separate from implementation claims | Accept, improve, redesign, or reject? | Not started |
 | 9. Real-world validation | Realistic task and user evidence | Does it solve the problem? | Not started |
 | 10. Optimization and delivery | Fixes, reproducible package, final demo | Ready to present, launch, or deploy? | Not started |
@@ -56,3 +56,5 @@ Additional research: [Neo4j and GraphRAG implementation patterns](../research/13
 | Stage 1 concluded at user instruction | 15 October 2026 | Consolidated problem understanding; no approval inferred for PromiseGraph, architecture, or implementation |
 | Stage 2 approved | 17 October 2026 | MCP-first delivery; three scenarios; hackathon shortcut through Stage 6 |
 | Stage 3 direction selected | 17 October 2026 | Service retirement readiness; detailed plan documented, implementation and validation pending |
+
+Current restriction update (17 October 2026): provider-neutral MCP only; the earlier Claude Desktop/client decision is withdrawn. Never use Claude models or request Claude access. Paid/live API execution awaits model, total spending cap and approved secure credentials. Local Stage 7 corrections are authorized; later framework acceptance and public submission remain pending human review.

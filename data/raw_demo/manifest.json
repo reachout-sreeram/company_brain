@@ -124,6 +124,9 @@
       },
       "authority": [
         "RUNS_ON"
+      ],
+      "reviewed_claims": [
+        "4ba041f30d8f097c01e4f6cb36187833aa0ed6127cdcd645a934ef8d22328f91"
       ]
     },
     {
@@ -138,6 +141,9 @@
       },
       "authority": [
         "REQUIRES"
+      ],
+      "reviewed_claims": [
+        "8de1c7abc76d58874611e72517fa5338f0f0b0cce26ee05397032893af0b68af"
       ]
     },
     {
@@ -152,6 +158,9 @@
       },
       "authority": [
         "REQUIRES"
+      ],
+      "reviewed_claims": [
+        "d96aad5d53f9ac2ac4e8d204761d9b7e7603a57b7aabd02d9ab27212c849d0f7"
       ]
     },
     {
@@ -166,6 +175,9 @@
       },
       "authority": [
         "MIGRATION_TRACKED_BY"
+      ],
+      "reviewed_claims": [
+        "baec720d41107189d916f5fd317cb58eb28d92a7f1af5c3c205b82cf35a42398"
       ]
     },
     {
@@ -180,6 +192,9 @@
       },
       "authority": [
         "BLOCKED_BY"
+      ],
+      "reviewed_claims": [
+        "a27523a703d3201efe8791c55d69249b059513b9ad56b0fe91314bfc6f7255e5"
       ]
     },
     {
@@ -194,6 +209,9 @@
       },
       "authority": [
         "OWNED_BY"
+      ],
+      "reviewed_claims": [
+        "94b14b3416a0af8a1924944c522d3a377513bcb30125a4b2732c44c8dd14fd8f"
       ]
     },
     {
@@ -208,6 +226,9 @@
       },
       "authority": [
         "OWNED_BY"
+      ],
+      "reviewed_claims": [
+        "fc7151846c8d4413b0f6b70f3c6508174b7c4b88f2cc051f575f7c1ccd0a90e0"
       ]
     },
     {
@@ -222,6 +243,9 @@
       },
       "authority": [
         "OWNED_BY"
+      ],
+      "reviewed_claims": [
+        "f8ec8aa61d038fe5608e6973a3e0eebd7858560cc2968c6d8c2de8142dd9906e"
       ]
     },
     {
@@ -236,6 +260,9 @@
       },
       "authority": [
         "STATUS"
+      ],
+      "reviewed_claims": [
+        "3ed7fef0adc88160c6aceb7392946ba1ce354aea13fcc7151921818e86ee989a"
       ]
     },
     {
@@ -250,6 +277,9 @@
       },
       "authority": [
         "STATUS"
+      ],
+      "reviewed_claims": [
+        "871e3eb9c10f1e3ebcbaf7cde75b54dcd9265bf9200b905b6d6b83ad8498e7f6"
       ]
     },
     {
@@ -264,6 +294,9 @@
       },
       "authority": [
         "RUNS_ON"
+      ],
+      "reviewed_claims": [
+        "175fc61f11f8837a5746a7d62046a9de6f71b93769b7b8fac83b62ce81a7ef7a"
       ]
     },
     {
@@ -278,7 +311,8 @@
       },
       "authority": [
         "VERIFIED_CLEAR"
-      ]
+      ],
+      "reviewed_claims": []
     },
     {
       "id": "source-permits-invoice",
@@ -292,6 +326,9 @@
       },
       "authority": [
         "PERMITS_USE"
+      ],
+      "reviewed_claims": [
+        "7ef05a0844fd4c2603295fb49374aec8666396d5b8fc3f6b7a856d6c9ea860fb"
       ]
     }
   ],

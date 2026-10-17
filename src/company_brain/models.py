@@ -47,6 +47,7 @@ class Source(Model):
     visibility: str = "public"
     authority: list[Predicate] = Field(default_factory=list)
     revoked: bool = False
+    reviewed_claims: list[str] = Field(default_factory=list)
 
     _aware = field_validator("recorded_at")(aware)
 

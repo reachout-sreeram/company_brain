@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from hashlib import sha256
+import json
 from .models import Assertion, Bundle
 
 RELATIONS = {
@@ -25,6 +26,19 @@ def unique(rows, key):
     return result
 
 
+def claim_digest(claim) -> str:
+    """Operator review binds every semantic field, identity, scope and source span."""
+    from .extraction import CandidateAssertion
+    fields = claim.model_dump(mode="json") if hasattr(claim, "model_dump") else dict(claim)
+    fields = {k: v for k, v in fields.items() if k in CandidateAssertion.model_fields}
+    for key in ("effective_from", "effective_until", "observed_at"):
+        if fields.get(key):
+            from datetime import datetime
+            fields[key] = datetime.fromisoformat(fields[key].replace("Z", "+00:00")).isoformat()
+    candidate = CandidateAssertion.model_validate(fields)
+    return sha256(json.dumps(candidate.model_dump(mode="json"), sort_keys=True).encode()).hexdigest()
+
+
 def validate_bundle(bundle: Bundle) -> None:
     entities = unique(bundle.entities, lambda x: x.id)
     sources = unique(bundle.sources, lambda x: x.key)
@@ -44,6 +58,8 @@ def validate_bundle(bundle: Bundle) -> None:
             raise ValueError(f"object scope mismatch in {a.id}")
         if a.status == "approved" and a.predicate not in source.authority:
             raise ValueError(f"source lacks predicate authority for {a.id}")
+        if a.method in {"extracted", "mock"} and a.status == "approved" and claim_digest(a) not in source.reviewed_claims:
+            raise ValueError(f"extracted assertion needs explicit operator review for {a.id}")
         if a.predicate != "VERIFIED_CLEAR" and a.target_service_id:
             raise ValueError("target_service_id only applies to clearance")
         if a.predicate in RELATIONS:
@@ -73,7 +89,7 @@ def validate_bundle(bundle: Bundle) -> None:
                 raise ValueError("dependency replacement must have newer observed evidence")
             if a.status != "approved":
                 raise ValueError("proposals cannot supersede active facts")
-            if a.predicate == "VERIFIED_CLEAR" and prior.object_id != a.target_service_id:
+            if a.predicate == "VERIFIED_CLEAR" and (prior.target_service_id if prior.predicate == "VERIFIED_CLEAR" else prior.object_id) != a.target_service_id:
                 raise ValueError("clearance cannot supersede dependency on another service")
             if a.predicate == "VERIFIED_CLEAR" and a.observed_at <= (prior.observed_at or prior.effective_from):
                 raise ValueError("clearance must be newer than dependency")
@@ -126,9 +142,11 @@ def extract_bundle(manifest: Bundle, adapter) -> Bundle:
         for candidate in adapter.extract(RawSource(source_id=source.id, version=source.version, text=source.text)):
             fields = candidate.model_dump(mode="json")
             identity = sha256((source.key + candidate.model_dump_json()).encode()).hexdigest()[:24]
+            if candidate.supersedes and claim_digest(candidate) not in source.reviewed_claims:
+                raise ValueError("unreviewed extraction cannot supersede facts")
             assertions.append(Assertion(
                 **fields, id=f"extract-{identity}", source_id=source.id, source_version=source.version,
-                method=adapter.method, status="approved" if candidate.predicate in source.authority else "proposal",
+                method=adapter.method, status="approved" if candidate.predicate in source.authority and claim_digest(candidate) in source.reviewed_claims else "proposal",
             ))
     result = manifest.model_copy(update={"assertions": assertions})
     validate_bundle(result)

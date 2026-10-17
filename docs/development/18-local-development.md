@@ -24,6 +24,7 @@ The official FalkorDBLite package embeds a real Redis + FalkorDB module and mana
 mkdir -p .local
 export COMPANY_BRAIN_LITE_PATH="$PWD/.local/retirement.rdb"
 export COMPANY_BRAIN_GRAPH=company_brain_demo_retirement
+export COMPANY_BRAIN_KNOWN_AT=2026-10-17T12:00:00Z
 ```
 
 The database persists at that file across CLI invocations; a real shutdown/reopen check is in the integration suite. The private runtime also writes library-managed settings beside it. `.local/` is ignored. Do not remove it when data should persist.
@@ -49,7 +50,7 @@ Expected progression: initial billing dependency blocks retirement; ticket compl
 
 Sources, assertions and prior revisions remain in FalkorDB. Source versions and assertion IDs are immutable. Revoking a source deactivates its evidence. Invalid ingestion is rejected before staging; staging/publish failure leaves the published revision readable. Concurrent publication uses a compare-and-set head update. Multiple distributed writers and crash recovery beyond the tested failure injection are not validated.
 
-Ingestion accepts typed JSON exports with explicit facts. Generic catalog/ticket vendor adapters are not implemented. Structured fixtures are labeled `seeded`/`parsed`; they are never presented as LLM extraction. Narrative candidates pass the same validator after extraction. Exact source spans prove provenance, not semantic entailment; review expected facts independently before trusting new extracted relationships.
+Ingestion accepts typed JSON exports with explicit facts. Generic catalog/ticket vendor adapters are not implemented. Structured fixtures are labeled `seeded`/`parsed`; they are never presented as LLM extraction. Narrative candidates pass the same validator after extraction. Only exact full-candidate digests in trusted operator `Source.reviewed_claims` metadata can activate extracted/mock claims; changed subject, scope, object, dates or supersession require fresh review. Unreviewed candidates remain proposals; unreviewed supersession is rejected. The raw demo manifest contains explicit reviewed digests for the authored mock candidates. This is an operator trust gate, not automated semantic proof. Exact source spans prove provenance, not semantic entailment; review expected facts independently before trusting new extracted relationships.
 
 ## Replay and tests
 
@@ -59,7 +60,7 @@ COMPANY_BRAIN_INTEGRATION=1 .venv/bin/python -m pytest tests/test_integration.py
 .venv/bin/python -m company_brain.replay --confirm-graph company_brain_demo_retirement --replays 3
 ```
 
-The replay explicitly resets only the named demo graph, compares four states to `evals/gold/retirement.json`, checks canonical results across runs, and writes evidence-linked output to `evals/results/replay.json`. Golden files are never loaded into ingestion or exposed by MCP. Assessment time is fixed for reproducibility; actual MCP calls use current UTC as the known-at time, so historical fixtures will eventually become stale.
+The replay explicitly resets only the named demo graph, compares four states to `evals/gold/retirement.json`, checks canonical results across runs, and writes evidence-linked output to `evals/results/replay.json`. Golden files are never loaded into ingestion or exposed by MCP. Assessment time is fixed for reproducibility. Set `COMPANY_BRAIN_KNOWN_AT` as above for stable historical MCP demos; without this explicit setting, MCP calls use current UTC and historical fixtures become stale. Real freshness rules remain unchanged. Reset/reingest old demo graphs after this schema correction.
 
 Reset is available only for the strict `company_brain_demo_*` / `company_brain_test_*` naming convention, operator access and exact confirmation:
 
@@ -71,7 +72,7 @@ Never point these commands at user or production graphs. There is no `FLUSHDB` o
 
 ## MCP client
 
-Run `.venv/bin/company-brain-mcp` as a stdio server. Configure your client with the absolute executable path and the same graph/database environment above. Example Claude Desktop server entry (replace `/absolute/path/company-brain`):
+Run `.venv/bin/company-brain-mcp` as a stdio server. Configure your client with the absolute executable path and the same graph/database environment above. Example provider-neutral MCP stdio server entry (replace `/absolute/path/company-brain`):
 
 ```json
 {
@@ -91,7 +92,7 @@ Tools: `find_entities(query, kind?)`, `assess_retirement(service_id, scope, plan
 
 Ask: “Can we retire legacy-runner in production/eu? Show indirect business dependencies, blockers, owners and evidence.” Clarify ambiguous names. Cite each material finding using its source/version/span; preserve contradictions, stale evidence and coverage gaps. Distinguish suggested next steps from approved decisions. No tool can mutate infrastructure or ingest facts. Access groups are trusted `COMPANY_BRAIN_GROUPS` server configuration, never model arguments.
 
-The official SDK protocol round-trip is tested. An actual Claude Desktop conversation/intent evaluation has not been run.
+The official SDK protocol round-trip is tested. No real model/client conversation or intent evaluation has been run. Claude Desktop and Claude models are excluded by the user.
 
 ## Separate extraction demo
 
@@ -115,6 +116,6 @@ No default model, retry loop or live call occurs automatically. The token cap bo
 
 ## Remaining evaluation
 
-Functional replay and adapter tests do not establish customer demand, production reliability, search improvement, or FalkorDB speed superiority. Search-only comparison, relationship ablation, independently authored unseen branches, comprehensive authority policy, production identity, and client intent/answer evaluation remain Stage 8 work. The Stage 3 p95 <2 seconds and reset <30 seconds targets require declared hardware/sample/cache settings before acceptance.
+Functional replay and adapter tests do not establish customer demand, production reliability, search improvement, or FalkorDB speed superiority. Search-only comparison execution, relationship ablation, independently authored unseen branches, comprehensive authority policy, production identity, and client intent/answer evaluation remain Stage 8 work. The Stage 3 p95 <2 seconds and reset <30 seconds targets require declared hardware/sample/cache settings before acceptance.
 
 Official API references: [FalkorDBLite](https://github.com/FalkorDB/falkordblite), [FalkorDB Python client](https://github.com/FalkorDB/falkordb-py), [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk), and [OpenRouter API](https://openrouter.ai/docs/api-reference/chat-completion).

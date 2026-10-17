@@ -25,14 +25,56 @@ class InMemoryAssessmentTestDouble:
         self.bundle = bundle
         self.incoming_calls = []
 
-    def snapshot(self):
-        return self.bundle.revision, self.bundle
+    def read_view(self, groups, scope=None):
+        from company_brain.models import Caller
+        caller=Caller(groups=groups)
+        entities={e.id:e for e in self.bundle.entities if caller.can_read(e.visibility) and (not scope or e.scope==scope)}
+        sources={s.key:s for s in self.bundle.sources if not s.revoked and caller.can_read(s.visibility) and (not scope or s.scope==scope)}
+        assertions=[a for a in self.bundle.assertions if a.source_key in sources and a.subject_id in entities
+                    and (not a.object_id or a.object_id in entities) and (not a.target_service_id or a.target_service_id in entities)]
+        hidden=any((not scope or a.scope==scope) and a not in assertions and
+                   not next(s for s in self.bundle.sources if s.key==a.source_key).revoked for a in self.bundle.assertions)
+        return self.bundle.revision, Bundle(entities=list(entities.values()),sources=list(sources.values()),assertions=assertions,
+            inventories=[i for i in self.bundle.inventories if i.source_key in sources and (not scope or i.scope==scope)]), hidden
 
-    def incoming(self, revision, target, allowed, limit):
-        assert revision == self.bundle.revision
-        self.incoming_calls.append((target, limit))
-        return sorted(a.id for a in self.bundle.assertions
-                      if a.id in allowed and a.object_id == target)[:limit]
+    def resolved(self, revision, scope, planned_at, known_at, groups):
+        from company_brain.models import Caller
+        caller = Caller(groups=groups)
+        sources = {s.key:s for s in self.bundle.sources if not s.revoked and caller.can_read(s.visibility)}
+        entities = {e.id:e for e in self.bundle.entities if caller.can_read(e.visibility)}
+        applicable = {a.id:a for a in self.bundle.assertions if a.source_key in sources
+            and a.subject_id in entities and (not a.object_id or a.object_id in entities)
+            and (not a.target_service_id or a.target_service_id in entities)
+            and a.scope==scope and a.status=='approved' and a.effective_from<=planned_at
+            and (not a.effective_until or planned_at<a.effective_until)
+            and (a.predicate not in {'RUNS_ON','DEPENDS_ON','REQUIRES','VERIFIED_CLEAR'} or a.effective_from<=known_at)
+            and sources[a.source_key].recorded_at<=known_at and (not a.observed_at or a.observed_at<=known_at)}
+        superseded = {old for a in applicable.values() for old in a.supersedes}
+        return {i:a for i,a in applicable.items() if i not in superseded}
+
+    def dependency_paths(self, revision, target, scope, planned_at, known_at, groups, depth, limit):
+        # Test-only enumeration. Production must use the actual Cypher path query.
+        active = self.resolved(revision,scope,planned_at,known_at,groups)
+        paths=[]
+        def expand(target, nodes, ids):
+            if len(ids)>=depth+1: return
+            for a in active.values():
+                if a.predicate not in {'RUNS_ON','DEPENDS_ON','REQUIRES'} or a.object_id!=target or a.id in ids: continue
+                row={'entity_ids':[a.subject_id,*nodes], 'assertion_ids':[a.id,*ids]}
+                paths.append(row)
+                expand(a.subject_id,row['entity_ids'],row['assertion_ids'])
+        expand(target,[target],[])
+        for path in paths:
+            path['context_nodes'], path['context_assertions'] = [], []
+            def context(node, nodes, aids):
+                if len(aids)>=depth+1: return
+                for a in active.values():
+                    if a.subject_id!=node or a.predicate not in {'MIGRATION_TRACKED_BY','BLOCKED_BY'} or a.id in aids: continue
+                    ns, ids = [*nodes,a.object_id], [*aids,a.id]
+                    path['context_nodes'].append(ns); path['context_assertions'].append(ids)
+                    context(a.object_id,ns,ids)
+            context(path['entity_ids'][0],[path['entity_ids'][0]],[])
+        return sorted(paths,key=lambda p:(len(p['assertion_ids']),p['entity_ids'][0]))[:limit]
 
 
 def scenario(*stages):
@@ -161,7 +203,7 @@ def test_cycles_and_traversal_budget_are_reported():
 
 def test_database_failure_propagates_instead_of_producing_an_empty_success():
     class OfflineStore:
-        def snapshot(self):
+        def read_view(self, *args):
             raise ConnectionError("FalkorDB unavailable")
     with pytest.raises(ConnectionError, match="FalkorDB unavailable"):
         Brain(OfflineStore()).assess_retirement("legacy-runner", SCOPE, NOW, known_at=NOW)

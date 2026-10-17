@@ -126,3 +126,59 @@ def test_database_reader_acl(store):
         with pytest.raises(PermissionError): reader.reset(store.graph_name)
     finally:
         client.acl_deluser("brain_test_reader")
+
+
+def test_review_regressions_on_actual_graph(store):
+    from test_regressions import restricted_usage_bundle, assert_restricted_coverage, budget_bundle, assert_budget
+    store.ingest(restricted_usage_bundle())
+    assert_restricted_coverage(store)
+    store.reset(store.graph_name)
+    store.ingest(budget_bundle())
+    assert_budget(store)
+
+
+def test_graph_native_paths_without_revision_payload_reads(store):
+    store.ingest(fixture('initial'))
+    original=store.query
+    statements=[]
+    def checked(statement,params=None,**kwargs):
+        assert 'r.payload' not in statement
+        assert '$allowed' not in statement
+        statements.append(statement)
+        return original(statement,params,**kwargs)
+    store.query=checked
+    result=Brain(store).assess_retirement('legacy-runner',SCOPE,AT,known_at=AT)
+    assert any(p['assertion_ids']==['requires-billing-invoice','run-invoice-legacy'] for p in result['dependency_paths'])
+    path_queries=[q for q in statements if 'MATCH p=' in q]
+    assert len(path_queries)==1
+    assert 'SUPERSEDES' in path_queries[0] and 'RETURN p,' in path_queries[0]
+    assert any(b['entity_id']=='network-approval' for b in result['blockers'])
+
+
+def test_demo_replay_at_future_wallclock_and_historical_projection(store,monkeypatch):
+    import company_brain.assessment as module
+    from datetime import timedelta
+    class Later(datetime):
+        @classmethod
+        def now(cls,tz=None): return AT+timedelta(days=30)
+    monkeypatch.setattr(module,'datetime',Later)
+    monkeypatch.setenv('COMPANY_BRAIN_KNOWN_AT',AT.isoformat())
+    gold=json.loads((ROOT/'evals/gold/retirement.json').read_text())
+    for state in gold['states']:
+        store.ingest(fixture(state['fixture']))
+        result=Brain(store).assess_retirement('legacy-runner',SCOPE,AT)
+        explicit=Brain(store).assess_retirement('legacy-runner',SCOPE,AT,known_at=AT)
+        assert result==explicit
+        assert result['disposition']==state['disposition']
+        legacy=store.query("MATCH (:CurrentEntity {id:'invoice-export'})-[r:RUNS_ON]->(:CurrentEntity {id:'legacy-runner'}) RETURN r.assertion_id")
+        if state['fixture'] in {'initial','completion'}: assert legacy==[['run-invoice-legacy']]
+        else: assert legacy==[]
+        if state['fixture']=='initial':
+            assert store.query("MATCH p=(:CurrentEntity {id:'invoice-export'})-[:MIGRATION_TRACKED_BY]->(:CurrentEntity)-[:BLOCKED_BY]->(:CurrentEntity)-[:OWNED_BY]->(:CurrentEntity {id:'security'}) RETURN p")
+        assert set(state['required_workflows'])<=set(result['affected_workflows'])
+        assert bool(result['coverage']['gaps'])==state['requires_gaps']
+    rev=store.snapshot()[0]
+    assert store.query('MATCH (e:CurrentEntity) RETURN DISTINCT e.rev')==[[rev]]
+    assert store.query('MATCH (e:HistoricalEntity) RETURN count(e)')[0][0]>0
+    monkeypatch.delenv('COMPANY_BRAIN_KNOWN_AT')
+    assert Brain(store).assess_retirement('legacy-runner',SCOPE,AT)['disposition']=='needs_verification'
