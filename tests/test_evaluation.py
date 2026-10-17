@@ -110,3 +110,62 @@ def test_additional_questions_use_same_initial_graph_and_known_time():
     counts=verify_questions(toolbox().brain)
     assert len(counts)==2
     assert sum(c['required_assertions'] for c in counts)==15
+
+
+def hidden_inventory_bundle(*, hide_service=False):
+    """Public source text is unchanged; only structured private identities differ."""
+    from company_brain.ingestion import validate_bundle
+    old='legacy-runner' if hide_service else 'report-job'
+    secret='secret-legacy-service' if hide_service else 'secret-payroll-consumer'
+    b=scenario('completion','migration','clear')
+    b=b.model_copy(update={
+        'entities':[e.model_copy(update={'id':secret,'visibility':'restricted','name':'Hidden payroll entity'}) if e.id==old else e for e in b.entities],
+        'assertions':[a.model_copy(update={
+            'subject_id':secret if a.subject_id==old else a.subject_id,
+            'object_id':secret if a.object_id==old else a.object_id,
+            'target_service_id':secret if a.target_service_id==old else a.target_service_id}) for a in b.assertions],
+        'inventories':[i.model_copy(update={'service_id':secret if i.service_id==old else i.service_id,
+            'consumer_ids':[secret if c==old else c for c in i.consumer_ids]}) for i in b.inventories]})
+    validate_bundle(b)
+    return b,secret
+
+
+def check_inventory_privacy(store, secret):
+    from company_brain.models import Caller
+    public=RecordSearch(Brain(store),SCOPE,NOW)
+    result=public.read_record('inventory-clear@1')
+    assert result['coverage_incomplete']
+    assert result['record']['inventories']==[]
+    exposed=json.dumps(public.records)
+    assert secret not in exposed and 'Hidden payroll entity' not in exposed
+    assert secret not in json.dumps(public.search_records('legacy-runner'))
+    authorized=RecordSearch(Brain(store,Caller(groups=frozenset({'public','restricted'}))),SCOPE,NOW)
+    assert authorized.read_record('inventory-clear@1')['record']['inventories']
+    assert secret in json.dumps(authorized.records)
+
+
+@pytest.mark.parametrize('hide_service',[False,True])
+def test_inventory_metadata_has_same_entity_authorization_as_graph(hide_service):
+    bundle,secret=hidden_inventory_bundle(hide_service=hide_service)
+    check_inventory_privacy(InMemoryAssessmentTestDouble(bundle),secret)
+
+
+def test_search_redacts_inaccessible_supersession_ids_like_history():
+    from company_brain.models import Bundle,Caller
+    from company_brain.ingestion import validate_bundle
+    b=scenario('completion','migration','clear')
+    old=next(a for a in b.assertions if a.id=='clear-report')
+    old=old.model_copy(update={'id':'secret-prior-assertion'})
+    old_source=next(s for s in b.sources if s.key==old.source_key)
+    source=old_source.model_copy(update={'id':'public-renewal','recorded_at':NOW})
+    new=old.model_copy(update={'id':'public-renewal','source_id':source.id,'supersedes':[old.id],
+                              'observed_at':NOW,'effective_from':NOW})
+    b=b.model_copy(update={'sources':[*[s.model_copy(update={'visibility':'restricted'}) if s.key==old_source.key else s for s in b.sources],source],
+        'assertions':[old if a.id=='clear-report' else a for a in b.assertions]+[new]})
+    validate_bundle(b)
+    store=InMemoryAssessmentTestDouble(b)
+    public=RecordSearch(Brain(store),SCOPE,NOW)
+    assert old.id not in json.dumps(public.records)
+    assert public.read_record(source.key)['record']['assertions'][0]['supersedes']==[]
+    authorized=RecordSearch(Brain(store,Caller(groups=frozenset({'public','restricted'}))),SCOPE,NOW)
+    assert authorized.read_record(source.key)['record']['assertions'][0]['supersedes']==[old.id]

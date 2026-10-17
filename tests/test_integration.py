@@ -204,3 +204,12 @@ def test_additional_question_goldens_and_provider_neutral_harness(store):
     assert result['graph']['revision']==result['search']['revision']
     assert result['graph']['records_digest']==result['search']['records_digest']
     assert all(arm['status']=='completed' for arm in result.values())
+
+
+def test_search_inventory_privacy_on_actual_graph(store):
+    from test_evaluation import hidden_inventory_bundle,check_inventory_privacy
+    for hide_service in (False,True):
+        store.reset(store.graph_name)
+        bundle,secret=hidden_inventory_bundle(hide_service=hide_service)
+        store.ingest(bundle)
+        check_inventory_privacy(store,secret)

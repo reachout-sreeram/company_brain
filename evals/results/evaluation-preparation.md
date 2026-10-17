@@ -69,7 +69,13 @@ they do not measure model extraction accuracy or graph-versus-search improvement
 `Toolbox` constructs the search arm from exactly the caller-authorized, scoped
 source versions, reviewed assertions and inventories at the graph revision.
 Search can rank keywords and explicit identifiers, page results, and read complete
-records with metadata, assertions and inventory declarations. It can follow
+records with metadata, assertions and authorized inventory declarations. If any
+service or consumer in an inventory is inaccessible, the whole declaration is
+omitted and generic incomplete coverage is reported; no private IDs or original
+counts are returned. Assertion supersession references are limited to accessible
+assertion IDs, matching MCP history. Public source text retains the same source-level
+permissions as MCP evidence; it is not reclassified from guessed entity names.
+Search can follow
 references iteratively. It has no relationship expansion and is not an MCP tool.
 Both arms may inspect dated historical/future records; shared policy restricts
 what may support an assessment known at the requested time.

@@ -26,14 +26,23 @@ class RecordSearch:
     This is an experimental baseline tool, not an additional MCP server tool.
     """
     def __init__(self, brain, scope, known_at):
-        rev, bundle, _, sources, assertions, hidden = brain.view(scope)
+        rev, bundle, entities, sources, assertions, hidden = brain.view(scope)
         self.revision, self.hidden = rev, hidden
         self.records = {}
+        inventories=[]
+        for inventory in bundle.inventories:
+            if inventory.service_id not in entities or any(c not in entities for c in inventory.consumer_ids):
+                # Omit the entire declaration: a filtered list must not look complete,
+                # and neither private identities nor original counts may escape.
+                self.hidden=True
+                continue
+            inventories.append(inventory)
         for key, source in sources.items():
             self.records[key] = {
                 'source': source.model_dump(mode='json'),
-                'assertions': [a.model_dump(mode='json') for a in assertions.values() if a.source_key==key],
-                'inventories': [i.model_dump(mode='json') for i in bundle.inventories if i.source_key==key],
+                'assertions': [{**a.model_dump(mode='json'), 'supersedes':[i for i in a.supersedes if i in assertions]}
+                               for a in assertions.values() if a.source_key==key],
+                'inventories': [i.model_dump(mode='json') for i in inventories if i.source_key==key],
             }
         # Review fingerprints are metadata, not extra inference or traversal.
         self.digest = sha256(encoded(self.records).encode()).hexdigest()
@@ -253,7 +262,13 @@ they do not measure model extraction accuracy or graph-versus-search improvement
 `Toolbox` constructs the search arm from exactly the caller-authorized, scoped
 source versions, reviewed assertions and inventories at the graph revision.
 Search can rank keywords and explicit identifiers, page results, and read complete
-records with metadata, assertions and inventory declarations. It can follow
+records with metadata, assertions and authorized inventory declarations. If any
+service or consumer in an inventory is inaccessible, the whole declaration is
+omitted and generic incomplete coverage is reported; no private IDs or original
+counts are returned. Assertion supersession references are limited to accessible
+assertion IDs, matching MCP history. Public source text retains the same source-level
+permissions as MCP evidence; it is not reclassified from guessed entity names.
+Search can follow
 references iteratively. It has no relationship expansion and is not an MCP tool.
 Both arms may inspect dated historical/future records; shared policy restricts
 what may support an assessment known at the requested time.
