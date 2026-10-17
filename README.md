@@ -45,7 +45,7 @@ WHERE a.status='approved' AND a.environment=$environment
       AND a.revoked=false
       AND a.source_visibility IN $groups AND a.subject_visibility IN $groups
       AND a.object_visibility IN $groups AND a.target_visibility IN $groups
-OPTIONAL MATCH (new:Assertion {rev:$rev})-[:SUPERSEDES]->(a)
+OPTIONAL MATCH lineage=(new:Assertion {rev:$rev})-[:SUPERSEDES*1..16]->(a)
 WHERE new.status='approved' AND new.environment=$environment
       AND new.region=$region AND new.effective_from <= $planned
       AND (new.effective_until IS NULL OR $planned < new.effective_until)
@@ -56,6 +56,16 @@ WHERE new.status='approved' AND new.environment=$environment
       AND new.revoked=false
       AND new.source_visibility IN $groups AND new.subject_visibility IN $groups
       AND new.object_visibility IN $groups AND new.target_visibility IN $groups
+  AND all(member IN nodes(lineage) WHERE member.rev=$rev AND member.subject_id=a.subject_id
+      AND member.status='approved' AND member.environment=$environment
+      AND member.region=$region AND member.effective_from <= $planned
+      AND member.recorded_at <= $known
+      AND (member.observed_at IS NULL OR member.observed_at <= $known)
+      AND (NOT member.predicate IN ['RUNS_ON','DEPENDS_ON','REQUIRES','VERIFIED_CLEAR']
+           OR member.effective_from <= $known)
+      AND member.revoked=false
+      AND member.source_visibility IN $groups AND member.subject_visibility IN $groups
+      AND member.object_visibility IN $groups AND member.target_visibility IN $groups)
 WITH a, count(new) AS replacements WHERE replacements=0
 WITH collect(a.id) AS active_ids
 MATCH p=(consumer:Entity {rev:$rev})-[:RUNS_ON|DEPENDS_ON|REQUIRES*1..9]->(target:Entity {rev:$rev,id:$target})
@@ -67,6 +77,8 @@ RETURN p, [node IN nodes(p) | node.id], [edge IN relationships(p) | edge.asserti
        collect([node IN nodes(q) | node.id]), collect([edge IN relationships(q) | edge.assertion_id]), consumer.id AS consumer_id
 ORDER BY length(p), consumer_id LIMIT $limit
 ```
+
+Supersession is transitive along at most 16 reviewed links. A currently eligible successor can suppress an ancestor through an expired intermediate: expiry ends the intermediate claim, not its historical replacement link. Every chain member must still be approved, in the same subject/scope/revision, visible, nonrevoked and known at the query cutoff. Only intermediate end dates are ignored. Future or restricted successors cannot erase public/historical evidence; revoked members break the chain in the current revision. Without any eligible renewal, expiry does not grant clearance. Ingestion rejects deeper chains explicitly, rather than silently truncating them. Historical validity and knowledge cutoffs still apply, and earlier immutable revisions retain their earlier trust state. This same policy builds the current projection.
 
 ## Inspect the initial current graph
 
@@ -108,4 +120,4 @@ AI assistance: Codex assisted with planning, implementation, synthetic fixtures,
 
 Current direction and decision history: [Stage 3](docs/planning/16-stage-3-solution-direction.md), [engineering framework](docs/planning/10-engineering-framework.md), [implementation milestones](docs/development/17-implementation-milestones.md). Historical research is retained under `docs/research/`; earlier product proposals are not current implementation claims.
 
-Evaluation preparation: run `.venv/bin/python -m company_brain.evaluation --prepare-only` to regenerate [raw input/mock counts and comparison controls](evals/results/evaluation-preparation.md). [Additional question goldens](evals/gold/questions.json) cover invoice ownership/rationale and a one-week approval slip using existing records; the latter distinguishes conditional retirement impact from an unsupported outage prediction. The current suite has 110 passing tests including 8 real-DB integration tests. [Public submission plan](docs/development/19-submission-plan.md) remains pending authorization; preparation is not a benchmark or publication.
+Evaluation preparation: run `.venv/bin/python -m company_brain.evaluation --prepare-only` to regenerate [raw input/mock counts and comparison controls](evals/results/evaluation-preparation.md). [Additional question goldens](evals/gold/questions.json) cover invoice ownership/rationale and a one-week approval slip using existing records; the latter distinguishes conditional retirement impact from an unsupported outage prediction. The current suite and independent rereview results are recorded in the verification report. [Public submission plan](docs/development/19-submission-plan.md) remains pending authorization; preparation is not a benchmark or publication.

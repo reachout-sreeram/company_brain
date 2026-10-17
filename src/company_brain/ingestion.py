@@ -5,6 +5,8 @@ from hashlib import sha256
 import json
 from .models import Assertion, Bundle
 
+MAX_SUPERSESSION_DEPTH = 16
+
 RELATIONS = {
     "RUNS_ON": ({"Job", "Service"}, {"Service"}),
     "DEPENDS_ON": ({"Service", "Job", "Workflow"}, {"Service", "Job", "Workflow"}),
@@ -97,6 +99,8 @@ def validate_bundle(bundle: Bundle) -> None:
     def walk(node, chain):
         if node in chain:
             raise ValueError("supersession cycle")
+        if len(chain)>MAX_SUPERSESSION_DEPTH:
+            raise ValueError(f"supersession depth exceeds {MAX_SUPERSESSION_DEPTH}")
         for old in assertions[node].supersedes:
             walk(old, chain | {node})
     for node in assertions:

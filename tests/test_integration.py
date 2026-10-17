@@ -213,3 +213,52 @@ def test_search_inventory_privacy_on_actual_graph(store):
         bundle,secret=hidden_inventory_bundle(hide_service=hide_service)
         store.ingest(bundle)
         check_inventory_privacy(store,secret)
+
+
+def test_transitive_renewal_lineage_on_actual_graph(store,monkeypatch):
+    from test_supersession import renewal_bundle,assert_renewal_chain,assert_history
+    monkeypatch.setenv('COMPANY_BRAIN_KNOWN_AT',AT.isoformat())
+    for length in (2,3,16):
+        store.reset(store.graph_name)
+        store.ingest(renewal_bundle(length))
+        assert_renewal_chain(store,length)
+        assert store.query("MATCH (:CurrentEntity {id:'report-job'})-[r:RUNS_ON]->(:CurrentEntity {id:'legacy-runner'}) RETURN r.assertion_id")==[]
+        if length==2: assert_history(store)
+
+
+def test_transitive_lineage_access_and_revocation_barriers_on_actual_graph(store):
+    from test_supersession import barrier_bundle,check_barrier
+    for barrier in ('revoked_leaf','revoked_middle','restricted_leaf','restricted_middle','future_recorded','future_recorded_middle','future_effective'):
+        store.reset(store.graph_name)
+        store.ingest(barrier_bundle(barrier))
+        check_barrier(store,barrier)
+    # A source revocation affects the new revision, never the immutable old one.
+    from test_supersession import renewal_bundle,assessment
+    store.reset(store.graph_name)
+    before=store.ingest(renewal_bundle())
+    source=next(s for s in renewal_bundle().sources if s.id=='renewal-source-1')
+    after=store.ingest(Bundle(sources=[source.model_copy(update={'revoked':True})]))
+    assert after!=before
+    assert assessment(store)['disposition']=='needs_verification'
+    historical=store.resolved(before,SCOPE,AT,AT,frozenset({'public'}))
+    assert 'renewal-1' in historical and 'run-report-legacy' not in historical
+    assert store.dependency_paths(before,'legacy-runner',SCOPE,AT,AT,frozenset({'public'}),8,129)==[]
+
+
+def test_invalid_renewal_scope_and_depth_preserve_published_graph(store):
+    from test_supersession import renewal_bundle
+    oversized=renewal_bundle(17)
+    baseline=oversized.model_copy(update={
+        'sources':[s for s in oversized.sources if not s.id.startswith('renewal-source-')],
+        'assertions':[a for a in oversized.assertions if not a.id.startswith('renewal-')]})
+    store.ingest(baseline)
+    before=store.snapshot()[0]
+    renewal=next(a for a in oversized.assertions if a.id=='renewal-1')
+    source=next(s for s in oversized.sources if s.key==renewal.source_key)
+    invalid=renewal.model_copy(update={'id':'bad-scope-renewal','scope':Scope(environment='staging',region='eu')})
+    with pytest.raises(ValueError,match='scope'):
+        store.ingest(Bundle(sources=[source],assertions=[invalid]))
+    assert store.snapshot()[0]==before
+    with pytest.raises(ValueError,match='supersession depth'):
+        store.ingest(oversized)
+    assert store.snapshot()[0]==before

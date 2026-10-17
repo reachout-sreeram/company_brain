@@ -42,14 +42,21 @@ class InMemoryAssessmentTestDouble:
         caller = Caller(groups=groups)
         sources = {s.key:s for s in self.bundle.sources if not s.revoked and caller.can_read(s.visibility)}
         entities = {e.id:e for e in self.bundle.entities if caller.can_read(e.visibility)}
-        applicable = {a.id:a for a in self.bundle.assertions if a.source_key in sources
+        lineage = {a.id:a for a in self.bundle.assertions if a.source_key in sources
             and a.subject_id in entities and (not a.object_id or a.object_id in entities)
             and (not a.target_service_id or a.target_service_id in entities)
             and a.scope==scope and a.status=='approved' and a.effective_from<=planned_at
-            and (not a.effective_until or planned_at<a.effective_until)
             and (a.predicate not in {'RUNS_ON','DEPENDS_ON','REQUIRES','VERIFIED_CLEAR'} or a.effective_from<=known_at)
             and sources[a.source_key].recorded_at<=known_at and (not a.observed_at or a.observed_at<=known_at)}
-        superseded = {old for a in applicable.values() for old in a.supersedes}
+        applicable={i:a for i,a in lineage.items() if not a.effective_until or planned_at<a.effective_until}
+        superseded=set()
+        # Test-only reference semantics; production lineage expansion stays in Cypher.
+        def ancestors(node,subject,depth):
+            if depth>16 or node not in lineage or lineage[node].subject_id!=subject: return
+            superseded.add(node)
+            for prior in lineage[node].supersedes: ancestors(prior,subject,depth+1)
+        for a in applicable.values():
+            for prior in a.supersedes: ancestors(prior,a.subject_id,1)
         return {i:a for i,a in applicable.items() if i not in superseded}
 
     def dependency_paths(self, revision, target, scope, planned_at, known_at, groups, depth, limit):

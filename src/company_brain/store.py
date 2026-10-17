@@ -7,15 +7,15 @@ import re
 from datetime import datetime, timezone
 from pathlib import Path
 from .models import Bundle, Entity, Source, Assertion, Inventory
-from .ingestion import merge_bundle, validate_bundle
+from .ingestion import MAX_SUPERSESSION_DEPTH, merge_bundle, validate_bundle
 
 
 # Both active-fact resolution and traversal run in FalkorDB, at a pinned revision.
 # Unix epoch values avoid timezone-dependent lexical comparisons.
-def eligible(alias):
+def eligible(alias, *, include_end=True):
+    until = f"\n      AND ({alias}.effective_until IS NULL OR $planned < {alias}.effective_until)" if include_end else ""
     return f"""{alias}.status='approved' AND {alias}.environment=$environment
-      AND {alias}.region=$region AND {alias}.effective_from <= $planned
-      AND ({alias}.effective_until IS NULL OR $planned < {alias}.effective_until)
+      AND {alias}.region=$region AND {alias}.effective_from <= $planned{until}
       AND {alias}.recorded_at <= $known
       AND ({alias}.observed_at IS NULL OR {alias}.observed_at <= $known)
       AND (NOT {alias}.predicate IN ['RUNS_ON','DEPENDS_ON','REQUIRES','VERIFIED_CLEAR']
@@ -27,8 +27,10 @@ def eligible(alias):
 
 ACTIVE_MATCH = f"""MATCH (a:Assertion {{rev:$rev}})
 WHERE {eligible('a')}
-OPTIONAL MATCH (new:Assertion {{rev:$rev}})-[:SUPERSEDES]->(a)
+OPTIONAL MATCH lineage=(new:Assertion {{rev:$rev}})-[:SUPERSEDES*1..{MAX_SUPERSESSION_DEPTH}]->(a)
 WHERE {eligible('new')}
+  AND all(member IN nodes(lineage) WHERE member.rev=$rev AND member.subject_id=a.subject_id
+      AND {eligible('member', include_end=False)})
 WITH a, count(new) AS replacements WHERE replacements=0
 """
 

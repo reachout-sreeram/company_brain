@@ -105,3 +105,27 @@ COMPANY_BRAIN_INTEGRATION=1 .venv/bin/python -m pytest -q tests/test_integration
 ```
 
 Result: **2 passed in 8.16s**. The repository actual-DB test covers public/authorized reads for both inaccessible consumers and inaccessible services, with no private names/IDs in returned search records or snippets. No model/API call or remote action occurred. Stage 7 remains under improvement.
+
+## Rereview P2: scoped transitive supersession
+
+Reproducer: usage ← original clearance (expires at noon) ← fresh renewal. The previous direct-only resolver discarded the expired intermediate before following its replacement link, so stale usage reappeared despite valid renewed clearance. Eight of the first sixteen offline lineage checks failed before the correction; the implemented policy and additional future-intermediate check now pass.
+
+Semantics: resolve a currently eligible successor through at most 16 explicit same-subject/scope/revision links. Ignore **only intermediate end dates**; do not ignore approval, start dates, observed/recorded knowledge cutoffs, revocation or caller visibility. Candidate and suppressing successor still need their requested business interval. Inaccessible or revoked links are barriers; fully authorized callers can resolve accessible chains. No eligible renewal means expired clearance cannot grant clearance. A later renewal cannot fill a historical gap or rewrite an earlier knowledge view. Revoking source trust affects the new revision; retained earlier immutable revisions keep their prior state. Scope, subject and clearance target mismatches remain invalid. Ingestion rejects more than 16 links before publication rather than silently accepting a partially traversable chain.
+
+Added regression coverage: **17 offline cases**, plus actual-DB matrices covering chain lengths 2/3/16, historical known-at and validity, seven barrier configurations (revoked leaf/intermediate, restricted leaf/intermediate, future-recorded leaf/intermediate, future-effective leaf), revocation with prior-revision preservation, and invalid scope/depth with unchanged published head. Restricted-case assertions check public responses and baseline metadata for absence of private IDs and confirm authorized resolution. Projection checks confirm the old reporting `RUNS_ON` edge stays out of the current view after renewal.
+
+Final combined command:
+
+```sh
+COMPANY_BRAIN_INTEGRATION=1 .venv/bin/python -m pytest -q tests /tmp/test_company_brain_rereview_db.py
+```
+
+Result: **137 passed in 64.49s**. This comprises **122 offline + 12 repository actual-FalkorDB integration + 3 independent actual-DB tests**. The repository suite alone contains 134 tests. The separate final offline run passed **122 tests**, with 12 integration skips, in 0.43s. An earlier matrix attempt hit a test-fixture immutable-source identity collision before reaching its intended depth check; the corrected test setup now reaches the explicit depth rejection and verifies head preservation. No production failure was masked or skipped.
+
+The independent file's renewal and inventory reproducers now pass, as does its three-reset/twelve-assessment canonical replay check. Full updated traversal statement: [`rereview-traversal.cypher`](rereview-traversal.cypher), generated verbatim by `dependency_query(8)` and reproduced in README. Inputs are revision, scope, epoch `planned`/`known`, trusted groups, target service and row budget. Supersession and dependency expansion remain in FalkorDB; no Python-derived traversal ID list is supplied.
+
+P2 changed files: `src/company_brain/store.py`, `src/company_brain/ingestion.py`, `tests/test_assessment.py`, `tests/test_supersession.py`, `tests/test_integration.py`, `README.md`, `docs/development/18-local-development.md`, `docs/development/17-implementation-milestones.md`, this report, and `evals/results/rereview-traversal.cypher`. P1 is separately committed as `bdf661a`; its exact changed files are available in that commit.
+
+No live/paid API, Claude use, public push, visibility change or deployment occurred. No new MCP tool was added. Live evaluation remains pending model selection, total spending cap and approved secure credential setup. Stage 7 and all subsequent human acceptance gates remain open.
+
+Final standalone replay after the transitive-query change: **3/3 clean resets/runs, 12/12 golden dispositions, identical canonical outputs across runs**. Each run returned `[blocked, blocked, needs_verification, no_known_blockers]`. Local in-process assessment n=12: min 8.537ms; max/nearest-rank p95 35.116ms. Resets: 1.101ms, 0.321ms, 0.362ms. Engine defaults/no cache flush, same Mac and pinned backend; these exclude model inference and do not establish comparative or end-to-end performance. Detailed output is regenerated at ignored `evals/results/replay.json`.
