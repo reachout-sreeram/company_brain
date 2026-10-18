@@ -126,3 +126,15 @@ Official API references: [FalkorDBLite](https://github.com/FalkorDB/falkordblite
 Resolution follows up to 16 explicit `SUPERSEDES` links within one revision, subject and scope. The ancestor and the suppressing successor must be currently eligible for the requested `planned_at` and `known_at`. An intermediate assertion may have expired, because its replacement link remains historical evidence; its approval, source validity, visibility, scope, start date, observation and recording cutoffs must still pass. A revoked or inaccessible chain member cannot be crossed. An expired clearance with no eligible renewal does not grant clearance, and a later renewal cannot retroactively fill a validity gap or become known earlier than its source.
 
 Ingestion rejects chains longer than 16 links before publication rather than accepting facts the bounded query cannot fully resolve. Scope, subject and clearance-target changes remain invalid supersession. Source revocation breaks lineage in the new revision; retained earlier immutable revisions preserve their prior state. Earlier-revision inspection is an operator/store capability, not a new MCP argument or tool. The current projection and assessment use the same Cypher resolver. The complete updated query is in README and `evals/results/rereview-traversal.cypher`.
+
+## Bounded retrieval and final-reference correction
+
+The comparison harness now searches one entity at a time and supplies at most two lexical empty-result retry hints, derived only from the failed query. Before accepting a final answer it checks exact IDs against structured tool results: assertions are separate from source references, workflows and decisions must have the correct entity kinds, ownership pairs need retrieved support, and a retrieved assessment disposition cannot be overridden. Rejected final calls receive a real local tool response with specific errors; both arms have at most two repair turns inside the same 20-turn/12-data-tool/65536-byte budgets. Invalid attempts remain in final_attempts; exhaustion is incomplete, never a successful answer. These checks validate references and selected contract invariants, not every sentence's semantic truth or golden completeness.
+
+For a deliberate paired rerun of the reproduced cases, after checking no prior process is active:
+
+```sh
+COMPANY_BRAIN_KNOWN_AT=2026-10-17T12:00:00Z .venv/bin/python -m company_brain.live_evaluation --execute-approved-usd3 --confirm-graph company_brain_demo_live_evaluation --comparison-only --cases clear invoice-owner-rationale network-slip-billing
+```
+
+This resumes existing extraction/smoke evidence and runs both arms for the named cases. The report records selected cases, implementation commit and controls; its prior report is archived before replacement. Keep the original v3 scores separate from the corrected v4 cohort. The same-model/equal-budget design still favors consolidated assessments in work per call; it does not isolate traversal or establish a fair general performance ranking.

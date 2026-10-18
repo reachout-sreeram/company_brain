@@ -23,6 +23,8 @@ from .openrouter import (LUNA_MODEL,OpenRouterConfig,OpenRouterError,OpenRouterS
 from .store import FalkorStore,StoreUnavailable
 
 GRAPH='company_brain_demo_live_evaluation'
+PROTOCOL_REVISION='native-function-calls-v4-exact-references'
+CASES=('initial','completion','migration','clear','invoice-owner-rationale','network-slip-billing')
 
 
 def load_named_credential(root):
@@ -82,7 +84,7 @@ def resume_comparison(previous,archive):
         raise OpenRouterError('comparison resume requires a successful same-model smoke report')
     report=dict(previous)
     report.pop('error',None)
-    report.update(status='not_started',evaluations=[],protocol_revision='native-function-calls-v3',
+    report.update(status='not_started',evaluations=[],protocol_revision=PROTOCOL_REVISION,
                   previous_protocol_attempt=archive)
     return report
 
@@ -92,20 +94,26 @@ def main():
     parser.add_argument('--execute-approved-usd3',action='store_true',required=True)
     parser.add_argument('--confirm-graph',required=True)
     parser.add_argument('--comparison-only',action='store_true')
+    parser.add_argument('--cases',nargs='+',choices=CASES,help='Explicit paired subset; only with --comparison-only')
     args=parser.parse_args()
+    if args.cases and not args.comparison_only: parser.error('--cases requires --comparison-only')
     if args.confirm_graph!=GRAPH: parser.error('confirm the exact isolated live-evaluation demo graph')
     root=Path(__file__).resolve().parents[2]
     output=root/'evals/results/live-openrouter.json'
     key=None
     report={'model':LUNA_MODEL,'cap_usd':'3','status':'not_started','smoke':None,
             'extraction':[],'narrative':[],'evaluations':[],
-            'protocol_revision':'native-function-calls-v3',
+            'protocol_revision':PROTOCOL_REVISION,
             'limits':'Small synthetic run; no customer or production validation; native OpenRouter function-call harness over read-only tools, not an external MCP client UI.'}
     if args.comparison_only:
         previous=json.loads(output.read_text())
         report=resume_comparison(previous,archive_report(output))
     else:
         archive_report(output)
+    report['selected_cases']=list(dict.fromkeys(args.cases or CASES))
+    report['implementation_commit']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()
+    report['comparison_controls']={'output_tokens':1500,'turns':20,'tool_calls':12,'context_bytes':65536,
+        'max_empty_retries':2,'max_final_repairs':2,'temperature':None,'reasoning_effort':'none'}
     database=None
     session=None
     ledger=SpendLedger(root/'.local/openrouter-budget.json')
@@ -194,6 +202,7 @@ def main():
                 'question':'Can we retire legacy-runner in production/eu? Explain business dependencies, blockers, owners, conflicts, permission expiry and coverage gaps with evidence IDs.',
                 'planned_at':at.isoformat(),'expected':state})
         tasks.extend({**c,'fixture':'initial','expected':c} for c in extra['cases'])
+        tasks=[task for task in tasks if task['id'] in report['selected_cases']]
         for index,task in enumerate(tasks):
             store.reset(GRAPH)
             for stage in ('initial','completion','migration','clear'):

@@ -34,6 +34,12 @@ def test_search_never_returns_restricted_records_or_assertions():
     with pytest.raises(ValueError,match='unavailable'): search.read_record('restricted-usage@1')
 
 
+def empty_answer(disposition='needs_verification'):
+    return {'disposition':disposition,'affected_workflows':[],'blocker_entities':[],
+            'owner_pairs':[],'evidence_ids':[],'source_references':[],'decisions':[],
+            'gaps':['Evidence is incomplete.'],'conflicts':[],'explanation':'Scripted contract probe only.'}
+
+
 class ScriptedClient:
     execution_label='scripted test double; no model inference'
     def __init__(self): self.models=[]
@@ -43,7 +49,7 @@ class ScriptedClient:
             if kwargs['tools'][0]['name']=='find_entities':
                 return {'tool':'assess_retirement','arguments':{'service_id':'legacy-runner','scope':SCOPE.model_dump(),'planned_at':NOW.isoformat()}}
             return {'tool':'search_records','arguments':{'query':'legacy-runner'}}
-        return {'final':{'disposition':'blocked','evidence_ids':[]}}
+        return {'final':empty_answer('blocked' if kwargs['tools'][0]['name']=='find_entities' else 'needs_verification')}
 
 
 def test_pair_uses_identical_model_settings_and_same_records_digest():
@@ -169,3 +175,128 @@ def test_search_redacts_inaccessible_supersession_ids_like_history():
     assert public.read_record(source.key)['record']['assertions'][0]['supersedes']==[]
     authorized=RecordSearch(Brain(store,Caller(groups=frozenset({'public','restricted'}))),SCOPE,NOW)
     assert authorized.read_record(source.key)['record']['assertions'][0]['supersedes']==[old.id]
+
+
+class DecomposingClient:
+    execution_label='scripted decomposition; no model inference'
+    def step(self,**kwargs):
+        messages=kwargs['messages']
+        if len(messages)==2:
+            return {'tool':'find_entities','arguments':{'query':'billing network approval'}}
+        if messages[-1]['role']=='system':
+            return {'final':empty_answer()}  # Reproduce premature finalization once.
+        response=json.loads(messages[-1]['content'])
+        if response.get('accepted') is False:
+            query=response['validation_errors'][-1]['suggested_queries'][0]
+            return {'tool':'find_entities','arguments':{'query':query}}
+        if 'candidates' in response:
+            return {'tool':'get_history','arguments':{'entity_id':response['candidates'][0]['id'],'scope':SCOPE.model_dump()}}
+        if 'assertions' in response:
+            rows=response['assertions']
+            runtime=next((a for a in rows if a['predicate']=='RUNS_ON'),None)
+            if runtime:
+                return {'tool':'assess_retirement','arguments':{'service_id':runtime['object_id'],'scope':SCOPE.model_dump(),'planned_at':NOW.isoformat()}}
+            requirement=next(a for a in rows if a['predicate']=='REQUIRES')
+            return {'tool':'get_history','arguments':{'entity_id':requirement['object_id'],'scope':SCOPE.model_dump()}}
+        answer=empty_answer(response['disposition'])
+        answer['affected_workflows']=response['affected_workflows']
+        answer['evidence_ids']=[e['assertion_id'] for e in response['evidence']]
+        answer['source_references']=[{'assertion_id':e['assertion_id'],'source_key':e['source_id']+'@'+e['version']} for e in response['evidence']]
+        answer['decisions']=[d['decision_id'] for d in response['decisions']]
+        return {'final':answer}
+
+
+def test_empty_multi_entity_lookup_cannot_end_in_premature_final():
+    result=run_arm(DecomposingClient(),Experiment('scripted/offline'),toolbox(),'graph',
+                   'What happens if an approval delays a workflow?',NOW)
+    assert result['status']=='completed'
+    assert result['events'][0]['response']['candidates']==[]
+    assert result['events'][1]['request']['arguments']['query']=='billing'
+    assert result['events'][1]['response']['candidates'][0]['id']=='monthly-billing'
+    assert result['events'][-1]['request']['tool']=='assess_retirement'
+    assert result['answer']['disposition']=='blocked'
+    assert result['final_attempts'][0]['errors'][0]['code']=='empty_lookup_retry_required'
+    assert result['tool_calls']==5
+
+
+@pytest.mark.parametrize('arm,tool',[('graph','find_entities'),('search','search_records')])
+def test_empty_retry_guidance_is_bounded_and_shared(arm,tool):
+    class Client:
+        execution_label='scripted empty lookups'
+        def step(self,**kwargs):
+            queries=[e['content'] for e in kwargs['messages'] if e['role']=='assistant' and json.loads(e['content']).get('tool')==tool]
+            if len(queries)<3:
+                return {'tool':tool,'arguments':{'query':['unknown foobar','unknown','foobar'][len(queries)]}}
+            return {'final':empty_answer()}
+    result=run_arm(Client(),Experiment('scripted/offline'),toolbox(),arm,'unknown thing',NOW)
+    assert result['status']=='completed' and result['tool_calls']==3
+    assert len([e for e in result['events'] if 'host_guidance' in e])==2
+
+
+def reference_registry():
+    from company_brain.evaluation import RetrievedReferences
+    tools=toolbox()
+    registry=RetrievedReferences(tools.search.entities)
+    result=tools.call('graph','assess_retirement',{'service_id':'legacy-runner','scope':SCOPE.model_dump(),'planned_at':NOW.isoformat()})
+    registry.collect(result)
+    answer=empty_answer(result['disposition'])
+    answer.update(evidence_ids=['permits-invoice'],source_references=[{'assertion_id':'permits-invoice','source_key':'source-permits-invoice@1'}],
+                  decisions=['temporary-exception'],affected_workflows=['monthly-billing'])
+    return registry,answer
+
+
+def test_contract_accepts_exact_separate_assertion_source_workflow_decision_ids():
+    registry,answer=reference_registry()
+    assert registry.validate(answer)==[]
+
+
+@pytest.mark.parametrize('field,value,code',[
+    ('evidence_ids',['source-permits-invoice@1#permits-invoice'],'citation_format'),
+    ('evidence_ids',['invented-assertion'],'unsupported_assertion'),
+    ('evidence_ids',['inventory-initial'],'unsupported_assertion'),
+    ('source_references',[{'assertion_id':'permits-invoice','source_key':'source-owns-invoice@1'}],'unsupported_source_pair'),
+    ('source_references',[],'citation_pairing'),
+    ('affected_workflows',['monthly-billing (production/eu)'],'unretrieved_entity'),
+    ('affected_workflows',['invoice-export'],'entity_kind'),
+    ('decisions',['temporary-exception permits use until November'],'unretrieved_entity'),
+    ('decisions',['invoice-export'],'entity_kind'),
+    ('owner_pairs',[['invoice-export','security']],'unsupported_owner_pair'),
+    ('disposition','no_known_blockers','disposition_override'),
+    ('gaps',[],'missing_coverage_gaps')])
+def test_final_contract_rejects_observed_live_failures_and_unsupported_claims(field,value,code):
+    registry,answer=reference_registry()
+    errors=registry.validate({**answer,field:value})
+    assert code in {e['code'] for e in errors}
+
+
+@pytest.mark.parametrize('arm',['graph','search'])
+def test_invalid_final_is_preserved_and_repair_is_bounded_for_both_arms(arm):
+    class BadClient:
+        execution_label='scripted invalid final'
+        def step(self,**kwargs):
+            return {'final':{**empty_answer(),'evidence_ids':['invented']}}
+    result=run_arm(BadClient(),Experiment('scripted/offline'),toolbox(),arm,'q',NOW)
+    assert result['status']=='invalid_final' and result['tool_calls']==0
+    assert len(result['final_attempts'])==3
+    assert all(a['answer']['evidence_ids']==['invented'] for a in result['final_attempts'])
+    assert 'answer' not in result
+
+
+def test_local_validation_repair_cannot_rewrite_original_strict_score():
+    registry,answer=reference_registry()
+    invalid={**answer,'evidence_ids':['source-permits-invoice@1#permits-invoice']}
+    class RepairClient:
+        execution_label='scripted final repair'
+        def step(self,**kwargs):
+            if len(kwargs['messages'])==2:
+                return {'tool':'assess_retirement','arguments':{'service_id':'legacy-runner','scope':SCOPE.model_dump(),'planned_at':NOW.isoformat()}}
+            if kwargs['messages'][-1]['role']=='tool' and json.loads(kwargs['messages'][-1]['content']).get('accepted') is False:
+                return {'final':answer}
+            return {'final':invalid}
+    result=run_arm(RepairClient(),Experiment('scripted/offline'),toolbox(),'graph','q',NOW)
+    assert result['status']=='completed' and len(result['final_attempts'])==1
+    assert result['final_attempts'][0]['answer']==invalid
+    assert result['answer']==answer
+    expected=json.loads((ROOT/'evals/gold/questions.json').read_text())['cases'][0]
+    assert score_answer(invalid,expected,registry.assertions)['unsupported_evidence']==1
+    assert score_answer(answer,expected,registry.assertions)['unsupported_evidence']==0

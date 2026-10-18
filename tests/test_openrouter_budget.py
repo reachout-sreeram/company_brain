@@ -238,3 +238,41 @@ def test_comparison_resume_archives_evidence_and_clears_only_current_errors(tmp_
     assert previous['error']=='old failure' and len(previous['evaluations'])==1
     with pytest.raises(OpenRouterError,match='same-model smoke'):
         resume_comparison({**previous,'model':'another-model'},first)
+
+
+def test_native_final_schema_distinguishes_exact_ids_and_separate_source_pairs():
+    from company_brain.openrouter import native_tools
+    schema=native_tools([])[-1]['function']['parameters']
+    assert set(schema['required'])==set(schema['properties'])
+    assert 'Exact retrieved Workflow entity IDs' in schema['properties']['affected_workflows']['description']
+    assert 'Decision entity IDs' in schema['properties']['decisions']['description']
+    assert 'assertion IDs only' in schema['properties']['evidence_ids']['description']
+    reference=schema['$defs']['SourceReference']
+    assert set(reference['properties'])=={'assertion_id','source_key'}
+    assert reference['additionalProperties'] is False
+
+
+def test_rejected_native_finish_is_replayed_as_a_real_tool_result():
+    from company_brain.evaluation import Experiment,run_arm
+    from test_evaluation import toolbox,empty_answer,NOW
+    requests=[]
+    def handler(request):
+        body=json.loads(request.content);requests.append(body)
+        if len(requests)==1:
+            args={**empty_answer(),'evidence_ids':['source-record@1#invented']}
+        else:
+            last=body['messages'][-1]
+            assert last['role']=='tool' and last['tool_call_id']=='rejected_finish'
+            rejection=json.loads(last['content'])
+            assert rejection['accepted'] is False
+            assert rejection['validation_errors'][0]['code']=='citation_format'
+            args=empty_answer()
+        result=response().json()
+        result['choices']=[{'finish_reason':'tool_calls','message':{'role':'assistant','content':None,'tool_calls':[
+            {'id':'rejected_finish' if len(requests)==1 else 'corrected_finish','type':'function',
+             'function':{'name':'finish_answer','arguments':json.dumps(args)}}]}}]
+        return httpx.Response(200,json=result)
+    client=OpenRouterEvaluationClient(session(handler))
+    result=run_arm(client,Experiment(LUNA_MODEL,max_output_tokens=200),toolbox(),'graph','q',NOW)
+    assert result['status']=='completed' and len(result['final_attempts'])==1
+    assert len(requests)==2 and result['tool_calls']==0

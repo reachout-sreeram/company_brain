@@ -269,14 +269,10 @@ def native_tools(descriptions):
         props=definitions[tool['name']]
         result.append({'type':'function','function':{'name':tool['name'],'description':tool['arguments'],
             'strict':True,'parameters':{'type':'object','properties':props,'required':list(props),'additionalProperties':False}}})
-    array={'type':'array','items':string}
-    final={'disposition':{'type':'string','enum':['blocked','needs_verification','no_known_blockers','clarification_needed']},
-           'affected_workflows':array,'blocker_entities':array,
-           'owner_pairs':{'type':'array','items':array},'evidence_ids':array,'decisions':array,
-           'gaps':array,'conflicts':array,'explanation':string}
+    from .evaluation import FinalAnswer
     result.append({'type':'function','function':{'name':'finish_answer',
-        'description':'Finish with the evidence-supported answer after reading tool results. This only returns an answer; it performs no external action.',
-        'strict':True,'parameters':{'type':'object','properties':final,'required':list(final),'additionalProperties':False}}})
+        'description':'Return the final answer for local validation. Use exact retrieved IDs, separate source_references, preserve assessment disposition, and resolve empty lookups within retry budgets. Put prose only in explanation/gaps/conflicts.',
+        'strict':True,'parameters':FinalAnswer.model_json_schema()}})
     return result
 
 
@@ -321,9 +317,9 @@ class OpenRouterEvaluationClient:
             call=calls[0]
             name=call['function']['name']; arguments=json.loads(call['function']['arguments'])
             if not isinstance(call['id'],str) or not isinstance(arguments,dict): raise ValueError('invalid native call')
-            if name=='finish_answer': return {'final':arguments}
-            if name not in {t['name'] for t in tools}: raise ValueError('unknown native function')
+            if name not in {'finish_answer',*(t['name'] for t in tools)}: raise ValueError('unknown native function')
             self._calls[len(messages)]={'role':'assistant','content':message.get('content'),'tool_calls':calls}
+            if name=='finish_answer': return {'final':arguments}
             return {'tool':name,'arguments':arguments}
         except (ValueError,KeyError,IndexError,TypeError):
             raise OpenRouterError('model returned malformed native function call') from None

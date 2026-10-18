@@ -262,3 +262,16 @@ def test_invalid_renewal_scope_and_depth_preserve_published_graph(store):
     with pytest.raises(ValueError,match='supersession depth'):
         store.ingest(oversized)
     assert store.snapshot()[0]==before
+
+
+def test_broad_lookup_decomposition_reaches_actual_cypher_assessment(store):
+    from test_evaluation import DecomposingClient
+    from company_brain.evaluation import Experiment,Toolbox,run_arm
+    store.ingest(fixture('initial'))
+    result=run_arm(DecomposingClient(),Experiment('scripted/offline'),Toolbox(Brain(store),SCOPE,AT),
+                   'graph','What if an approval delays a workflow?',AT)
+    assert result['status']=='completed' and result['answer']['disposition']=='blocked'
+    assert result['events'][0]['response']['candidates']==[]
+    assert result['events'][1]['response']['candidates'][0]['id']=='monthly-billing'
+    assert result['events'][-1]['request']['tool']=='assess_retirement'
+    assert result['tool_calls']==5 and result['final_attempts']
