@@ -42,6 +42,36 @@ svg.e path{fill:none;stroke-width:2.6}
 .hide{display:none}
 .verdict{position:absolute;right:20px;top:60px;width:330px;border-radius:12px;border:1.5px solid var(--task);background:#1a1230;padding:10px 14px;font-size:12px;color:#fecdd3;line-height:1.55}
 .verdict b{display:block;font-size:15px;color:#fff;margin-bottom:2px}
+
+/* plain v2 */
+:root{--bg:#fbfaf6;--panel:#fff;--ink:#1d1d1b;--muted:#6f6f69;--faint:#9a988f;--line:#cfcdc4;--ok:#2f6b3a;--task:#c2410c}
+body{background:#fbfaf6}
+.glow{display:none}
+.tag{background:none;color:var(--ink);border:1.25px solid var(--ink);border-radius:4px;font-weight:700}
+h1{font-weight:600}
+.st{background:#fff;border:1.25px solid var(--line);border-radius:6px;opacity:.45}
+.st.done{opacity:1}
+.st.on{opacity:1;border:2px solid var(--theme);background:#fff;box-shadow:none}
+.st .n{color:var(--faint)} .st.on .n{color:var(--theme)} .st.done .n{color:var(--muted)}
+.st .b{color:var(--muted)}
+.mono{background:#f6f4ec;border:1px solid #e3e0d4;color:var(--ink);border-radius:4px}
+.ck{color:var(--ok);font-weight:500}
+.x{color:#c2410c;font-weight:500}
+.hl{background:#f1e7c9;color:var(--ink)}
+.pill{border-radius:4px;font-weight:600}
+.pill.prop{color:var(--muted);border:1px dashed #8d8b82}
+.pill.appr{background:none;color:var(--ok);border:1.25px solid var(--ok)}
+.pill.blk{background:none;color:#c2410c;border:1.25px solid #c2410c}
+.graph{background:#fff;border:1px solid var(--line);border-radius:6px}
+.graph .cap{color:var(--muted)}
+.gn{background:#fff;border:1.25px solid var(--ink);border-radius:5px;color:var(--ink)}
+.gn small{color:var(--muted)}
+.gn.lit{box-shadow:none;border:2px solid var(--theme)}
+.gn.lit small{color:var(--theme)}
+.el{background:#fff;font-family:"DejaVu Sans Mono",monospace;border:none;color:var(--ink)!important}
+.verdict{background:#fff;border:2px solid #c2410c;color:var(--ink)}
+.verdict b{color:#c2410c}
+b{color:var(--ink)!important}
 </style></head><body><div class="wrap" id="w"><div class="glow"></div>
 <div class="top"><span class="tag" id="tag"></span><h1 id="title"></h1></div>
 <div class="sub" id="sub"></div>
@@ -61,7 +91,7 @@ svg.e path{fill:none;stroke-width:2.6}
 </div>
 <script>
 const P=new URLSearchParams(location.search), mode=P.get('mode'), step=+P.get('step');
-const W={theme:'#34d399',tag:'WRITE',title:'How a record becomes a trusted fact',
+const W={theme:'#2f6b3a',tag:'WRITE',title:'How a record becomes a trusted fact',
  sub:'Ingestion is operator-controlled. The LLM only proposes; code validates; a human approves; FalkorDB stores every revision.',
  cap:'GRAPH · PUBLISHED REVISION',
  st:[
@@ -72,7 +102,7 @@ const W={theme:'#34d399',tag:'WRITE',title:'How a record becomes a trusted fact'
  ['Operator approves','<span class="mono">approve-proposals<br>--ids run-invoice-legacy<br>--actor ops --note "checked"</span>Audit: <b style="color:#e8ecff">ProposalReview</b> node'],
  ['FalkorDB publishes','New immutable <b style="color:#e8ecff">Revision</b>. Edge appears with its assertion_id.<br><span class="pill appr">approved</span><div class="mono">RUNS_ON {assertion_id:<br>run-invoice-legacy}</div>'],
  ]};
-const R={theme:'#7dd3fc',tag:'READ',title:'How an agent gets an answer it can trust',
+const R={theme:'#c2410c',tag:'READ',title:'How an agent gets an answer it can trust',
  sub:'The agent (Claude, Luna, any MCP client) calls read-only tools. FalkorDB walks the graph; fixed rules decide; the agent only explains.',
  cap:'GRAPH · TRAVERSAL IN FALKORDB',
  st:[
@@ -91,15 +121,15 @@ const show=(id,on)=>document.getElementById(id).classList.toggle('hide',!on);
 const color=(id,c,dash)=>{const e=document.getElementById(id);e.setAttribute('stroke',c);e.setAttribute('stroke-dasharray',dash||'');};
 ['e3','n4'].forEach(i=>show(i,false));
 if(mode==='write'){
-  color('e1','#a78bfa'); show('l1',true);
+  color('e1','#1d1d1b'); show('l1',true);
   if(step<3){show('e2',false);show('l2',false);}
-  else if(step<5){color('e2','#6b7bd6','6 6');document.getElementById('l2').style.color='#6b7bd6';document.getElementById('l2').textContent='RUNS_ON · proposal (inactive)'}
-  else {color('e2','#2dd4bf');document.getElementById('l2').textContent='RUNS_ON · run-invoice-legacy';['n2','n3'].forEach(i=>document.getElementById(i).classList.add('lit'));}
+  else if(step<5){color('e2','#8d8b82','6 6');document.getElementById('l2').style.color='#8d8b82';document.getElementById('l2').textContent='RUNS_ON · proposal (inactive)'}
+  else {color('e2','#1d1d1b');document.getElementById('l2').textContent='RUNS_ON · run-invoice-legacy';['n2','n3'].forEach(i=>document.getElementById(i).classList.add('lit'));}
 } else {
-  color('e1','#3a4677'); color('e2','#3a4677');
+  color('e1','#cfcdc4'); color('e2','#cfcdc4');
   if(step>=1) document.getElementById('n3').classList.add('lit');
-  if(step>=2){color('e2','#2dd4bf');document.getElementById('n2').classList.add('lit');color('e1','#a78bfa');document.getElementById('n1').classList.add('lit');
-     show('n4',true);show('e3',true);color('e3','#fb7185');}
+  if(step>=2){color('e2','#1d1d1b');document.getElementById('n2').classList.add('lit');color('e1','#1d1d1b');document.getElementById('n1').classList.add('lit');
+     show('n4',true);show('e3',true);color('e3','#1d1d1b');}
   if(step>=5){const v=document.getElementById('verdict');v.classList.remove('hide');
      v.innerHTML='<b>Blocked</b>Billing still needs invoice-export on legacy-runner. Migration waits on network-approval (Security). Exception allows use until 1 Nov. Reporting evidence stale → gap.';}
 }
