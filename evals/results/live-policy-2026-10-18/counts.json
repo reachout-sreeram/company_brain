@@ -1,0 +1,208 @@
+{
+  "protocol_revision": "native-function-calls-v4.2-arm-specific-policy",
+  "implementation_commit": "0b2ddea215442a9d3122c42b3bb76a92154de484",
+  "selected_cases": [
+    "clear",
+    "invoice-owner-rationale",
+    "network-slip-billing"
+  ],
+  "controls": {
+    "output_tokens": 1500,
+    "turns": 20,
+    "tool_calls": 12,
+    "context_bytes": 65536,
+    "max_empty_retries": 2,
+    "max_final_repairs": 2,
+    "temperature": null,
+    "reasoning_effort": "none"
+  },
+  "arms": [
+    {
+      "case": "clear",
+      "arm": "graph",
+      "status": "completed",
+      "disposition": "no_known_blockers",
+      "tool_calls": 4,
+      "remaining_data_tool_calls": 8,
+      "context_bytes": 9843,
+      "latency_ms": 10299.28945901338,
+      "counts": {
+        "disposition_correct": true,
+        "required_workflows": 0,
+        "correct_workflows": 0,
+        "unsupported_evidence": 0,
+        "gap_handling_correct": true
+      },
+      "rejected_final_attempts": 0,
+      "rejection_codes": []
+    },
+    {
+      "case": "clear",
+      "arm": "search",
+      "status": "completed",
+      "disposition": "blocked",
+      "tool_calls": 12,
+      "remaining_data_tool_calls": 0,
+      "context_bytes": 24019,
+      "latency_ms": 26287.852125009522,
+      "counts": {
+        "disposition_correct": false,
+        "required_workflows": 0,
+        "correct_workflows": 0,
+        "unsupported_evidence": 0,
+        "gap_handling_correct": false
+      },
+      "rejected_final_attempts": 0,
+      "rejection_codes": []
+    },
+    {
+      "case": "invoice-owner-rationale",
+      "arm": "search",
+      "status": "completed",
+      "disposition": "blocked",
+      "tool_calls": 12,
+      "remaining_data_tool_calls": 0,
+      "context_bytes": 27012,
+      "latency_ms": 28620.279458002187,
+      "counts": {
+        "required_evidence": 8,
+        "correct_required_evidence": 6,
+        "unsupported_evidence": 0,
+        "required_workflows": 1,
+        "correct_workflows": 0,
+        "extra_workflows": 0,
+        "required_blockers": 2,
+        "correct_blockers": 1,
+        "extra_blockers": 0,
+        "required_owners": 2,
+        "correct_owners": 1,
+        "disposition_correct": true,
+        "gap_reported": true,
+        "required_decisions": 1,
+        "correct_decisions": 1
+      },
+      "rejected_final_attempts": 1,
+      "rejection_codes": [
+        "entity_kind"
+      ]
+    },
+    {
+      "case": "invoice-owner-rationale",
+      "arm": "graph",
+      "status": "completed",
+      "disposition": "blocked",
+      "tool_calls": 8,
+      "remaining_data_tool_calls": 4,
+      "context_bytes": 24303,
+      "latency_ms": 18041.938250069506,
+      "counts": {
+        "required_evidence": 8,
+        "correct_required_evidence": 8,
+        "unsupported_evidence": 0,
+        "required_workflows": 1,
+        "correct_workflows": 1,
+        "extra_workflows": 0,
+        "required_blockers": 2,
+        "correct_blockers": 2,
+        "extra_blockers": 0,
+        "required_owners": 2,
+        "correct_owners": 2,
+        "disposition_correct": true,
+        "gap_reported": true,
+        "required_decisions": 1,
+        "correct_decisions": 1
+      },
+      "rejected_final_attempts": 0,
+      "rejection_codes": []
+    },
+    {
+      "case": "network-slip-billing",
+      "arm": "graph",
+      "status": "completed",
+      "disposition": "blocked",
+      "tool_calls": 5,
+      "remaining_data_tool_calls": 7,
+      "context_bytes": 20348,
+      "latency_ms": 16162.694833008572,
+      "counts": {
+        "required_evidence": 7,
+        "correct_required_evidence": 6,
+        "unsupported_evidence": 0,
+        "required_workflows": 1,
+        "correct_workflows": 1,
+        "extra_workflows": 0,
+        "required_blockers": 2,
+        "correct_blockers": 2,
+        "extra_blockers": 1,
+        "required_owners": 2,
+        "correct_owners": 2,
+        "disposition_correct": true,
+        "gap_reported": true,
+        "required_decisions": 1,
+        "correct_decisions": 1
+      },
+      "rejected_final_attempts": 0,
+      "rejection_codes": []
+    },
+    {
+      "case": "network-slip-billing",
+      "arm": "search",
+      "status": "completed",
+      "disposition": "blocked",
+      "tool_calls": 12,
+      "remaining_data_tool_calls": 0,
+      "context_bytes": 25232,
+      "latency_ms": 28886.52370800264,
+      "counts": {
+        "required_evidence": 7,
+        "correct_required_evidence": 6,
+        "unsupported_evidence": 0,
+        "required_workflows": 1,
+        "correct_workflows": 1,
+        "extra_workflows": 0,
+        "required_blockers": 2,
+        "correct_blockers": 2,
+        "extra_blockers": 0,
+        "required_owners": 2,
+        "correct_owners": 1,
+        "disposition_correct": true,
+        "gap_reported": true,
+        "required_decisions": 1,
+        "correct_decisions": 1
+      },
+      "rejected_final_attempts": 0,
+      "rejection_codes": []
+    }
+  ],
+  "verification": {
+    "method_specific_search_policy": true,
+    "search_used_only_record_tools": true,
+    "search_did_not_require_missing_graph_action": true,
+    "all_accepted_budget_claims_match_host_counts": true,
+    "same_model_cases_record_digests_and_numeric_budgets_as_v4_1": true
+  },
+  "provenance": {
+    "v4_1_sha256": "c7c39cf6a4e58f5ce5cba92def43fdac52c61a63cf2465cd72f6fc8ae4e15650",
+    "v4_1_bytes_unchanged": true,
+    "v4_1_path": "../live-corrections-2026-10-18/live-openrouter.json",
+    "smoke_extraction_narrative": "inherited, not rerun; proposals remain unapproved"
+  },
+  "cost": {
+    "known_receipts_usd": "0.047546820",
+    "new_round_usd": "0.009913915",
+    "timeout_allowance_usd": "0.00468431250",
+    "accounted_upper_bound_usd": "0.05223113250",
+    "key_usage_snapshot": {
+      "usage": 0.048354995,
+      "usage_daily": 0.04191185,
+      "usage_weekly": 0.048354995,
+      "usage_monthly": 0.048354995,
+      "limit": 3,
+      "limit_remaining": 2.951645005,
+      "limit_reset": null,
+      "byok_usage": 0
+    },
+    "new_api_usage_delta_matches_round_receipts": true,
+    "note": "Aggregate API usage and receipts overlap; do not add them. Earlier timeout has no individual receipt; allowance remains held."
+  }
+}
