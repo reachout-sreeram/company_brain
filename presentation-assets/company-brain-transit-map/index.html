@@ -1,0 +1,768 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Company Brain Transit Map</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;800;900&family=Overpass+Mono:wght@400;600&display=swap">
+<style>
+/* Concept: the company is a transit map. Things are stations, each fact draws one line, a question is a signal walking back from the target.
+   Single light "printed map" look by choice. */
+:root{
+  color-scheme:light;
+  --paper:#F1F3F5; --sheet:#FFFFFF; --ink:#141A24; --muted:#5D6776; --rule:#D3D9E0;
+  --dep:#E2412A; --mig:#1F62D4; --own:#7D8796; --perm:#8A4ED0; --stale:#E39A14; --ok:#17955A; --bad:#D22F28;
+  --f-sign:"Overpass", "Helvetica Neue", Arial, sans-serif;
+  --f-mono:"Overpass Mono", ui-monospace, Menlo, monospace;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-sign);font-size:16px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--mig);outline-offset:2px}
+
+header.top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;padding-block:14px 8px;max-width:1360px;width:100%;margin:0 auto}
+.brand{display:flex;align-items:center;gap:10px}
+.roundel{width:30px;height:30px;border-radius:50%;border:6px solid var(--dep);position:relative;flex:none}
+.roundel::after{content:"";position:absolute;left:-9px;right:-9px;top:50%;height:7px;margin-top:-3.5px;background:var(--mig)}
+.brand b{font-weight:900;font-size:1.15rem;letter-spacing:.01em}
+.brand span{color:var(--muted);font-size:.9rem}
+.lines-key{display:flex;gap:14px;flex-wrap:wrap;font-size:.78rem;color:var(--muted)}
+.lines-key span{display:inline-flex;align-items:center;gap:6px}
+.lines-key i{width:22px;height:0;border-top:5px solid var(--dep);border-radius:3px}
+.lines-key i.m{border-color:var(--mig)} .lines-key i.o{border-top:3px dotted var(--own)} .lines-key i.p{border-top:3px dashed var(--perm)} .lines-key i.s{border-color:var(--stale)} .lines-key i.x{border-top:3px dashed #B9C1CB}
+
+.theatre{flex:1;display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:18px;max-width:1360px;width:100%;margin:0 auto;padding-bottom:12px;min-height:0}
+@media (max-width:980px){.theatre{grid-template-columns:1fr}}
+.stagewrap{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;overflow:auto;min-width:0;align-self:start}
+#stage{display:block;width:100%;min-width:680px;height:auto}
+.story{display:flex;flex-direction:column;gap:12px;min-width:0}
+.sc-n{font-family:var(--f-mono);font-size:.74rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.sc-n b{color:var(--ink)}
+.story h2{font-weight:900;font-size:clamp(1.5rem,2.4vw,2rem);line-height:1.05;margin:0;text-wrap:balance;letter-spacing:-.01em}
+.cap{font-size:1.06rem;line-height:1.5;margin:0;text-wrap:pretty}
+.tech{font-family:var(--f-mono);font-size:.76rem;color:var(--muted);border-left:3px solid var(--rule);padding:2px 0 2px 10px;margin:0;overflow-wrap:anywhere}
+.extra{display:flex;flex-direction:column;gap:10px}
+.box{background:var(--sheet);border:1px solid var(--rule);border-radius:8px;padding:12px 14px}
+.box h4{margin:0 0 6px;font-size:.72rem;font-family:var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+
+/* verdict card */
+.verdict .head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.stamp{font-weight:900;letter-spacing:.06em;font-size:.95rem;padding:3px 10px;border-radius:4px;border:2.5px solid currentColor;text-transform:uppercase}
+.st-blocked{color:var(--bad)} .st-needs{color:var(--stale)} .st-clear{color:var(--ok)}
+.rev{font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
+.vlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px}
+.vlist li{display:grid;grid-template-columns:14px 1fr;gap:8px;font-size:.9rem;animation:rise .45s ease both}
+.vlist li i{width:10px;height:10px;border-radius:50%;margin-top:6px;background:var(--dep)}
+.vlist li i.m{background:var(--mig)} .vlist li i.p{background:var(--perm)} .vlist li i.s{background:var(--stale)} .vlist li i.o{background:var(--own)} .vlist li i.k{background:var(--ok)} .vlist li i.c{background:var(--bad);border-radius:2px;transform:rotate(45deg)}
+.vlist small{display:block;font-family:var(--f-mono);font-size:.7rem;color:var(--muted);overflow-wrap:anywhere}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.agent{display:flex;flex-direction:column;gap:8px}
+.bubble{background:var(--ink);color:var(--paper);border-radius:14px 14px 14px 4px;padding:10px 12px;font-size:.95rem;min-height:3em}
+.call{font-family:var(--f-mono);font-size:.76rem;background:var(--sheet);border:1.5px solid var(--mig);border-radius:8px;padding:8px 10px;color:var(--mig);overflow-wrap:anywhere;animation:rise .45s ease both}
+.checks{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;font-size:.88rem}
+.checks li{opacity:.35;transition:opacity .3s}
+.checks li.on{opacity:1}
+.checks li.on::before{content:"✓ ";color:var(--ok);font-weight:900}
+.counter{font-weight:900;font-size:2.4rem;line-height:1;font-variant-numeric:tabular-nums}
+.toggle{display:flex;gap:6px;flex-wrap:wrap}
+.tg{border:1.5px solid var(--rule);background:var(--sheet);border-radius:999px;padding:6px 14px;cursor:pointer;font-weight:600;font-size:.88rem}
+.tg.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.hist{font-family:var(--f-mono);font-size:.74rem;display:flex;flex-direction:column;gap:4px}
+.hist .old{color:var(--muted);text-decoration:line-through}
+.receipt{font-size:.86rem}
+.receipt q{display:block;font-family:var(--f-mono);font-size:.76rem;background:var(--paper);border-radius:6px;padding:8px;margin:6px 0;quotes:none}
+.range{width:100%;accent-color:var(--mig)}
+.ticks{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
+.qchips{display:flex;flex-direction:column;gap:6px}
+.qchip{text-align:left;border:1.5px solid var(--rule);background:var(--sheet);border-radius:8px;padding:8px 10px;cursor:pointer;font-size:.9rem;display:flex;flex-direction:column;gap:2px}
+.qchip.on{border-color:var(--ink)}
+.qchip small{font-family:var(--f-mono);font-size:.68rem;color:var(--muted)}
+.proof{font-size:.85rem;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.proof b{display:block;font-size:.72rem;font-family:var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
+.proof .y b{color:var(--ok)} .proof .n b{color:var(--stale)}
+.proof ul{margin:4px 0 0;padding-left:16px}
+
+/* controls */
+.controls{position:sticky;bottom:0;background:var(--paper);border-top:1px solid var(--rule);padding-block:10px calc(10px + env(safe-area-inset-bottom,0px));max-width:1360px;width:100%;margin:0 auto;display:flex;align-items:center;gap:10px}
+.cbtn{border:1.5px solid var(--ink);background:var(--sheet);border-radius:999px;width:40px;height:40px;cursor:pointer;display:grid;place-items:center;font-weight:900;flex:none}
+.cbtn.play{background:var(--ink);color:var(--paper);width:auto;padding:0 16px;gap:6px;display:flex;align-items:center}
+.route{flex:1;display:flex;align-items:center;min-width:0;overflow-x:auto;padding:14px 4px 4px;position:relative}
+.route::before{content:"";position:absolute;left:10px;right:10px;top:21px;height:4px;background:var(--rule);border-radius:2px}
+.stop{position:relative;flex:1 0 34px;display:flex;flex-direction:column;align-items:center;gap:4px;border:0;background:none;cursor:pointer;padding:0}
+.stop span{width:14px;height:14px;border-radius:50%;background:var(--sheet);border:3px solid var(--rule);position:relative;z-index:1}
+.stop.done span{border-color:var(--ink);background:var(--ink)}
+.stop.on span{border-color:var(--dep);background:var(--sheet);transform:scale(1.35)}
+.stop em{font-style:normal;font-size:.62rem;font-family:var(--f-mono);color:var(--muted);white-space:nowrap;height:1em}
+.stop.on em{color:var(--ink);font-weight:600}
+
+/* ---------- SVG ---------- */
+svg text{font-family:var(--f-sign)}
+.halo{paint-order:stroke;stroke:var(--sheet);stroke-width:5px;stroke-linejoin:round}
+.frame{fill:none;stroke:var(--ink);stroke-width:2}
+.frame-tag rect{fill:var(--ink)} .frame-tag text{fill:var(--sheet);font-weight:800;font-size:12px;letter-spacing:.12em}
+.revchip rect{fill:var(--sheet);stroke:var(--ink);stroke-width:1.5} .revchip text{font-family:var(--f-mono);font-size:11px;fill:var(--ink)}
+
+.ln path.p{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.ln-dep path.p{stroke:var(--dep);stroke-width:9}
+.ln-mig path.p{stroke:var(--mig);stroke-width:9}
+.ln-own path.p{stroke:var(--own);stroke-width:3;stroke-dasharray:1 7}
+.ln-perm path.p{stroke:var(--perm);stroke-width:4;stroke-dasharray:10 7}
+.ln-rst path.p{stroke:var(--dep);stroke-width:6;stroke-dasharray:12 8}
+.ln.stale path.p{stroke:var(--stale)}
+.ln.replaced path.p{stroke:#BCC4CE;stroke-width:5;stroke-dasharray:10 8}
+.ln.replaced text.rl{fill:#9AA4B1;text-decoration:line-through}
+.ln.faint{opacity:.22}
+.ln path.hit{fill:none;stroke:transparent;stroke-width:24;cursor:pointer}
+.ln text.rl{font-size:11.5px;font-weight:600;fill:var(--muted)}
+.ln.flash path.p{animation:flash .7s ease 2}
+@keyframes flash{50%{stroke-width:16;opacity:.75}}
+
+.trace{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:15;opacity:.95}
+.tr-dep{stroke:var(--dep)} .tr-mig{stroke:var(--mig)} .tr-perm{stroke:var(--perm)} .tr-own{stroke:var(--own)} .tr-stale{stroke:var(--stale)}
+.trace.glow{stroke-width:22;opacity:.18}
+.dot{stroke:var(--sheet);stroke-width:3}
+circle.tr-dep,circle.tr-mig,circle.tr-perm,circle.tr-own,circle.tr-stale{stroke:var(--sheet)}
+circle.tr-dep{fill:var(--dep)} circle.tr-mig{fill:var(--mig)} circle.tr-perm{fill:var(--perm)} circle.tr-own{fill:var(--own)} circle.tr-stale{fill:var(--stale)}
+
+.st .c{fill:var(--sheet);stroke:var(--ink);stroke-width:4}
+.st-team .c{stroke:var(--own);stroke-width:3}
+.st-decision .c{stroke:var(--perm)}
+.st-task .c{stroke:var(--mig)}
+.st.target .c{fill:var(--ink)}
+.st .ring{fill:none;stroke:var(--dep);stroke-width:3}
+.st .nm{font-weight:800;font-size:14px;fill:var(--ink)}
+.st .kd{font-family:var(--f-mono);font-size:9.5px;fill:var(--muted);letter-spacing:.08em}
+.st.dim{opacity:.28}
+.st.lit .c{fill:var(--dep);stroke:var(--ink)}
+.st.lit-mig .c{fill:var(--mig)}
+.st.lit-own .c{fill:var(--own)}
+.st.lit-perm .c{fill:var(--perm)}
+.st.lit-stale .c{fill:var(--stale)}
+.st.lit-ok .c{fill:var(--ok)}
+.st-in{transition:transform .5s cubic-bezier(.2,1.6,.4,1)}
+.ping{fill:none;stroke:var(--dep);stroke-width:3;transform-box:fill-box;transform-origin:center;animation:ping 1.6s ease-out infinite}
+@keyframes ping{from{transform:scale(1);opacity:.9}to{transform:scale(3.8);opacity:0}}
+.bigping{fill:none;stroke:var(--ok);stroke-width:4;transform-box:fill-box;transform-origin:center;animation:bigping 2.4s ease-out 2 forwards}
+@keyframes bigping{from{transform:scale(1);opacity:.9}to{transform:scale(21);opacity:0}}
+
+.bdg rect{stroke:none} .bdg text{font-family:var(--f-mono);font-size:10.5px;font-weight:600}
+.b-open rect{fill:#FBE0DE} .b-open text{fill:var(--bad)}
+.b-warn rect{fill:#FCEBC8} .b-warn text{fill:#94600A}
+.b-ok rect{fill:#D7F0E3} .b-ok text{fill:#0E6D41}
+.b-ink rect{fill:var(--ink)} .b-ink text{fill:var(--sheet)}
+.bdg{animation:pop .4s cubic-bezier(.2,1.6,.4,1) both;transform-box:fill-box;transform-origin:center}
+@keyframes pop{from{transform:scale(.2);opacity:0}}
+
+.callout rect{fill:var(--ink)} .callout text{fill:var(--sheet);font-size:12px;font-weight:600}
+.callout.c-stale rect{fill:#94600A} .callout.c-perm rect{fill:var(--perm)} .callout.c-ok rect{fill:var(--ok)} .callout.c-bad rect{fill:var(--bad)}
+.callout{animation:pop .4s cubic-bezier(.2,1.6,.4,1) both;transform-box:fill-box;transform-origin:center}
+
+.card .bg{fill:var(--sheet);stroke:var(--ink);stroke-width:1.5;filter:drop-shadow(0 3px 5px rgba(20,26,36,.12))}
+.card .hd{fill:var(--ink)}
+.card .who{fill:var(--sheet);font-family:var(--f-mono);font-size:10.5px;font-weight:600;letter-spacing:.04em}
+.card .tx{font-family:var(--f-mono);font-size:12px;fill:var(--ink)}
+.card.chat .hd{fill:var(--perm)} .card.new .hd{fill:var(--mig)}
+.card .ul{fill:none;stroke:var(--mig);stroke-width:3}
+.bob{animation:bob 3.6s ease-in-out infinite alternate}
+@keyframes bob{to{transform:translateY(-6px)}}
+
+.tk rect{fill:var(--sheet);stroke:var(--ink);stroke-width:1.5}
+.tk circle{fill:var(--dep)}
+.tk.m circle{fill:var(--mig)} .tk.o circle{fill:var(--own)} .tk.p circle{fill:var(--perm)} .tk.s circle{fill:var(--ink)}
+.tk text{font-family:var(--f-mono);font-size:11.5px;fill:var(--ink)}
+.tk.bad rect{stroke:var(--bad);stroke-dasharray:5 4;fill:#FDF1F0}
+.tk.bad circle{fill:var(--bad)}
+
+.gate .post{fill:var(--ink)}
+.gate .lamp{fill:#C6CDD5;stroke:var(--ink);stroke-width:2;transition:fill .15s}
+.gate .lamp.ok{fill:var(--ok)} .gate .lamp.no{fill:var(--bad)}
+.gate text{font-size:12px;font-weight:600;fill:var(--ink)}
+.gate .gt{font-weight:900;font-size:13px;letter-spacing:.14em}
+.tray rect{fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:6 5}
+.tray text{font-family:var(--f-mono);font-size:11px;fill:var(--muted)}
+.big rect.bg{fill:var(--sheet);stroke:var(--mig);stroke-width:2.5}
+.big .pill rect{fill:var(--ink)} .big .pill text{fill:var(--sheet);font-weight:800;font-size:15px}
+.big .rel{font-weight:900;font-size:14px;fill:var(--dep)}
+.big .fk{font-family:var(--f-mono);font-size:10px;fill:var(--muted);letter-spacing:.08em}
+.big .fv{font-family:var(--f-mono);font-size:12.5px;fill:var(--ink)}
+.spark{fill:none;stroke:var(--bad);stroke-width:3;stroke-linejoin:round;animation:spark .25s steps(2) infinite}
+@keyframes spark{50%{opacity:.25}}
+.repl{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-dasharray:5 4}
+.repl-t{font-weight:800;font-size:12px;fill:var(--ink)}
+.stampbig{font-weight:900;font-size:30px;letter-spacing:.08em}
+.stampbig rect{fill:none;stroke-width:4}
+.lock{font-family:var(--f-mono);font-size:11px;fill:var(--ink)}
+.fogged{opacity:.18}
+#stage .trace,#stage .dot,#stage .callout,#stage .spark,#stage .card,#stage .tk,#stage .gate,#stage .big,#stage .bdg,#stage .ping,#stage .bigping,#stage .stampbig,#stage .repl,#stage .repl-t{pointer-events:none}
+.scanbar{fill:var(--mig);opacity:.12}
+.scanline{stroke:var(--mig);stroke-width:3}
+@media (prefers-reduced-motion: reduce){.bob,.ping,.spark{animation:none}}
+
+.tk.prop rect{stroke:var(--muted);stroke-dasharray:6 4;fill:var(--paper)}
+.tk.prop circle{fill:var(--muted)}
+.tk.okd rect{stroke:var(--ok);stroke-width:2.5}
+.tk.okd circle{fill:var(--ok)}
+.sb-h{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;fill:var(--muted);font-weight:700}
+.sb-c{font-size:15px;font-weight:700;fill:var(--ink)}
+.sb-y{font-size:17px;font-weight:900;fill:var(--ok)}
+.sb-n{font-size:17px;font-weight:900;fill:var(--bad)}
+.sb-bar-g{fill:var(--dep)}
+.sb-bar-s{fill:var(--muted)}
+.sb-num{font-family:var(--f-mono);font-size:11px;fill:var(--ink)}
+.sb-tot{font-size:30px;font-weight:900}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand"><div class="roundel" aria-hidden="true"></div><div><b>Company Brain</b> <span>· one question, ridden through FalkorDB</span></div></div>
+  <div class="lines-key" aria-label="Map key">
+    <span><i></i>depends / runs on</span><span><i class="m"></i>migration</span><span><i class="o"></i>owned by</span><span><i class="p"></i>allowed by</span><span><i class="s"></i>old evidence</span><span><i class="x"></i>replaced</span>
+  </div>
+</header>
+
+<div class="theatre">
+  <div class="stagewrap"><svg id="stage" viewBox="0 0 1000 620" role="img" aria-label="Animated map of the Company Brain graph"></svg></div>
+  <aside class="story" aria-live="polite">
+    <div class="sc-n" id="scn"></div>
+    <h2 id="title"></h2>
+    <p class="cap" id="cap"></p>
+    <p class="tech" id="tech"></p>
+    <div class="extra" id="extra"></div>
+    <div class="box receipt" id="receipt" hidden></div>
+  </aside>
+</div>
+
+<div class="controls">
+  <button class="cbtn" id="prev" aria-label="Previous scene">‹</button>
+  <button class="cbtn play" id="play" aria-pressed="false">▶ <span>Play</span></button>
+  <button class="cbtn" id="next" aria-label="Next scene">›</button>
+  <div class="route" id="route" role="group" aria-label="Scenes"></div>
+  <button class="cbtn" id="again" aria-label="Replay this scene" title="Replay scene">↻</button>
+</div>
+
+<script>
+(()=>{
+const NS='http://www.w3.org/2000/svg', SVG=document.getElementById('stage');
+const $=id=>document.getElementById(id);
+const mk=(t,a={},p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e};
+const tx=(p,x,y,s,cls='',anc='start')=>{const t=mk('text',{x,y,class:cls,'text-anchor':anc},p);t.textContent=s;return t};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches, SP=RM?0.03:1;
+const L={}; ['frame','lines','fx','stations','cards'].forEach(k=>L[k]=mk('g',{},SVG));
+let token=0; const STOP=Symbol('stop');
+
+/* ---------- the map (fixture: data/synthetic/*.json, production/eu) ---------- */
+const ST={
+ mb:{x:110,y:230,n:'Monthly billing',k:'workflow',lab:[0,34,'middle']},
+ ie:{x:330,y:230,n:'Invoice export',k:'job',lab:[0,36,'middle']},
+ rv2:{x:620,y:230,n:'Runner v2',k:'service',lab:[0,-22,'middle']},
+ lr:{x:620,y:370,n:'Legacy runner',k:'service · target',lab:[30,-2,'start']},
+ mr:{x:110,y:520,n:'Monthly reporting',k:'workflow',lab:[0,34,'middle']},
+ rj:{x:330,y:520,n:'Reporting job',k:'job',lab:[0,34,'middle']},
+ im:{x:330,y:100,n:'Invoice migration',k:'task',lab:[0,-22,'middle']},
+ na:{x:620,y:100,n:'Network approval',k:'task',lab:[0,-22,'middle']},
+ sec:{x:850,y:100,n:'Security',k:'team',lab:[0,-22,'middle']},
+ dp:{x:200,y:430,n:'Data platform',k:'team',lab:[-20,4,'end']},
+ te:{x:150,y:120,n:'Temporary exception',k:'decision',lab:[0,-22,'middle']},
+};
+const KIND={workflow:'workflow',job:'job',service:'service','service · target':'service',task:'task',team:'team',decision:'decision'};
+const ED={
+ run_i:{t:'dep',pts:[[330,230],[470,370],[620,370]],lab:[548,360],rl:'runs on',id:'run-invoice-legacy',src:'source-run-invoice-legacy@1',q:'Configuration observation 2026-10-17T09:00:00Z: invoice-export runs on legacy-runner in production/eu.',seen:'17 Oct 09:00',m:'parsed'},
+ req_b:{t:'dep',pts:[[110,230],[330,230]],lab:[220,218],rl:'requires',id:'requires-billing-invoice',src:'source-requires-billing-invoice@1',q:'Monthly billing requires invoice-export in production/eu.',seen:'17 Oct 09:00',m:'seeded'},
+ run_r:{t:'dep',pts:[[330,520],[470,520],[620,370]],lab:[420,508],rl:'runs on',id:'run-report-legacy',src:'source-run-report-legacy@1',q:'Configuration observation 2026-09-01T09:00:00Z: report-job runs on legacy-runner in production/eu.',seen:'1 Sep 09:00',m:'parsed'},
+ req_r:{t:'dep',pts:[[110,520],[330,520]],lab:[220,508],rl:'requires',id:'requires-reporting-report',src:'source-requires-reporting-report@1',q:'Monthly reporting requires report-job in production/eu.',seen:'17 Oct 09:00',m:'seeded'},
+ trk:{t:'mig',pts:[[330,230],[330,100]],lab:[342,170],rl:'tracked by',anc:'start',id:'tracks-invoice-migration',src:'source-tracks-invoice-migration@1',q:'invoice-export migration is tracked by invoice-migration in production/eu.',seen:'17 Oct 09:00',m:'seeded'},
+ blk:{t:'mig',pts:[[330,100],[620,100]],lab:[475,88],rl:'blocked by',id:'blocked-network',src:'source-blocked-network@1',q:'invoice-migration is blocked by network-approval in production/eu.',seen:'17 Oct 09:00',m:'seeded'},
+ own_n:{t:'own',pts:[[620,100],[850,100]],lab:[735,88],rl:'owned by',id:'owns-network',src:'source-owns-network@1',q:'The approved roster assigns network-approval to security in production/eu.',seen:'17 Oct 09:00',m:'seeded'},
+ own_i:{t:'own',pts:[[330,230],[200,430]],lab:[248,318],rl:'owned by',anc:'end',id:'owns-invoice',src:'source-owns-invoice@1',q:'The approved roster assigns invoice-export to data-platform in production/eu.',seen:'17 Oct 09:00',m:'seeded'},
+ own_r:{t:'own',pts:[[330,520],[200,430]],lab:null,rl:'owned by',id:'owns-report',src:'source-owns-report@1',q:'The approved roster assigns report-job to data-platform in production/eu.',seen:'17 Oct 09:00',m:'seeded'},
+ perm:{t:'perm',pts:[[150,120],[330,230]],lab:[232,190],rl:'allowed until 1 Nov',anc:'end',id:'permits-invoice',src:'source-permits-invoice@1',q:'Decision effective 2026-10-01T00:00:00Z through 2026-11-01T00:00:00Z: temporary-exception permits continued use by invoice-export in production/eu.',seen:'17 Oct 09:00',m:'seeded'},
+ run_v:{t:'dep',pts:[[330,230],[620,230]],lab:[475,218],rl:'runs on',id:'run-invoice-v2',src:'source-run-invoice-v2@1',q:'Verified deployment observation 2026-10-17T11:00:00Z: invoice-export runs on runner-v2 in production/eu; the legacy-runner binding was removed.',seen:'17 Oct 11:00',m:'parsed · supersedes run-invoice-legacy'},
+ rst:{t:'rst',pts:[[330,230],[420,305],[598,358]],lab:[470,298],rl:'locked record',id:'restricted-new-usage',src:'restricted-usage (restricted)',q:'Observed: invoice-export still runs on legacy-runner in production/eu.',seen:'17 Oct 11:45',m:'test fixture · restricted visibility'},
+};
+const BASE=['run_i','req_b','run_r','req_r','trk','blk','own_n','own_i','own_r','perm'];
+const REVS={1:'066340c1',2:'17d8e0c7',3:'0b73383f',4:'2589fdfa'};
+const dpath=p=>'M'+p.map(q=>q.join(',')).join(' L');
+
+function reset(){for(const k in L){L[k].innerHTML='';L[k].style.opacity=''}$('extra').innerHTML='';$('receipt').hidden=true;SVG.querySelectorAll('.st').forEach(s=>s.remove())}
+
+function frame(rev){
+  mk('rect',{x:24,y:28,width:952,height:572,rx:16,class:'frame'},L.frame);
+  const t=mk('g',{class:'frame-tag'},L.frame); mk('rect',{x:44,y:18,width:118,height:22,rx:4},t); tx(t,103,33,'FALKORDB','', 'middle');
+  if(rev){const r=mk('g',{class:'revchip',id:'revchip'},L.frame); mk('rect',{x:812,y:17,width:144,height:24,rx:12},r); tx(r,884,33,'graph rev '+rev,'','middle');}
+}
+function setRev(rev){const r=document.querySelector('#revchip text'); if(r){r.textContent='graph rev '+rev; r.parentNode.animate([{transform:'scale(1.15)'},{transform:'none'}],{duration:400*SP})}}
+
+function line(k,{cls=''}={}){
+  const e=ED[k]; const g=mk('g',{class:'ln ln-'+e.t+' '+cls,'data-k':k},L.lines);
+  mk('path',{d:dpath(e.pts),class:'p'},g);
+  mk('path',{d:dpath(e.pts),class:'hit'},g);
+  if(e.lab) tx(g,e.lab[0],e.lab[1],e.rl,'rl halo',e.anc||'middle');
+  const t=mk('title',{},g); t.textContent=e.id+' · tap for receipt';
+  g.addEventListener('click',()=>showReceipt(k));
+  return g;
+}
+const lineEl=k=>L.lines.querySelector(`.ln[data-k="${k}"]`);
+async function drawLine(k,w,dur=650,opts){
+  const g=line(k,opts), p=g.querySelector('.p');
+  if(ED[k].t==='dep'||ED[k].t==='mig'){
+    const len=p.getTotalLength(); p.style.strokeDasharray=len; p.style.strokeDashoffset=len;
+    p.animate([{strokeDashoffset:len},{strokeDashoffset:0}],{duration:dur*SP,easing:'ease-in-out',fill:'forwards'});
+    await w(dur); p.style.strokeDasharray=''; p.style.strokeDashoffset=''; p.getAnimations().forEach(a=>a.cancel());
+  } else { g.animate([{opacity:0},{opacity:1}],{duration:dur*SP,fill:'backwards'}); await w(dur) }
+  return g;
+}
+function station(k,{dim=false}={}){
+  const s=ST[k]; const g=mk('g',{class:'st st-'+KIND[s.k]+(k==='lr'?' target':'')+(dim?' dim':''),'data-k':k,transform:`translate(${s.x},${s.y})`},L.stations);
+  const i=mk('g',{class:'st-in'},g);
+  if(k==='lr'){mk('circle',{r:22,class:'ring'},i)}
+  mk('circle',{r:k==='lr'?14:11,class:'c'},i);
+  const [dx,dy,a]=s.lab; tx(i,dx,dy,s.n,'nm halo',a); tx(i,dx,dy+14,s.k.toUpperCase(),'kd halo',a);
+  return g;
+}
+const stEl=k=>L.stations.querySelector(`.st[data-k="${k}"]`);
+function light(k,c='lit'){const s=stEl(k);if(!s)return;s.classList.remove('lit','lit-mig','lit-own','lit-perm','lit-stale','lit-ok');s.classList.add(c);s.querySelector('.st-in').animate([{transform:'scale(1.5)'},{transform:'scale(1)'}],{duration:450*SP,easing:'cubic-bezier(.2,1.6,.4,1)'})}
+const BPOS={im:[-20,0,'end'],na:[0,30,'middle'],rj:[0,66,'middle'],lr:[30,30,'start'],ie:[-18,-18,'end']};
+function badge(k,text,cls){
+  const old=L.stations.querySelector(`.bdg[data-k="${k}"]`); if(old)old.remove();
+  const s=ST[k],[dx,dy,a]=BPOS[k]; const w=text.length*6.7+18; let x=s.x+dx; if(a==='end')x-=w; else if(a==='middle')x-=w/2;
+  const g=mk('g',{class:'bdg '+cls,'data-k':k},L.stations); mk('rect',{x,y:s.y+dy-11,width:w,height:21,rx:10.5},g); tx(g,x+w/2,s.y+dy+3.5,text,'','middle'); return g;
+}
+function callout(x,y,text,cls='',anc='middle'){
+  const w=text.length*6.9+20; let x0=anc==='middle'?x-w/2:anc==='end'?x-w:x;
+  const g=mk('g',{class:'callout '+cls},L.fx); mk('rect',{x:x0,y:y-14,width:w,height:24,rx:5},g); tx(g,x0+w/2,y+2.5,text,'','middle'); return g;
+}
+
+/* static map for a given data state (1..4) */
+function mapState(state,{rev=true,lines=true}={}){
+  frame(rev?REVS[state]:null);
+  if(lines){
+    BASE.forEach(k=>{let c=''; if(k==='run_i'&&state>=3)c='replaced'; if(k==='run_r'&&state>=4)c='replaced'; line(k,{cls:c})});
+    if(state>=3)line('run_v');
+  }
+  Object.keys(ST).forEach(k=>station(k,{dim:k==='rv2'&&state<3}));
+  if(state===1){badge('im','open','b-open');badge('na','open','b-open')}
+  if(state===2){badge('im','open + “done”?','b-warn');badge('na','open','b-open')}
+  if(state>=3){badge('im','complete ✓','b-ok');badge('na','complete ✓','b-ok')}
+  if(state>=4)badge('rj','verified clear ✓','b-ok');
+}
+
+/* a signal walking a line, optionally backwards */
+function trace(k,w,{rev=true,c='tr-dep',dur=900,stay=true}={}){
+  const e=ED[k], pts=rev?[...e.pts].reverse():e.pts;
+  const glow=mk('path',{d:dpath(pts),class:'trace glow '+c},L.fx);
+  const p=mk('path',{d:dpath(pts),class:'trace '+c},L.fx), len=p.getTotalLength();
+  [p,glow].forEach(x=>{x.style.strokeDasharray=len;x.style.strokeDashoffset=len});
+  const dot=mk('circle',{r:9,class:'dot '+c},L.fx);
+  const D=Math.max(1,dur*SP), t0=performance.now(), tk=w.tk;
+  return new Promise((res,rej)=>{
+    const f=t=>{ if(tk!==token){rej(STOP);return}
+      const u=Math.min(1,(t-t0)/D), q=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2, pt=p.getPointAtLength(len*q);
+      dot.setAttribute('cx',pt.x);dot.setAttribute('cy',pt.y);
+      p.style.strokeDashoffset=glow.style.strokeDashoffset=len*(1-q);
+      if(u<1)requestAnimationFrame(f); else {dot.remove(); if(!stay){p.remove();glow.remove()} res()}};
+    requestAnimationFrame(f);
+  });
+}
+function traced(keys,c='tr-dep'){keys.forEach(k=>{[0,1].forEach(i=>mk('path',{d:dpath(ED[k].pts),class:'trace '+(i?'':'glow ')+c},L.fx))})}
+function ping(k){const s=ST[k];return mk('circle',{cx:s.x,cy:s.y,r:16,class:'ping'},L.fx)}
+function flashLine(k){const g=lineEl(k);if(!g)return;g.classList.remove('flash');void g.getBBox();g.classList.add('flash')}
+
+/* cards & tickets */
+function card(c){
+  const g=mk('g',{class:'card '+(c.cls||'')},L.cards); const inner=mk('g',{},g); const w=c.w||240, h=36+c.t.length*18;
+  mk('rect',{width:w,height:h,rx:7,class:'bg'},inner); mk('path',{d:`M0,7 a7,7 0 0 1 7,-7 h${w-14} a7,7 0 0 1 7,7 v19 h-${w} z`,class:'hd'},inner);
+  tx(inner,10,17,c.who,'who'); c.t.forEach((l,i)=>tx(inner,10,44+i*18,l,'tx'));
+  g.dataset.w=w; g.dataset.h=h; g._inner=inner; return g;
+}
+function place(g,x,y,{s=1,r=0,dur=0,o=1}={}){
+  g.style.transition=dur?`transform ${dur*SP}ms cubic-bezier(.2,.8,.2,1), opacity ${dur*SP}ms`:'none';
+  g.style.transform=`translate(${x}px,${y}px) rotate(${r}deg) scale(${s})`; g.style.opacity=o;
+}
+function ticket(text,cls='',w0){const w=Math.max(w0||0,text.length*7.05+46);
+  const g=mk('g',{class:'tk '+cls},L.cards); mk('rect',{width:w,height:34,rx:17},g); mk('circle',{cx:18,cy:17,r:6},g); tx(g,32,21.5,text); return g;
+}
+function gate(x){
+  const g=mk('g',{class:'gate'},L.cards);
+  mk('rect',{x:x-6,y:70,width:12,height:470,rx:4,class:'post'},g);
+  tx(g,x,58,'CHECKPOINT','gt','middle');
+  const lamps=[['exact quote',190],['allowed to say this',300],['same place & time',410]].map(([t,y])=>{const c=mk('circle',{cx:x,cy:y,r:15,class:'lamp'},g);tx(g,x+24,y+4,t);return c});
+  return {g,lamps,async flash(i,cls,w,ms=380){const ls=i==null?lamps:[lamps[i]];ls.forEach(l=>l.classList.add(cls));await w(ms);ls.forEach(l=>l.classList.remove(cls))}};
+}
+function tray(x,y,w,label){const g=mk('g',{class:'tray'},L.cards);mk('rect',{x,y,width:w,height:84,rx:8},g);tx(g,x+12,y-8,label);return g}
+
+/* panel helpers */
+const extra=()=>$('extra');
+function box(title,html=''){const b=document.createElement('div');b.className='box';b.innerHTML=(title?'<h4>'+title+'</h4>':'')+html;extra().appendChild(b);return b}
+function verdictBox(status,rev){
+  const b=box('');b.classList.add('verdict');
+  b.innerHTML='<div class="head"><span class="stamp" id="vstamp"></span><span class="rev">rev '+rev+'</span></div><ul class="vlist" id="vlist"></ul>';
+  setStamp(status); return b;
+}
+function setStamp(s){const el=$('vstamp');if(!el)return;const m={blocked:['st-blocked','Blocked'],needs:['st-needs','Needs verification'],clear:['st-clear','No known blockers'],wait:['','…']}[s];el.className='stamp '+m[0];el.textContent=m[1];el.animate([{transform:'scale(1.4)',opacity:0},{transform:'none',opacity:1}],{duration:380*SP,easing:'cubic-bezier(.2,1.6,.4,1)'})}
+function vrow(dot,text,ids){const li=document.createElement('li');li.innerHTML='<i class="'+dot+'"></i><span>'+text+(ids?'<small>'+esc(ids)+'</small>':'')+'</span>';$('vlist').appendChild(li)}
+function showReceipt(k){const e=ED[k],r=$('receipt');r.hidden=false;
+  r.innerHTML='<h4>Receipt for this line</h4><b class="mono">'+esc(e.id)+'</b><q>'+esc(e.q)+'</q><span class="rev">source '+esc(e.src)+' · seen '+esc(e.seen)+' · '+esc(e.m)+'</span>';
+  flashLine(k)}
+function stampOnMap(text,color,x=760,y=470){const g=mk('g',{class:'stampbig'},L.fx);g.style.color=color;
+  const w=text.length*22+30; mk('rect',{x:x-w/2,y:y-30,width:w,height:46,rx:6,stroke:'currentColor'},g); const t=tx(g,x,y+3,text,'','middle'); t.setAttribute('fill','currentColor');
+  g.setAttribute('transform',`rotate(-6 ${x} ${y})`); g.animate([{opacity:0,transform:`rotate(-6deg) scale(1.8)`},{opacity:1,transform:'rotate(-6deg) scale(1)'}],{duration:450*SP,easing:'cubic-bezier(.2,1.4,.4,1)'});
+  g.style.transformOrigin=`${x}px ${y}px`; return g}
+
+/* ---------- source records (initial fixture) ---------- */
+const RECS=[
+ {who:'CONFIG EXPORT · 17 OCT',t:['invoice-export runs on','legacy-runner · production/eu','seen 17 Oct 09:00'],at:[50,62,-4]},
+ {who:'SERVICE CATALOG',t:['Monthly billing requires','invoice-export'],at:[375,44,3]},
+ {who:'TEAM ROSTER',t:['network-approval → security','invoice-export → data-platform','report-job → data-platform'],at:[700,72,-2]},
+ {who:'TICKET · INVOICE-MIGRATION',t:['Status: open','blocked by network-approval'],at:[95,262,2]},
+ {who:'TICKET · NETWORK-APPROVAL',t:['Status: open'],at:[420,250,-3]},
+ {who:'DECISION RECORD',t:['invoice-export may keep its','current runner 1 Oct – 1 Nov'],at:[705,268,4]},
+ {who:'CONFIG EXPORT · 1 SEP',t:['report-job runs on','legacy-runner · seen 1 Sep'],at:[240,430,-2]},
+ {who:'SERVICE CATALOG',t:['Monthly reporting requires','report-job'],at:[560,440,3]},
+];
+const FACTS=[
+ ['invoice-export → runs on → legacy-runner',''],['billing → requires → invoice-export',''],['reporting → requires → report-job',''],['report-job → runs on → legacy-runner',''],
+ ['invoice-export → tracked by → migration','m'],['migration → blocked by → network-approval','m'],['network-approval → owned by → security','o'],
+ ['invoice-export → owned by → data-platform','o'],['report-job → owned by → data-platform','o'],['exception → allows → invoice-export','p'],
+ ['invoice-migration · status open','s'],['network-approval · status open','s'],
+];
+
+/* ---------- scenes ---------- */
+const SC=[
+{stop:'records',title:'Eight scraps of paper',
+ cap:'Someone asks: <b>can we switch off legacy-runner on Friday?</b> The answer exists, but it is split across eight records from different tools. Some of them are out of date. None of them mentions billing and the runner together.',
+ tech:'Lumora demo · scope production/eu · data/synthetic/initial.json (13 sources)',
+ async run(w){reset();RECS.forEach((r,i)=>{const g=card(r);place(g,r.at[0],r.at[1],{r:r.at[2]});g._inner.classList.add('bob');g._inner.style.animationDelay=(-i*.7)+'s';g.animate([{transform:`translate(${r.at[0]}px,${r.at[1]-40}px) rotate(${r.at[2]*3}deg)`,opacity:.2},{transform:`translate(${r.at[0]}px,${r.at[1]}px) rotate(${r.at[2]}deg)`,opacity:1}],{duration:700*SP,delay:i*90*SP,easing:'cubic-bezier(.2,1.2,.4,1)',fill:'backwards'})});await w(1600)}},
+
+{stop:'facts',title:'Every record becomes small facts with a receipt',
+ cap:'We never store a record as "the truth". We pull out one small fact and staple a receipt to it: which record, which exact characters, where it applies, and when it was seen.',
+ tech:'Assertion node = subject · predicate · object · scope · effective_from · observed_at · source@version · span · sha256 · method · status',
+ async run(w){reset();
+  const cs=RECS.map(r=>{const g=card(r);place(g,r.at[0],r.at[1],{r:r.at[2]});return g});
+  await w(400); cs.forEach((g,i)=>{if(i)place(g,RECS[i].at[0],RECS[i].at[1],{r:RECS[i].at[2],dur:500,o:.12})});
+  place(cs[0],330,60,{s:1.45,dur:900}); await w(1000);
+  [0,1].forEach(i=>{const u=mk('path',{d:`M10,${49+i*18} h${i?200:170}`,class:'ul'},cs[0]._inner);const len=i?200:170;u.style.strokeDasharray=len;u.animate([{strokeDashoffset:len},{strokeDashoffset:0}],{duration:500*SP,delay:i*350*SP,fill:'both'})});
+  await w(1000);
+  const b=mk('g',{class:'big'},L.cards); place(b,190,300,{o:0});
+  mk('rect',{width:620,height:190,rx:12,class:'bg'},b);
+  const pill=(x,t)=>{const g=mk('g',{class:'pill'},b);const wd=t.length*9+26;mk('rect',{x,y:26,width:wd,height:34,rx:17},g);tx(g,x+wd/2,48,t,'','middle');return wd};
+  const w1=pill(24,'invoice-export'); const ax=24+w1+14;
+  mk('path',{d:`M${ax},43 h150`,stroke:'var(--dep)','stroke-width':8,'stroke-linecap':'round'},b); tx(b,ax+75,33,'RUNS ON','rel','middle');
+  pill(ax+166,'legacy-runner');
+  const F=[['WHERE','production / eu'],['SEEN','17 Oct 2026 09:00 UTC'],['RECEIPT','source-run-invoice-legacy v1 · chars 0–102'],['FINGERPRINT','sha256 of the full record text'],['STATUS','approved · parsed']];
+  place(b,190,300,{dur:600});
+  for(let i=0;i<F.length;i++){const y=88+i*20;const r=mk('g',{},b);tx(r,24,y,F[i][0],'fk');tx(r,130,y,F[i][1],'fv');r.animate([{opacity:0,transform:'translateX(-10px)'},{opacity:1,transform:'none'}],{duration:350*SP,fill:'both'});await w(260)}
+  await w(1700);
+  place(b,190,300,{dur:500,o:0}); cs.forEach(g=>place(g,40,40,{s:.3,dur:600,o:0})); await w(450);
+  FACTS.forEach(([t,c],i)=>{const g=ticket(t,c);place(g,40,30+i*46,{o:1});g.animate([{transform:`translate(${360}px,${200}px) scale(.3)`,opacity:0},{transform:`translate(40px,${30+i*46}px)`,opacity:1}],{duration:600*SP,delay:i*70*SP,easing:'cubic-bezier(.2,1,.3,1)',fill:'backwards'})});
+  await w(1400); const t=tx(L.cards,400,300,'12 facts, each with a receipt','', 'start'); t.setAttribute('style','font-weight:900;font-size:26px'); t.animate([{opacity:0},{opacity:1}],{duration:500*SP}); await w(600)}},
+
+{stop:'check',title:'The checkpoint',
+ cap:'Before a fact gets in, code checks it. Does the quote match the record exactly? Is this kind of record allowed to say this? A roster can say who owns something, but it can\'t say what a job runs on. An AI model may <i>suggest</i> facts, but only these checks let one in.',
+ tech:'validate_bundle(): span == text[start:end] · hash · scope · type rules · per-predicate authority · operator-reviewed digest for extracted facts. One failure rejects the whole update.',
+ async run(w){reset();
+  const G=gate(500); tx(L.cards,690,50,'ALLOWED IN','', 'start').setAttribute('style','font-weight:900;font-size:13px;letter-spacing:.14em');
+  tray(300,520,400,'REJECTED · nothing changes');
+  const tks=FACTS.map(([t,c],i)=>{const g=ticket(t,c,290);place(g,20,40+i*42);return g});
+  await w(500);
+  for(let i=0;i<tks.length;i++){place(tks[i],680,40+i*42,{dur:700});await w(260);G.flash(null,'ok',w,260).catch(()=>{});await w(90)}
+  await w(700);
+  const bad=[['AI guess: billing → runs on → legacy-runner',0,'quote not found in the record'],['Roster: report-job → runs on → legacy-runner',1,'a roster isn\'t allowed to say this']];
+  let bi=0;
+  for(const [t,lamp,why] of bad){
+    const g=ticket(t,'bad',300); place(g,20,500); g.animate([{opacity:0},{opacity:1}],{duration:300*SP});
+    await w(350); place(g,180,250,{dur:700}); await w(700);
+    await G.flash(lamp,'no',w,500);
+    const c=callout(330,226,why,'c-bad');
+    place(g,312,528+bi*38,{r:bi?-2:2,dur:700,s:.92}); bi++; await w(1200); c.remove();
+  }
+  await w(400)}},
+
+{stop:'map',title:'Facts become a map inside FalkorDB',
+ cap:'Inside FalkorDB the facts turn into a map. Things are stations. Each fact draws one line, and every line keeps the receipt that drew it. <b>Tap any line</b> to read its receipt.',
+ tech:'(:Entity)-[:RUNS_ON {assertion_id}]->(:Entity), backed by Assertion and Source nodes. Published as content-addressed revision 066340c1.',
+ async run(w){reset();frame(null);
+  const order=['lr','ie','mb','rj','mr','im','na','sec','dp','te','rv2'];
+  for(const k of order){const s=station(k,{dim:k==='rv2'});s.querySelector('.st-in').animate([{transform:'scale(0)'},{transform:'scale(1)'}],{duration:450*SP,easing:'cubic-bezier(.2,1.6,.4,1)',fill:'backwards'});await w(110)}
+  for(const k of ['run_i','req_b','run_r','req_r','trk','blk','own_n','own_i','own_r','perm']){
+    const p=drawLine(k,w,520); const e=ED[k]; const mid=e.lab||e.pts[1]; const c=callout(mid[0],mid[1]-26,e.id,'');
+    await p; await w(140); c.animate([{opacity:1},{opacity:0}],{duration:300*SP,fill:'forwards'});
+  }
+  badge('im','open','b-open');badge('na','open','b-open');
+  const r=mk('g',{class:'revchip',id:'revchip'},L.frame); mk('rect',{x:812,y:17,width:144,height:24,rx:12},r); tx(r,884,33,'graph rev 066340c1','','middle'); r.animate([{opacity:0},{opacity:1}],{duration:400*SP});
+  box('In the graph now','11 stations · 10 lines · 2 ticket statuses · 13 receipts. The readable lines are a view. The assertion nodes underneath are what the database actually checks.');
+  await w(800)}},
+
+{stop:'ask',title:'A question arrives',
+ cap:'An AI agent turns the person\'s question into one exact request: this service, in production/eu, at a specific time. It doesn\'t search documents. It asks the map.',
+ tech:'MCP tool assess_retirement(service_id, scope, planned_at). Read-only; works with any MCP client (tested live with GPT-6 Luna via the official MCP SDK). No AI model decides the verdict.',
+ async run(w){reset();mapState(1);ping('lr');
+  const a=box('Agent');a.classList.add('agent');a.insertAdjacentHTML('beforeend','<div class="bubble" id="bub"></div>');
+  const q='Can we switch off legacy-runner on Friday? What still needs it, and who has to fix what?';
+  for(let i=1;i<=q.length;i++){$('bub').textContent=q.slice(0,i);await w(18)}
+  await w(500);
+  a.insertAdjacentHTML('beforeend','<div class="call">assess_retirement(<br>&nbsp;"legacy-runner",<br>&nbsp;{environment:"production", region:"eu"},<br>&nbsp;"2026-10-17T12:00:00Z")</div>');
+  await w(600); callout(620,440,'start here','c-bad'); await w(800)}},
+
+{stop:'filter',title:'Which lines count right now?',
+ cap:'Before walking anywhere, the database decides which lines are allowed to count for this exact question. Today all ten pass.',
+ tech:'Runs inside FalkorDB as the first half of one Cypher query: status, scope, effective_from/until vs planned_at, recorded/observed vs known_at, visibility vs caller groups, revoked, superseded.',
+ async run(w){reset();mapState(1);
+  const chk=box('Each line must be','<ul class="checks" id="chk"><li>approved</li><li>in production/eu</li><li>valid on 17 Oct</li><li>known by 12:00</li><li>visible to this caller</li><li>not replaced by newer</li></ul>');
+  const cnt=box('Lines that count','<div class="counter" id="cnt">0</div>');
+  const bar=mk('rect',{x:0,y:28,width:60,height:572,class:'scanbar'},L.fx), sl=mk('line',{x1:60,y1:28,x2:60,y2:600,class:'scanline'},L.fx);
+  const lis=[...document.querySelectorAll('#chk li')]; lis.forEach((l,i)=>setTimeout(()=>{if(l.isConnected)l.classList.add('on')},(200+i*260)*SP));
+  const mids=BASE.map(k=>{const p=ED[k].pts;return [k,(p[0][0]+p[p.length-1][0])/2]}).sort((a,b)=>a[1]-b[1]);
+  const D=2600*SP,t0=performance.now(),tk=w.tk;let n=0;
+  await new Promise((res,rej)=>{const f=t=>{if(tk!==token)return rej(STOP);const u=Math.min(1,(t-t0)/D),x=24+u*930;bar.setAttribute('x',x-60);sl.setAttribute('x1',x);sl.setAttribute('x2',x);
+    while(n<mids.length&&mids[n][1]<=x){flashLine(mids[n][0]);n++;$('cnt').textContent=n}
+    if(u<1)requestAnimationFrame(f);else res()};requestAnimationFrame(f)});
+  bar.remove();sl.remove();$('cnt').textContent='10 of 10';await w(600)}},
+
+{stop:'walk',title:'Walk backwards from the runner',
+ cap:'Now a signal walks <b>backwards</b> from legacy-runner along "runs on" and "requires" lines. Two hops back, <b>Monthly billing</b> lights up, even though no billing record mentions the runner. The reporting route is found too, but its evidence is 46 days old, so it can\'t be trusted either way.',
+ tech:'MATCH p=(consumer)-[:RUNS_ON|DEPENDS_ON|REQUIRES*1..9]->(target) WHERE every edge.assertion_id is in the "counts" list. Runtime observations must be under 7 days old; business requirements use declared validity dates.',
+ async run(w){reset();mapState(1);light('lr');
+  const f=box('Found so far','<ul class="vlist" id="vlist"></ul>');
+  await trace('run_i',w); light('ie'); vrow('','Invoice export runs on it','run-invoice-legacy · seen 17 Oct');
+  await trace('req_b',w); light('mb'); callout(110,175,'2 hops away','c-bad'); vrow('','Monthly billing needs Invoice export','requires-billing-invoice');
+  await w(400);
+  await trace('run_r',w,{c:'tr-stale'}); light('rj','lit-stale'); callout(470,560,'seen 1 Sep · 46 days ago','c-stale'); vrow('s','Reporting job ran on it… on 1 Sep','run-report-legacy · stale');
+  await trace('req_r',w,{c:'tr-stale'}); light('mr','lit-stale'); vrow('s','Monthly reporting needs Reporting job','requires-reporting-report');
+  await w(800)}},
+
+{stop:'block',title:'What stands in the way?',
+ cap:'From each job that still uses the runner, follow the migration line. Invoice migration is waiting on network approval, which is still open, and <b>Security</b> owns it. A temporary exception allows the old runner until 1 Nov. That gives permission to use it. It doesn\'t prove the job needs it.',
+ tech:'Same query, second pattern: MIGRATION_TRACKED_BY|BLOCKED_BY. Python then attaches OWNED_BY and PERMITS_USE facts to every station reached.',
+ async run(w){reset();mapState(1);traced(['run_i','req_b']);traced(['run_r','req_r'],'tr-stale');['lr','ie','mb'].forEach(k=>stEl(k).classList.add('lit'));['rj','mr'].forEach(k=>stEl(k).classList.add('lit-stale'));
+  box('Found so far','<ul class="vlist" id="vlist"></ul>');
+  await trace('trk',w,{rev:false,c:'tr-mig',dur:600}); light('im','lit-mig'); vrow('m','Invoice migration: open','status-migration-open');
+  callout(455,138,'no owner on record','c-bad');
+  await trace('blk',w,{rev:false,c:'tr-mig'}); light('na','lit-mig'); vrow('m','Blocked by Network approval: open','blocked-network · status-network-open');
+  await trace('own_n',w,{rev:false,c:'tr-own',dur:700}); light('sec','lit-own'); callout(850,140,'owner','');vrow('o','Security owns network approval','owns-network');
+  await trace('own_i',w,{rev:false,c:'tr-own',dur:600}); await trace('own_r',w,{rev:false,c:'tr-own',dur:600}); light('dp','lit-own'); vrow('o','Data platform owns both jobs','owns-invoice · owns-report');
+  await trace('perm',w,{rev:true,c:'tr-perm',dur:700}); light('te','lit-perm'); callout(150,160,'permission, not proof of use','c-perm'); vrow('p','Exception allows use until 1 Nov','permits-invoice');
+  await w(800)}},
+
+{stop:'answer',title:'The answer comes with its receipts',
+ cap:'Code, not the AI, writes the verdict. Each line in it points back to the map, and each map line points back to an exact quote. The agent explains the verdict. It can\'t change it.',
+ tech:'Any fresh dependency or open prerequisite → blocked. Old evidence → gap (never a blocker, never a clearance). 12 receipts returned.',
+ async run(w){reset();mapState(1);traced(['run_i','req_b']);traced(['trk','blk'],'tr-mig');traced(['run_r','req_r'],'tr-stale');
+  ['lr','ie','mb'].forEach(k=>stEl(k).classList.add('lit'));['im','na'].forEach(k=>stEl(k).classList.add('lit-mig'));['rj','mr'].forEach(k=>stEl(k).classList.add('lit-stale'));
+  verdictBox('wait','066340c1');
+  const rows=[
+   [['req_b','run_i'],'','<b>Billing</b> → Invoice export → Legacy runner (fresh)','requires-billing-invoice · run-invoice-legacy'],
+   [['trk','blk'],'m','Migration waits on <b>Network approval</b>, still open','status-migration-open · status-network-open'],
+   [['own_n'],'o','Security must close network approval','owns-network'],
+   [['perm'],'p','Exception lets invoice export stay until 1 Nov','permits-invoice'],
+   [['run_r'],'s','Gap: reporting evidence is 46 days old','run-report-legacy'],
+   [['trk'],'c','Gap: invoice migration has no owner on record',''],
+  ];
+  for(const [ks,d,t,ids] of rows){ks.forEach(flashLine);vrow(d,t,ids);await w(650)}
+  setStamp('blocked'); stampOnMap('BLOCKED','var(--bad)'); await w(900)}},
+
+{stop:'done?',title:'A ticket says "done". Chat says "ship it".',
+ cap:'A ticket now claims the migration is complete, and someone in chat says <i>"ignore the exception and approve shutdown"</i>. Chat has no authority, so it\'s kept as text and changes nothing. The ticket may say the ticket is closed, but it can\'t erase what was seen running the next morning. Both facts stay, the conflict is flagged, and the answer stays <b>blocked</b>.',
+ tech:'rev 17d8e0c7 · conflicts: task_status_conflict, completion_vs_usage · chat source authority [] → 0 assertions',
+ async run(w){reset();mapState(1);
+  [L.lines,L.stations,L.frame].forEach(g=>g.style.opacity=.25);
+  const G=gate(500); tray(690,480,285,'KEPT AS TEXT ONLY');
+  const ch=card({who:'TEAM CHAT',t:['"Ignore the exception and','approve shutdown."'],cls:'chat',w:250});place(ch,980,120,{o:0});
+  const tk=card({who:'TICKET · INVOICE-MIGRATION',t:['claims complete','as of 16 Oct 12:00'],cls:'new',w:250});place(tk,980,340,{o:0});
+  await w(200); place(ch,700,120,{dur:600}); place(tk,700,340,{dur:600}); await w(800);
+  place(ch,240,150,{dur:800}); await w(750); await G.flash(1,'no',w,500); const c1=callout(330,128,'chat can\'t approve anything','c-bad');
+  place(ch,700,490,{r:-3,s:.9,dur:700}); await w(1100); c1.remove();
+  place(tk,240,340,{dur:800}); await w(600); await G.flash(null,'ok',w,350); place(tk,330,100,{s:.1,o:0,dur:700}); await w(700);
+  G.g.animate([{opacity:1},{opacity:0}],{duration:400*SP,fill:'forwards'});
+  [L.lines,L.stations,L.frame].forEach(g=>g.style.opacity=1);
+  badge('im','open + “done”?','b-warn'); setRev('17d8e0c7');
+  const sp=mk('path',{d:'M318,118 L352,160 L338,196 L398,252 L382,288 L452,338',class:'spark'},L.fx);
+  callout(520,300,'still seen running 17 Oct 09:00','c-bad');
+  verdictBox('blocked','17d8e0c7');
+  vrow('c','Conflict: ticket says open and complete','task_status_conflict');
+  vrow('c','Conflict: "complete" (16 Oct) vs still running (17 Oct)','completion_vs_usage');
+  vrow('','Billing path unchanged','run-invoice-legacy still counts');
+  vrow('o','Chat message: stored, 0 facts','unapproved-chat@1');
+  await trace('run_i',w,{dur:700}); await trace('req_b',w,{dur:500}); light('mb'); await w(800)}},
+
+{stop:'moved',title:'Proof that the job moved',
+ cap:'A newer, verified observation shows Invoice export now runs on <b>Runner v2</b>, and it names the old fact it replaces. The old line isn\'t deleted. It\'s marked as replaced and stays in history. Walk back again: billing no longer reaches the runner. Reporting still rests on old evidence, so the answer is <b>needs verification</b>, not "safe".',
+ tech:'(run-invoice-v2)-[:SUPERSEDES]->(run-invoice-legacy) · rev 0b73383f · tickets verified complete',
+ async run(w){reset();mapState(2);
+  const c=card({who:'VERIFIED DEPLOYMENT · 17 OCT 11:00',t:['invoice-export runs on runner-v2','legacy binding removed'],cls:'new',w:270});place(c,980,250,{o:0});
+  await w(200); place(c,680,140,{dur:700}); await w(1100); place(c,470,215,{s:.1,o:0,dur:600}); await w(400);
+  stEl('rv2').classList.remove('dim'); await drawLine('run_v',w,800);
+  const rp=mk('path',{d:'M500,236 C560,270 540,300 520,352',class:'repl','marker-end':''},L.fx);
+  const len=rp.getTotalLength(); rp.style.strokeDasharray='5 4'; rp.animate([{opacity:0},{opacity:1}],{duration:400*SP});
+  const rt=tx(L.fx,560,300,'replaces','repl-t halo','start'); await w(700);
+  lineEl('run_i').classList.add('replaced'); lineEl('run_i').animate([{opacity:.3},{opacity:1}],{duration:500*SP});
+  badge('im','complete ✓','b-ok'); badge('na','complete ✓','b-ok'); setRev('0b73383f'); await w(900);
+  rp.remove(); rt.remove();
+  ping('lr'); await w(400);
+  callout(500,420,'replaced line doesn\'t count','');
+  await trace('run_r',w,{c:'tr-stale'}); light('rj','lit-stale'); await trace('req_r',w,{c:'tr-stale'}); light('mr','lit-stale');
+  verdictBox('needs','0b73383f');
+  vrow('k','Billing no longer reaches the runner','run-invoice-v2 supersedes run-invoice-legacy');
+  vrow('s','Gap: reporting evidence is still 46 days old','run-report-legacy');
+  vrow('s','Gap: no fresh check for report-job','');
+  box('History keeps both','<div class="hist"><span class="old">17 Oct 09:00 · invoice-export runs on legacy-runner</span><span>17 Oct 11:00 · invoice-export runs on runner-v2 · replaces ↑</span></div>');
+  await w(800)}},
+
+{stop:'clear',title:'The last route is checked',
+ cap:'Reporting job gets a fresh, specific check, and the full list of runner users is re-confirmed. Walk back once more: <b>nothing reaches the runner</b>. The answer is "no known blockers", but only for the list that was checked. It isn\'t a shutdown button. A person still signs that off.',
+ tech:'rev 2589fdfa · VERIFIED_CLEAR (11:30) supersedes run-report-legacy · inventory complete and fresh · 0 gaps',
+ async run(w){reset();mapState(3);
+  const c=card({who:'SCOPED VERIFICATION · 11:30',t:['report-job no longer uses','legacy-runner · binding removed'],cls:'new',w:270});place(c,980,450,{o:0});
+  await w(200); place(c,660,470,{dur:700}); await w(1100); place(c,330,520,{s:.1,o:0,dur:600}); await w(500);
+  lineEl('run_r').classList.add('replaced'); badge('rj','verified clear ✓','b-ok'); setRev('2589fdfa');
+  const inv=box('Declared users of legacy-runner','<ul class="vlist" id="inv"></ul>');
+  await w(500);
+  for(const [t,s] of [['invoice-export','checked 11:00 · now on runner-v2'],['report-job','checked 11:30 · verified clear']]){const li=document.createElement('li');li.innerHTML='<i class="k"></i><span>'+t+'<small>'+s+'</small></span>';$('inv').appendChild(li);await w(500)}
+  mk('circle',{cx:620,cy:370,r:20,class:'bigping'},L.fx); await w(1600);
+  callout(620,440,'nothing reaches the runner','c-ok'); light('lr','lit-ok');
+  verdictBox('clear','2589fdfa');
+  vrow('k','Every declared user freshly checked','inventory-clear@1');
+  vrow('k','No gaps, no conflicts, nothing hidden','');
+  vrow('o','Only within the checked list · a human still approves','');
+  await w(900)}},
+
+{stop:'hidden',title:'Who\'s asking changes what they see',
+ cap:'Suppose a private record says Invoice export is <i>still</i> running on the old runner. A viewer who can\'t see that record never sees the line, its name or its count. But the system knows something is hidden from them, so they never get an all-clear. A cleared viewer sees the line, and the answer is <b>blocked</b>.',
+ tech:'Visibility is filtered inside the Cypher during the walk. Caller groups come from server config, never from the AI. Tested by assert_restricted_coverage.',
+ async run(w){reset();mapState(4);
+  const tg=box('Viewer','<div class="toggle"><button class="tg" id="vPub">Public viewer</button><button class="tg" id="vSec">Cleared for restricted</button></div>');
+  const out=document.createElement('div');out.id='vout';extra().appendChild(out);
+  const showPub=async(w2)=>{L.fx.innerHTML='';const r=lineEl('rst');if(r)r.remove();['ie','mb','lr'].forEach(k=>stEl(k).classList.remove('lit'));
+    $('vPub').classList.add('on');$('vSec').classList.remove('on');
+    const lk=mk('g',{},L.fx); callout(520,330,'1 record here you can\'t see','');
+    out.innerHTML='';const v=verdictBox('needs','private-test');out.appendChild(v);
+    vrow('s','Coverage is incomplete for this viewer','no IDs, names or counts shown')};
+  const showSec=async(w2)=>{L.fx.innerHTML='';$('vSec').classList.add('on');$('vPub').classList.remove('on');
+    if(!lineEl('rst'))await drawLine('rst',w2,700);
+    out.innerHTML='';const v=verdictBox('blocked','private-test');out.appendChild(v);
+    await trace('rst',w2,{dur:700}); light('ie'); await trace('req_b',w2,{dur:600}); light('mb');
+    vrow('','Locked record: invoice-export still on legacy-runner','restricted-new-usage');
+    vrow('','Billing is affected again','')};
+  const mkw=()=>{const tk=token;const f=ms=>new Promise((res,rej)=>setTimeout(()=>tk===token?res():rej(STOP),ms*SP));f.tk=tk;return f};
+  $('vPub').onclick=()=>showPub(mkw()).catch(()=>{}); $('vSec').onclick=()=>showSec(mkw()).catch(()=>{});
+  await showPub(w); await w(2600); await showSec(w); await w(900)}},
+
+{stop:'history',title:'Nothing was overwritten',
+ cap:'Every update created a new snapshot with its own fingerprint, so you can always ask what was believed at a given moment and why it changed. Drag through the four snapshots.',
+ tech:'Content-addressed revisions (sha256 of the sorted bundle). The head moves by compare-and-set only after staging succeeds. Same input → same revision → nothing duplicated.',
+ async run(w){reset();
+  const V={1:['blocked','Initial records'],2:['blocked','Ticket says done'],3:['needs','Verified move'],4:['clear','Last route checked']};
+  const b=box('Snapshot','<input type="range" class="range" id="snap" min="1" max="4" step="1" value="1" aria-label="Snapshot"><div class="ticks"><span>066340c1</span><span>17d8e0c7</span><span>0b73383f</span><span>2589fdfa</span></div><div id="snapv" style="margin-top:10px"></div>');
+  const show=s=>{for(const k in L)L[k].innerHTML='';mapState(s);$('snapv').innerHTML='<span class="stamp '+({blocked:'st-blocked',needs:'st-needs',clear:'st-clear'}[V[s][0]])+'">'+({blocked:'Blocked',needs:'Needs verification',clear:'No known blockers'}[V[s][0]])+'</span> <span class="rev">'+V[s][1]+'</span>';$('snap').value=s};
+  $('snap').oninput=e=>show(+e.target.value);
+  for(let s=1;s<=4;s++){show(s);await w(1500)}}},
+
+
+{stop:'review',title:'An AI suggests. A person approves.',
+ cap:'Now a real AI model (GPT-6 Luna) reads the raw records and proposes facts. They pass the checkpoint, but <b>proposals don\'t count</b>, so the answer stays "needs verification". A reviewer checks four of them against their source and approves them. Ask again: the answer becomes <b>blocked</b>. The other seven stay proposals, and asking "as of before the review" still gives the old answer.',
+ tech:'company-brain approve-proposals --proposal … --actor … --reviewed-at … · approved copies + immutable review audit in FalkorDB (APPROVES / REVIEWED_FROM) · approval time filtered in Cypher · no MCP write tool',
+ async run(w){reset();
+  const P=[['invoice-export → runs on → legacy-runner',1],['billing → requires → invoice-export',1],['invoice-export → owned by → data-platform',1],['exception → allows → invoice-export until 1 Nov',1],
+   ['reporting → requires → report-job',0],['report-job → runs on → legacy-runner',0],['migration → blocked by → network-approval',0],['report-job → owned by → data-platform',0],
+   ['network-approval → owned by → security',0],['invoice-migration · status open',0],['network-approval · status open',0]];
+  tx(L.cards,30,30,'LIVE AI PROPOSALS · 11 · inactive','sb-h');
+  tx(L.cards,560,30,'APPROVED · these count','sb-h');
+  const tks=P.map(([t],i)=>{const g=ticket(t,'prop',360);place(g,20,46+i*44,{o:0});return g});
+  for(let i=0;i<tks.length;i++){place(tks[i],20,46+i*44,{dur:350});await w(90)}
+  verdictBox('needs','before review');
+  vrow('s','Proposals alone change nothing','11 proposals · 0 approved');
+  await w(1500);
+  const sel=P.map((p,i)=>p[1]?i:-1).filter(i=>i>=0);
+  for(const [n,i] of sel.entries()){
+    const g=tks[i]; g.classList.remove('prop'); g.classList.add('okd');
+    const c=callout(420,62+i*44,'source checked ✓','c-ok','start'); await w(450); c.remove();
+    place(g,560,46+n*44,{dur:600}); await w(500);
+  }
+  const rest=tks.filter((_,i)=>!P[i][1]); rest.forEach((g,n)=>place(g,20,46+n*44,{dur:500}));
+  await w(600);
+  extra().innerHTML='';
+  verdictBox('blocked','after review');
+  vrow('','Billing → Invoice export → Legacy runner','approved runtime + prerequisite');
+  vrow('o','Data platform owns invoice export','approved roster fact');
+  vrow('p','Exception allows use until 1 Nov','approved dated permission');
+  vrow('s','7 proposals still inactive','not batch-approved');
+  box('Time travel still works','Ask with a knowledge time <b>before</b> the review → still <b>needs verification</b>. Approval is never retroactive.');
+  stampOnMap('BLOCKED','var(--bad)',760,500); await w(1200)}},
+
+{stop:'vs',title:'Same model, same records: graph vs search',
+ cap:'We gave the same AI model the same records two ways: our graph tools, or plain search over the records. With the graph it got <b>all 6</b> answers right in 2–6 tool calls. With search it got <b>4 of 6</b>, used 11–12 calls every time, and said "blocked" after the job had already moved.',
+ tech:'openai/gpt-6-luna · 6 paired cases · same records, scope and times · 12 data-tool calls max · one sample each, synthetic data · total spend ≈ USD 0.07 of a USD 3 cap',
+ async run(w){reset();
+  const R=[['Initial state',1,2,1,12],['Ticket says "done"',1,2,1,12],['Verified migration',1,4,0,12],['Last route checked',1,2,0,12],['Who owns invoice export, and why?',1,5,1,11],['If network approval slips a week?',1,6,1,11]];
+  tx(L.cards,40,60,'QUESTION','sb-h'); tx(L.cards,470,60,'GRAPH (OUR MCP TOOLS)','sb-h'); tx(L.cards,730,60,'PLAIN SEARCH','sb-h');
+  for(let i=0;i<R.length;i++){
+    const [q,g,gc,sr,sc]=R[i], y=110+i*66;
+    const row=mk('g',{},L.cards);
+    tx(row,40,y,q,'sb-c');
+    tx(row,470,y,g?'✓':'✗',g?'sb-y':'sb-n');
+    const gb=mk('rect',{x:495,y:y-12,width:0,height:14,rx:3,class:'sb-bar-g'},row); tx(row,495,y+20,gc+' calls','sb-num');
+    tx(row,730,y,sr?'✓':'✗',sr?'sb-y':'sb-n');
+    const sbr=mk('rect',{x:755,y:y-12,width:0,height:14,rx:3,class:'sb-bar-s'},row); tx(row,755,y+20,sc+' calls','sb-num');
+    row.animate([{opacity:0,transform:'translateX(-12px)'},{opacity:1,transform:'none'}],{duration:350*SP,fill:'both'});
+    gb.animate([{width:'0px'},{width:(gc*17)+'px'}],{duration:500*SP,fill:'forwards'});
+    sbr.animate([{width:'0px'},{width:(sc*17)+'px'}],{duration:700*SP,fill:'forwards'});
+    if(!sr) callout(860,y+42,i===2?'said blocked, job had moved':'missed the all-clear','c-bad');
+    await w(550);
+  }
+  const t1=tx(L.cards,470,540,'6 / 6','sb-tot'); t1.setAttribute('fill','var(--ok)');
+  const t2=tx(L.cards,730,540,'4 / 6','sb-tot'); t2.setAttribute('fill','var(--bad)');
+  box('Why the graph wins here','Search has to rediscover the chain, the conflicts and the freshness rules from raw text every time. The graph returns one consolidated, cited assessment, so the model only has to explain it.');
+  box('Honest limits','Single samples on known synthetic cases, with bounded answer repairs on both sides. It shows the design works, not general superiority.');
+  await w(1200)}},
+{stop:'next',title:'One map, many questions',
+ cap:'Service retirement was the first question. The map, the receipts, the checkpoint and the history don\'t know they\'re about retirement. A new question walks the same map a different way.',
+ tech:'Reusable: sources, assertions with scope and two clocks, per-predicate authority, the trust gate, revisions, the eligibility + supersession query, read-only MCP. Per question: a walk pattern and a rule set.',
+ async run(w){reset();mapState(4);
+  const Q=[
+   ['Can we switch off legacy-runner?','built · assess_retirement',()=>{}],
+   ['What changed for invoice export, and why?','data exists today · get_history',async w2=>{flashLine('run_i');flashLine('run_v');await trace('run_v',w2,{rev:false,dur:700});callout(475,190,'replaced run-invoice-legacy at 11:00','')}],
+   ['Who must act on network approval?','data exists today · owners',async w2=>{await trace('own_n',w2,{rev:false,c:'tr-own',dur:700});light('sec','lit-own')}],
+   ['If billing changes, what does it touch?','idea · walk forwards instead',async w2=>{await trace('req_b',w2,{rev:false,dur:600});await trace('run_v',w2,{rev:false,dur:700});light('rv2')}],
+  ];
+  const b=box('Try a question','<div class="qchips" id="qc"></div>');
+  Q.forEach(([q,s,f],i)=>{const btn=document.createElement('button');btn.className='qchip';btn.innerHTML=q+'<small>'+s+'</small>';
+    btn.onclick=()=>{document.querySelectorAll('.qchip').forEach(x=>x.classList.toggle('on',x===btn));L.fx.innerHTML='';const tk=token;const w2=ms=>new Promise((res,rej)=>setTimeout(()=>tk===token?res():rej(STOP),ms*SP));w2.tk=tk;Promise.resolve(f(w2)).catch(()=>{})};$('qc').appendChild(btn)});
+  box('Where it stands','<div class="proof"><div class="y"><b>Proven</b><ul><li>229 tests, 15 on real FalkorDB</li><li>3/3 clean replays, 12/12 expected verdicts</li><li>live AI proposals + explicit approval</li><li>real MCP client kept verdict and 13 citations</li><li>graph 6/6 vs search 4/6</li><li>no leaks to hidden viewers</li></ul></div><div class="n"><b>Next</b><ul><li>real company connectors</li><li>production identity</li><li>scale testing</li><li>more question types</li></ul></div></div>');
+  await w(300);document.querySelectorAll('.qchip')[1].click();await w(1800)}},
+];
+
+/* ---------- player ---------- */
+let cur=0, playing=false;
+const route=$('route');
+SC.forEach((s,i)=>{const b=document.createElement('button');b.className='stop';b.innerHTML='<span></span><em>'+s.stop+'</em>';b.setAttribute('aria-label','Scene '+(i+1)+': '+s.title);b.onclick=()=>go(i);route.appendChild(b)});
+async function go(i){
+  cur=(i+SC.length)%SC.length; const my=++token; const s=SC[cur];
+  [...route.children].forEach((b,j)=>b.className='stop'+(j===cur?' on':j<cur?' done':''));
+  route.children[cur].scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
+  $('scn').innerHTML='Scene <b>'+(cur+1)+'</b> of '+SC.length;
+  $('title').textContent=s.title; $('cap').innerHTML=s.cap; $('tech').textContent=s.tech;
+  try{history.replaceState(null,'','#s'+(cur+1))}catch(e){}
+  const w=ms=>new Promise((res,rej)=>setTimeout(()=>my===token?res():rej(STOP),ms*SP)); w.tk=my;
+  try{ await s.run(w); if(playing&&my===token){await w(3200); if(cur<SC.length-1)go(cur+1); else setPlay(false)} }
+  catch(e){ if(e!==STOP)console.error(e) }
+}
+function setPlay(p){playing=p;$('play').setAttribute('aria-pressed',String(p));$('play').innerHTML=p?'❚❚ <span>Pause</span>':'▶ <span>Play</span>'}
+$('play').onclick=()=>{setPlay(!playing); if(playing)go(cur)};
+$('prev').onclick=()=>go(cur-1); $('next').onclick=()=>go(cur+1); $('again').onclick=()=>go(cur);
+document.addEventListener('keydown',e=>{if(e.target.matches('input'))return;
+  if(e.key==='ArrowRight'){e.preventDefault();go(cur+1)} else if(e.key==='ArrowLeft'){e.preventDefault();go(cur-1)}
+  else if(e.key===' '&&!e.target.matches('button')){e.preventDefault();$('play').click()} else if(e.key==='r'||e.key==='R')go(cur)});
+const fromHash=()=>{const m=/^#s(\d+)$/.exec(location.hash);return m?Math.min(SC.length,Math.max(1,+m[1]))-1:0};
+window.addEventListener('hashchange',()=>go(fromHash())); go(fromHash());
+})();
+</script>
+</body>
+</html>
