@@ -16,40 +16,6 @@
       "observed_at": "2026-10-17T09:00:00Z"
     }
   ],
-  "source-requires-billing-invoice@1": [
-    {
-      "subject_id": "monthly-billing",
-      "predicate": "REQUIRES",
-      "object_id": "invoice-export",
-      "value": null,
-      "quote": "Monthly billing requires invoice-export in production/eu.",
-      "span_start": 0,
-      "span_end": 57,
-      "scope": {
-        "environment": "production",
-        "region": "eu"
-      },
-      "effective_from": "2026-10-01T00:00:00Z",
-      "observed_at": "2026-10-17T09:00:00Z"
-    }
-  ],
-  "source-requires-reporting-report@1": [
-    {
-      "subject_id": "monthly-reporting",
-      "predicate": "REQUIRES",
-      "object_id": "report-job",
-      "value": null,
-      "quote": "Monthly reporting requires report-job in production/eu.",
-      "span_start": 0,
-      "span_end": 55,
-      "scope": {
-        "environment": "production",
-        "region": "eu"
-      },
-      "effective_from": "2026-10-01T00:00:00Z",
-      "observed_at": "2026-10-17T09:00:00Z"
-    }
-  ],
   "source-tracks-invoice-migration@1": [
     {
       "subject_id": "invoice-export",
@@ -203,6 +169,44 @@
       "effective_from": "2026-10-01T00:00:00Z",
       "observed_at": "2026-10-17T09:00:00Z",
       "effective_until": "2026-11-01T00:00:00Z"
+    }
+  ],
+  "source-requires-billing-invoice@2": [
+    {
+      "subject_id": "monthly-billing",
+      "predicate": "REQUIRES",
+      "object_id": "invoice-export",
+      "value": null,
+      "quote": "Monthly billing requires invoice-export in production/eu.",
+      "span_start": 0,
+      "span_end": 57,
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "effective_from": "2026-10-17T10:00:00Z",
+      "observed_at": null,
+      "time_basis": "validity",
+      "effective_until": null
+    }
+  ],
+  "source-requires-reporting-report@2": [
+    {
+      "subject_id": "monthly-reporting",
+      "predicate": "REQUIRES",
+      "object_id": "report-job",
+      "value": null,
+      "quote": "Monthly reporting requires report-job in production/eu.",
+      "span_start": 0,
+      "span_end": 55,
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "effective_from": "2026-10-17T10:00:00Z",
+      "observed_at": null,
+      "time_basis": "validity",
+      "effective_until": null
     }
   ]
 }

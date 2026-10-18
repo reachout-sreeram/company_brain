@@ -68,7 +68,7 @@ class Brain:
             return result
         active = self.store.resolved(rev, scope, planned_at, known_at, self.caller.groups)
         def fresh(a):
-            return bool(a.observed_at and timedelta(0) <= known_at-a.observed_at <= self.freshness)
+            return a.time_basis=='validity' or bool(a.observed_at and timedelta(0) <= known_at-a.observed_at <= self.freshness)
         evidence_ids = set()
         gaps = result["coverage"]["gaps"]
         def record(a):
@@ -135,7 +135,7 @@ class Brain:
                 if status.value != "complete": continue
                 for consumer in reached:
                     if any(a.predicate=="MIGRATION_TRACKED_BY" and a.object_id==task for a in by_subject.get(consumer,[])):
-                        usage = [a for a in by_subject.get(consumer,[]) if a.predicate in DEPENDENCIES and a.object_id==service_id and fresh(a) and a.observed_at >= (status.observed_at or status.effective_from)]
+                        usage = [a for a in by_subject.get(consumer,[]) if a.predicate in DEPENDENCIES and a.object_id==service_id and fresh(a) and a.observed_at and a.observed_at >= (status.observed_at or status.effective_from)]
                         for a in usage:
                             result["conflicts"].append({"kind":"completion_vs_usage","entity_id":consumer,"assertion_ids":[status.id,a.id]})
                             record(a)
@@ -173,7 +173,7 @@ class Brain:
                     if not fresh(a): continue
                     relevant_path = a.predicate in DEPENDENCIES and (a.object_id==service_id or a.subject_id in reached)
                     scoped_clear = a.predicate=="VERIFIED_CLEAR" and a.target_service_id==service_id
-                    verified_migration = a.predicate in DEPENDENCIES and any(prior in visible and visible[prior].subject_id==consumer and visible[prior].object_id==service_id and a.observed_at > (visible[prior].observed_at or visible[prior].effective_from) for prior in a.supersedes)
+                    verified_migration = a.predicate in DEPENDENCIES and a.observed_at and any(prior in visible and visible[prior].subject_id==consumer and visible[prior].object_id==service_id and a.observed_at > (visible[prior].observed_at or visible[prior].effective_from) for prior in a.supersedes)
                     if relevant_path or scoped_clear or verified_migration: checks.append(a)
                 if not checks:
                     gap(f"consumer verification missing or stale: {consumer}")
@@ -200,5 +200,5 @@ class Brain:
         result["coverage"]["gaps"] = gaps[:self.max_results]
         for aid in sorted(kept):
             a=active[aid]; source=sources[a.source_key]
-            result["evidence"].append({"assertion_id":aid,"source_id":source.id,"version":source.version,"content_hash":source.content_hash,"span_start":a.span_start,"span_end":a.span_end,"quote":a.quote,"method":a.method,"approval_id":a.approval_id,"approved_at":a.approved_at.isoformat() if a.approved_at else None,"observed_at":a.observed_at.isoformat() if a.observed_at else None})
+            result["evidence"].append({"assertion_id":aid,"source_id":source.id,"version":source.version,"content_hash":source.content_hash,"span_start":a.span_start,"span_end":a.span_end,"quote":a.quote,"method":a.method,"time_basis":a.time_basis,"effective_from":a.effective_from.isoformat(),"effective_until":a.effective_until.isoformat() if a.effective_until else None,"approval_id":a.approval_id,"approval_kind":a.approval_kind,"approved_at":a.approved_at.isoformat() if a.approved_at else None,"observed_at":a.observed_at.isoformat() if a.observed_at else None})
         return result

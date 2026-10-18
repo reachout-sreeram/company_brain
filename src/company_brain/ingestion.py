@@ -38,7 +38,9 @@ def claim_digest(claim) -> str:
             from datetime import datetime
             fields[key] = datetime.fromisoformat(fields[key].replace("Z", "+00:00")).isoformat()
     candidate = CandidateAssertion.model_validate(fields)
-    return sha256(json.dumps(candidate.model_dump(mode="json"), sort_keys=True).encode()).hexdigest()
+    payload=candidate.model_dump(mode='json')
+    if payload.get('time_basis')=='observed': payload.pop('time_basis') # Legacy reviewed fingerprints remain identical.
+    return sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
 
 
 def validate_bundle(bundle: Bundle) -> None:
@@ -58,7 +60,7 @@ def validate_bundle(bundle: Bundle) -> None:
                 raise ValueError('review must retain original proposal and selected approved fact')
             if proposal.method not in {'extracted','mock'} or approved.approval_id!=review.id or approved.approved_at!=review.reviewed_at:
                 raise ValueError('review attribution mismatch')
-            expected=proposal.model_copy(update={'id':approved.id,'status':'approved','approval_id':review.id,'approved_at':review.reviewed_at})
+            expected=proposal.model_copy(update={'id':approved.id,'status':'approved','approval_id':review.id,'approval_kind':review.actor_kind,'approved_at':review.reviewed_at})
             if approved!=expected or proposal.source_key!=selection.source_key or claim_digest(proposal)!=selection.claim_digest:
                 raise ValueError('reviewed proposal/source/digest mismatch')
             source=sources.get(proposal.source_key)
@@ -80,7 +82,7 @@ def validate_bundle(bundle: Bundle) -> None:
             raise ValueError(f"source lacks predicate authority for {a.id}")
         if a.method in {"extracted", "mock"} and a.status == "approved" and claim_digest(a) not in source.reviewed_claims and not (a.approval_id and reviewed.get(a.id)==a.approval_id):
             raise ValueError(f"extracted assertion needs explicit operator review for {a.id}")
-        if (a.approval_id is None)!=(a.approved_at is None) or (a.approval_id and reviewed.get(a.id)!=a.approval_id):
+        if (a.approval_id is None)!=(a.approved_at is None) or (a.approval_id is None)!=(a.approval_kind is None) or (a.approval_id and reviewed.get(a.id)!=a.approval_id):
             raise ValueError('unknown or incomplete approval audit')
         if a.predicate != "VERIFIED_CLEAR" and a.target_service_id:
             raise ValueError("target_service_id only applies to clearance")
@@ -96,7 +98,15 @@ def validate_bundle(bundle: Bundle) -> None:
                 raise ValueError("clearance needs scoped target service")
             if entities[a.subject_id].kind not in {"Job", "Service"} or a.value != "verified" or not a.observed_at:
                 raise ValueError(f"invalid clearance in {a.id}")
-        if a.predicate in {"RUNS_ON", "DEPENDS_ON", "REQUIRES"} and not a.observed_at:
+        if a.time_basis=='validity':
+            if a.predicate!='REQUIRES' or a.observed_at is not None:
+                raise ValueError('validity basis only applies to non-runtime REQUIRES')
+            declared=(source.requires_valid_from==a.effective_from and source.requires_valid_until==a.effective_until)
+            def stated(stamp):
+                return stamp and any(value in source.text for value in (stamp.isoformat(),stamp.isoformat().replace('+00:00','Z')))
+            if not declared and not (stated(a.effective_from) and (not a.effective_until or stated(a.effective_until))):
+                raise ValueError('REQUIRES validity must be explicitly declared in source text or metadata')
+        if a.predicate in {"RUNS_ON", "DEPENDS_ON", "REQUIRES"} and a.time_basis=='observed' and not a.observed_at:
             raise ValueError(f"dependency observation time missing in {a.id}")
         if a.observed_at and a.observed_at > source.recorded_at:
             raise ValueError(f"observation newer than source in {a.id}")
@@ -107,7 +117,11 @@ def validate_bundle(bundle: Bundle) -> None:
             allowed = prior.predicate == a.predicate or (a.predicate == "VERIFIED_CLEAR" and prior.predicate in {"RUNS_ON", "DEPENDS_ON"})
             if not allowed or prior.subject_id != a.subject_id or prior.scope != a.scope or prior.effective_from > a.effective_from:
                 raise ValueError(f"invalid scoped supersession in {a.id}")
-            if a.predicate in {"RUNS_ON", "DEPENDS_ON", "REQUIRES"} and (not a.observed_at or a.observed_at <= (prior.observed_at or prior.effective_from)):
+            if a.time_basis!=prior.time_basis and a.predicate==prior.predicate:
+                raise ValueError('supersession cannot silently change observation semantics')
+            if a.time_basis=='validity' and a.effective_from<=prior.effective_from:
+                raise ValueError('prerequisite replacement needs newer explicit validity')
+            if a.predicate in {"RUNS_ON", "DEPENDS_ON", "REQUIRES"} and a.time_basis=='observed' and (not a.observed_at or a.observed_at <= (prior.observed_at or prior.effective_from)):
                 raise ValueError("dependency replacement must have newer observed evidence")
             if a.status != "approved":
                 raise ValueError("proposals cannot supersede active facts")

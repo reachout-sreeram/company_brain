@@ -94,7 +94,9 @@ class Client(Protocol):
 
 POLICY = """Investigate service retirement using the declared scope, planned_at and known_at.
 Do not predict successful future work. Usage evidence requires observation within 7 days of known_at;
-future observed/recorded facts are unavailable. Respect status, interval, scope, authority, revocation,
+future observed/recorded facts are unavailable. REQUIRES with time_basis validity is an explicitly
+declared business prerequisite in its effective interval, not runtime evidence; it does not age as a
+runtime observation. Observed dependencies still require the seven-day freshness check. Respect status, interval, scope, authority, revocation,
 visibility and explicit supersession. Ticket completion is not runtime clearance. Permission allows
 continued use until its expiry and does not establish usage. No known blockers requires complete fresh
 inventory checks; hidden evidence, budgets, staleness and conflicts are gaps. Never override

@@ -29,6 +29,8 @@ class RawSource(BaseModel):
     text: str = Field(min_length=1, max_length=100_000)
     scope: dict[str, str] | None = None
     recorded_at: str | None = None
+    requires_valid_from: str | None = None
+    requires_valid_until: str | None = None
     entities: list[CatalogEntity] = Field(default_factory=list)
 
 
@@ -39,7 +41,9 @@ def raw_source(source, entities=()) -> RawSource:
     catalog = [CatalogEntity(id=e.id, kind=e.kind, name=e.name, aliases=list(e.aliases))
                for e in entities if getattr(e, "scope", None) is None or e.scope.model_dump() == scope]
     return RawSource(source_id=source.id, version=source.version, text=source.text,
-                     scope=scope, recorded_at=recorded, entities=catalog)
+                     scope=scope, recorded_at=recorded, entities=catalog,
+                     requires_valid_from=source.requires_valid_from.isoformat() if source.requires_valid_from else None,
+                     requires_valid_until=source.requires_valid_until.isoformat() if source.requires_valid_until else None)
 
 
 class CandidateAssertion(BaseModel):
@@ -53,6 +57,7 @@ class CandidateAssertion(BaseModel):
     effective_from: str
     effective_until: str | None = None
     observed_at: str | None = None
+    time_basis: Literal["observed","validity"] = "observed"
     span_start: int = Field(ge=0)
     span_end: int = Field(gt=0)
     quote: str = Field(min_length=1)
@@ -76,6 +81,8 @@ class CandidateAssertion(BaseModel):
 
     @model_validator(mode="after")
     def valid_fact(self) -> CandidateAssertion:
+        if self.time_basis=='validity' and (self.predicate!='REQUIRES' or self.observed_at is not None):
+            raise ValueError('validity basis only describes an unobserved REQUIRES prerequisite')
         if (self.object_id is None) == (self.value is None):
             raise ValueError("exactly one of object_id and value is required")
         if self.predicate == "STATUS" and self.value not in {"open", "complete"}:
@@ -129,13 +136,14 @@ LEAN_SCHEMA = {
     "properties": {"assertions": {"type": "array", "items": {
         "type": "object", "additionalProperties": False,
         "required": ["subject_id", "predicate", "object_id", "value", "target_service_id",
-                     "quote", "effective_from", "effective_until", "observed_at"],
+                     "quote", "effective_from", "effective_until", "observed_at", "time_basis"],
         "properties": {
             "subject_id": {"type": "string"},
             "predicate": {"type": "string", "enum": list(PREDICATE_GUIDE)},
             "object_id": _NULLABLE, "value": _NULLABLE, "target_service_id": _NULLABLE,
             "quote": {"type": "string"},
             "effective_from": _NULLABLE, "effective_until": _NULLABLE, "observed_at": _NULLABLE,
+            "time_basis": {"type":["string","null"],"enum":["observed","validity",None]},
         }}}},
 }
 
@@ -150,7 +158,7 @@ Rules:
 1. subject_id, object_id and target_service_id must be ids from the entity catalog. Map names and aliases to their id. If a mention cannot be mapped to exactly one catalog id, skip that fact.
 2. Use object_id for entity objects. Use value only for STATUS ("open"/"complete") and VERIFIED_CLEAR ("verified"); then object_id is null. target_service_id is only for VERIFIED_CLEAR.
 3. quote: copy the shortest contiguous part of the text that states the fact, character for character, long enough to occur only once.
-4. Dates: fill effective_from, effective_until and observed_at ONLY when the text states them, as ISO-8601 with timezone. "from X until Y" -> effective_from X, effective_until Y. "as of X" -> effective_from X. "observation X" / "observed X" / "verified X" -> observed_at X. Otherwise use null. The system may fill effective_from from record metadata, but a runtime dependency requires an explicit observation time; recorded_at is not an observation.
+4. Dates: fill effective_from, effective_until and observed_at ONLY when the text states them, as ISO-8601 with timezone. "from X until Y" -> effective_from X, effective_until Y. "as of X" -> effective_from X. "observation X" / "observed X" / "verified X" -> observed_at X. Otherwise use null. time_basis is observed for runtime/configuration dependencies, which require an explicit observation time; recorded_at is not an observation. For REQUIRES only, time_basis validity may describe a business prerequisite with an explicitly stated validity interval or trusted requires_valid_from/until metadata. It is not runtime usage, has no invented observed_at, and must never use an implicit current time. Missing observation AND missing declared prerequisite validity means skip that dependency.
 5. Scope comes from the record metadata. Skip a fact only if the text explicitly places it in a different environment or region.
 6. Emit only facts that match a predicate definition. Lists of catalog contents, rationale and commentary are not assertions.
 7. Return {{"assertions": []}} when nothing qualifies.
@@ -158,8 +166,8 @@ Rules:
 Example (different company): record scope production/us, catalog has payroll-sync (Job), batch-host (Service), ops (Team).
 Text: "Config check 2026-03-02T08:00:00Z: payroll-sync runs on batch-host in production/us. Owner: ops. Someone suggested we just delete batch-host."
 Output: {{"assertions": [
- {{"subject_id":"payroll-sync","predicate":"RUNS_ON","object_id":"batch-host","value":null,"target_service_id":null,"quote":"payroll-sync runs on batch-host in production/us","effective_from":null,"effective_until":null,"observed_at":"2026-03-02T08:00:00Z"}},
- {{"subject_id":"payroll-sync","predicate":"OWNED_BY","object_id":"ops","value":null,"target_service_id":null,"quote":"Owner: ops","effective_from":null,"effective_until":null,"observed_at":null}}]}}
+ {{"subject_id":"payroll-sync","predicate":"RUNS_ON","object_id":"batch-host","value":null,"target_service_id":null,"quote":"payroll-sync runs on batch-host in production/us","effective_from":null,"effective_until":null,"observed_at":"2026-03-02T08:00:00Z","time_basis":"observed"}},
+ {{"subject_id":"payroll-sync","predicate":"OWNED_BY","object_id":"ops","value":null,"target_service_id":null,"quote":"Owner: ops","effective_from":null,"effective_until":null,"observed_at":null,"time_basis":"observed"}}]}}
 The deletion suggestion produces nothing."""
 
 
@@ -189,16 +197,35 @@ def _complete_lean(source: RawSource, item: dict) -> dict:
             if item.get(key) is not None and item[key] not in known:
                 raise ExtractionError("Extraction referenced an entity outside the catalog")
     observed = item.get("observed_at")
-    if item.get("predicate") in {"RUNS_ON","DEPENDS_ON","REQUIRES"} and observed is None:
-        raise ExtractionError("Dependency needs an explicit observation time; recorded_at is not runtime evidence")
+    basis=item.get('time_basis') or ('validity' if item.get('predicate')=='REQUIRES' and source.requires_valid_from and observed is None else 'observed')
+    if basis=='validity':
+        if item.get('predicate')!='REQUIRES' or observed is not None:
+            raise ExtractionError('Only a non-runtime REQUIRES prerequisite may use validity semantics')
+        if source.requires_valid_from:
+            if item.get('effective_from') and datetime.fromisoformat(item['effective_from'].replace('Z','+00:00'))!=datetime.fromisoformat(source.requires_valid_from.replace('Z','+00:00')):
+                raise ExtractionError('Prerequisite interval disagrees with declared source metadata')
+            effective=source.requires_valid_from
+            until=source.requires_valid_until
+            if item.get('effective_until') and (not until or datetime.fromisoformat(item['effective_until'].replace('Z','+00:00'))!=datetime.fromisoformat(until.replace('Z','+00:00'))):
+                raise ExtractionError('Prerequisite interval disagrees with declared source metadata')
+        else:
+            effective=item.get('effective_from');until=item.get('effective_until')
+            if not effective or not any(stamp in source.text for stamp in (effective,effective.replace('+00:00','Z'))):
+                raise ExtractionError('Prerequisite validity needs explicit source dates or declared metadata')
+            if until and not any(stamp in source.text for stamp in (until,until.replace('+00:00','Z'))):
+                raise ExtractionError('Prerequisite end date is unsupported')
+    else:
+        if item.get("predicate") in {"RUNS_ON","DEPENDS_ON","REQUIRES"} and observed is None:
+            raise ExtractionError("Dependency needs an explicit observation time; recorded_at is not runtime evidence")
+        effective=item.get('effective_from') or observed or source.recorded_at
+        until=item.get('effective_until')
     allowed=set(LEAN_SCHEMA["properties"]["assertions"]["items"]["properties"])
     if set(item)-allowed:
         raise ExtractionError("Extraction returned invalid candidate structure")
-    effective = item.get("effective_from") or item.get("observed_at") or source.recorded_at
     return {"subject_id": item.get("subject_id"), "predicate": item.get("predicate"),
             "object_id": item.get("object_id"), "value": item.get("value"),
             "target_service_id": item.get("target_service_id"), "scope": dict(source.scope),
-            "effective_from": effective, "effective_until": item.get("effective_until"),
+            "effective_from": effective, "effective_until": until, "time_basis":basis,
             "observed_at": observed, "span_start": start, "span_end": start + len(quote), "quote": quote}
 
 

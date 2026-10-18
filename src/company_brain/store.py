@@ -20,7 +20,7 @@ def eligible(alias, *, include_end=True):
       AND ({alias}.approved_at IS NULL OR {alias}.approved_at <= $known)
       AND ({alias}.observed_at IS NULL OR {alias}.observed_at <= $known)
       AND (NOT {alias}.predicate IN ['RUNS_ON','DEPENDS_ON','REQUIRES','VERIFIED_CLEAR']
-           OR {alias}.effective_from <= $known)
+           OR {alias}.time_basis='validity' OR {alias}.effective_from <= $known)
       AND {alias}.revoked=false
       AND {alias}.source_visibility IN $groups AND {alias}.subject_visibility IN $groups
       AND {alias}.object_visibility IN $groups AND {alias}.target_visibility IN $groups"""
@@ -105,12 +105,12 @@ class FalkorStore:
                     props.update(visibility=row.visibility, revoked=row.revoked, recorded_at=row.recorded_at.timestamp())
                 if label == "Assertion":
                     source = sources[row.source_key]
-                    props.update(predicate=row.predicate, status=row.status, subject_id=row.subject_id,
+                    props.update(predicate=row.predicate, status=row.status, time_basis=row.time_basis, subject_id=row.subject_id,
                         object_id=row.object_id, target_service_id=row.target_service_id,
                         effective_from=row.effective_from.timestamp(),
                         effective_until=row.effective_until.timestamp() if row.effective_until else None,
                         observed_at=row.observed_at.timestamp() if row.observed_at else None,
-                        approval_id=row.approval_id, approved_at=row.approved_at.timestamp() if row.approved_at else None,
+                        approval_id=row.approval_id, approval_kind=row.approval_kind, approved_at=row.approved_at.timestamp() if row.approved_at else None,
                         source_id=row.source_id, source_version=row.source_version, source_key=row.source_key,
                         recorded_at=source.recorded_at.timestamp(), revoked=source.revoked,
                         source_visibility=source.visibility, subject_visibility=entities[row.subject_id].visibility,

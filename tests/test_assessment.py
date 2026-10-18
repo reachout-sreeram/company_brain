@@ -46,7 +46,7 @@ class InMemoryAssessmentTestDouble:
             and a.subject_id in entities and (not a.object_id or a.object_id in entities)
             and (not a.target_service_id or a.target_service_id in entities)
             and a.scope==scope and a.status=='approved' and a.effective_from<=planned_at
-            and (a.predicate not in {'RUNS_ON','DEPENDS_ON','REQUIRES','VERIFIED_CLEAR'} or a.effective_from<=known_at)
+            and (a.predicate not in {'RUNS_ON','DEPENDS_ON','REQUIRES','VERIFIED_CLEAR'} or a.time_basis=='validity' or a.effective_from<=known_at)
             and (not a.approved_at or a.approved_at<=known_at)
             and sources[a.source_key].recorded_at<=known_at and (not a.observed_at or a.observed_at<=known_at)}
         applicable={i:a for i,a in lineage.items() if not a.effective_until or planned_at<a.effective_until}

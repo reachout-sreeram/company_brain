@@ -48,11 +48,15 @@ class Source(Model):
     authority: list[Predicate] = Field(default_factory=list)
     revoked: bool = False
     reviewed_claims: list[str] = Field(default_factory=list)
+    requires_valid_from: datetime | None = None
+    requires_valid_until: datetime | None = None
 
-    _aware = field_validator("recorded_at")(aware)
+    _aware = field_validator("recorded_at", "requires_valid_from", "requires_valid_until")(lambda v: aware(v) if v else v)
 
     @model_validator(mode="after")
     def hash_matches(self):
+        if self.requires_valid_until and (not self.requires_valid_from or self.requires_valid_until<=self.requires_valid_from):
+            raise ValueError('invalid declared prerequisite validity interval')
         if self.content_hash != sha256(self.text.encode()).hexdigest():
             raise ValueError("source content hash mismatch")
         return self
@@ -81,13 +85,17 @@ class Assertion(Model):
     method: Literal["seeded", "parsed", "extracted", "mock"]
     status: Literal["approved", "proposal"] = "approved"
     supersedes: list[str] = Field(default_factory=list)
+    time_basis: Literal["observed","validity"] = "observed"
     approval_id: str | None = None
+    approval_kind: Literal["operator","demonstration"] | None = None
     approved_at: datetime | None = None
 
     _aware = field_validator("effective_from", "effective_until", "observed_at", "approved_at")(lambda v: aware(v) if v else v)
 
     @model_validator(mode="after")
     def check(self):
+        if self.time_basis=='validity' and (self.predicate!='REQUIRES' or self.observed_at is not None):
+            raise ValueError('validity basis only describes an unobserved REQUIRES prerequisite')
         if (self.object_id is None) == (self.value is None):
             raise ValueError("exactly one of object_id/value is required")
         if self.span_end <= self.span_start:

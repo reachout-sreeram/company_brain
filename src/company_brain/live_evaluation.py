@@ -23,7 +23,7 @@ from .openrouter import (LUNA_MODEL,OpenRouterConfig,OpenRouterError,OpenRouterS
 from .store import FalkorStore,StoreUnavailable
 
 GRAPH='company_brain_demo_live_evaluation'
-PROTOCOL_REVISION='native-function-calls-v4.2-arm-specific-policy'
+PROTOCOL_REVISION='native-function-calls-v5-fidelity-reviewed-validity'
 CASES=('initial','completion','migration','clear','invoice-owner-rationale','network-slip-billing')
 
 
@@ -164,10 +164,17 @@ def main():
                         'latency_ms':(perf_counter()-start)*1000})
                 save()
                 if ledger.snapshot()['halted']: raise OpenRouterError('cost ledger halted during extraction')
-            raw_revision=raw_store.ingest(manifest.model_copy(update={'assertions':extracted}))
+            pending_bundle=manifest.model_copy(update={'assertions':extracted})
+            raw_revision=raw_store.ingest(pending_bundle)
+            pending_path=root/f'.local/live-proposals-{raw_revision[:12]}.json'
+            pending_bytes=pending_bundle.model_dump_json(indent=2)
+            if pending_path.exists():
+                if pending_path.read_text()!=pending_bytes: raise ValueError('proposal bundle identity collision')
+            else:
+                with pending_path.open('x') as file: file.write(pending_bytes)
             at=datetime.fromisoformat('2026-10-17T12:00:00+00:00')
             scope=Scope(environment='production',region='eu')
-            report['raw_pipeline']={'revision':raw_revision,'approved':sum(a.status=='approved' for a in extracted),
+            report['raw_pipeline']={'revision':raw_revision,'proposal_bundle_path':str(pending_path.relative_to(root)),'approved':sum(a.status=='approved' for a in extracted),
                 'proposals':sum(a.status=='proposal' for a in extracted),
                 'assessment':Brain(raw_store).assess_retirement('legacy-runner',scope,at,known_at=at)}
             # Score manual narrative expectations without giving goldens to the model.

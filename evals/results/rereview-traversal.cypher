@@ -3,9 +3,10 @@ WHERE a.status='approved' AND a.environment=$environment
       AND a.region=$region AND a.effective_from <= $planned
       AND (a.effective_until IS NULL OR $planned < a.effective_until)
       AND a.recorded_at <= $known
+      AND (a.approved_at IS NULL OR a.approved_at <= $known)
       AND (a.observed_at IS NULL OR a.observed_at <= $known)
       AND (NOT a.predicate IN ['RUNS_ON','DEPENDS_ON','REQUIRES','VERIFIED_CLEAR']
-           OR a.effective_from <= $known)
+           OR a.time_basis='validity' OR a.effective_from <= $known)
       AND a.revoked=false
       AND a.source_visibility IN $groups AND a.subject_visibility IN $groups
       AND a.object_visibility IN $groups AND a.target_visibility IN $groups
@@ -14,9 +15,10 @@ WHERE new.status='approved' AND new.environment=$environment
       AND new.region=$region AND new.effective_from <= $planned
       AND (new.effective_until IS NULL OR $planned < new.effective_until)
       AND new.recorded_at <= $known
+      AND (new.approved_at IS NULL OR new.approved_at <= $known)
       AND (new.observed_at IS NULL OR new.observed_at <= $known)
       AND (NOT new.predicate IN ['RUNS_ON','DEPENDS_ON','REQUIRES','VERIFIED_CLEAR']
-           OR new.effective_from <= $known)
+           OR new.time_basis='validity' OR new.effective_from <= $known)
       AND new.revoked=false
       AND new.source_visibility IN $groups AND new.subject_visibility IN $groups
       AND new.object_visibility IN $groups AND new.target_visibility IN $groups
@@ -24,9 +26,10 @@ WHERE new.status='approved' AND new.environment=$environment
       AND member.status='approved' AND member.environment=$environment
       AND member.region=$region AND member.effective_from <= $planned
       AND member.recorded_at <= $known
+      AND (member.approved_at IS NULL OR member.approved_at <= $known)
       AND (member.observed_at IS NULL OR member.observed_at <= $known)
       AND (NOT member.predicate IN ['RUNS_ON','DEPENDS_ON','REQUIRES','VERIFIED_CLEAR']
-           OR member.effective_from <= $known)
+           OR member.time_basis='validity' OR member.effective_from <= $known)
       AND member.revoked=false
       AND member.source_visibility IN $groups AND member.subject_visibility IN $groups
       AND member.object_visibility IN $groups AND member.target_visibility IN $groups)

@@ -31,7 +31,7 @@ def approve_proposals(bundle,proposal_ids,*,actor,reviewed_at,note,demonstration
         approved_id='approved-'+sha256((review_id+ident).encode()).hexdigest()[:24]
         selections.append(ReviewSelection(proposal_id=ident,approved_id=approved_id,
             source_key=proposal.source_key,claim_digest=claim_digest(proposal)))
-        approved.append(proposal.model_copy(update={'id':approved_id,'status':'approved','approval_id':review_id,'approved_at':reviewed_at}))
+        approved.append(proposal.model_copy(update={'id':approved_id,'status':'approved','approval_id':review_id,'approval_kind':metadata['actor_kind'],'approved_at':reviewed_at}))
     review=ProposalReview(id=review_id,actor=actor,actor_kind=metadata['actor_kind'],reviewed_at=reviewed_at,
         input_revision=bundle.revision,selections=selections,note=note)
     result=bundle.model_copy(update={'assertions':[*bundle.assertions,*approved],'reviews':[*bundle.reviews,review]})
