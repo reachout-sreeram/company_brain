@@ -24,9 +24,28 @@ def main():
     assess=commands.add_parser("assess"); assess.add_argument("service_id"); assess.add_argument("--environment",required=True); assess.add_argument("--region",required=True); assess.add_argument("--planned-at",required=True); assess.add_argument("--known-at")
     history=commands.add_parser("history"); history.add_argument("entity_id"); history.add_argument("--environment",required=True); history.add_argument("--region",required=True)
     extract=commands.add_parser("extract-ingest"); extract.add_argument("manifest"); extract.add_argument("--mock-candidates"); extract.add_argument("--allow-paid-api",action="store_true"); extract.add_argument("--model"); extract.add_argument("--max-tokens",type=int,default=2048)
+    proposals=commands.add_parser('proposals');proposals.add_argument('path')
+    approve=commands.add_parser('approve-proposals');approve.add_argument('path')
+    approve.add_argument('--proposal',action='append',required=True)
+    approve.add_argument('--actor',required=True);approve.add_argument('--reviewed-at',required=True)
+    approve.add_argument('--note',required=True);approve.add_argument('--demonstration',action='store_true')
+    approve.add_argument('--output',required=True)
+    audits=commands.add_parser('review-history');audits.add_argument('path')
     args=parser.parse_args()
     try:
-        if args.command=="validate":
+        if args.command=='proposals':
+            from .review import list_proposals
+            result={'proposals':list_proposals(load(args.path))}
+        elif args.command=='review-history':
+            bundle=load(args.path);validate_bundle(bundle)
+            result={'reviews':[r.model_dump(mode='json') for r in bundle.reviews]}
+        elif args.command=='approve-proposals':
+            from .review import approve_proposals
+            bundle,review=approve_proposals(load(args.path),args.proposal,actor=args.actor,
+                reviewed_at=datetime.fromisoformat(args.reviewed_at),note=args.note,demonstration=args.demonstration)
+            with Path(args.output).open('x') as output: output.write(bundle.model_dump_json(indent=2))
+            result={'output':args.output,'review':review.model_dump(mode='json'),'revision':bundle.revision}
+        elif args.command=="validate":
             bundle=load(args.path); validate_bundle(bundle); result={"valid":True,"revision":bundle.revision}
         elif args.command=="ingest":
             result={"graph_revision":connect(writable=True).ingest(load(args.path))}

@@ -46,6 +46,24 @@ def validate_bundle(bundle: Bundle) -> None:
     sources = unique(bundle.sources, lambda x: x.key)
     assertions = unique(bundle.assertions, lambda x: x.id)
     unique(bundle.inventories, lambda x: (x.service_id, x.scope.environment, x.scope.region))
+    reviews=unique(bundle.reviews,lambda r:r.id)
+    reviewed={}; selected=set()
+    for review in reviews.values():
+        for selection in review.selections:
+            proposal=assertions.get(selection.proposal_id)
+            approved=assertions.get(selection.approved_id)
+            if selection.proposal_id in selected: raise ValueError('proposal already approved')
+            selected.add(selection.proposal_id)
+            if not proposal or proposal.status!='proposal' or not approved or approved.status!='approved':
+                raise ValueError('review must retain original proposal and selected approved fact')
+            if proposal.method not in {'extracted','mock'} or approved.approval_id!=review.id or approved.approved_at!=review.reviewed_at:
+                raise ValueError('review attribution mismatch')
+            expected=proposal.model_copy(update={'id':approved.id,'status':'approved','approval_id':review.id,'approved_at':review.reviewed_at})
+            if approved!=expected or proposal.source_key!=selection.source_key or claim_digest(proposal)!=selection.claim_digest:
+                raise ValueError('reviewed proposal/source/digest mismatch')
+            source=sources.get(proposal.source_key)
+            if not source or review.reviewed_at<source.recorded_at: raise ValueError('review predates source')
+            reviewed[approved.id]=review.id
     for a in bundle.assertions:
         if a.subject_id not in entities or (a.object_id and a.object_id not in entities):
             raise ValueError(f"unknown entity in {a.id}")
@@ -60,8 +78,10 @@ def validate_bundle(bundle: Bundle) -> None:
             raise ValueError(f"object scope mismatch in {a.id}")
         if a.status == "approved" and a.predicate not in source.authority:
             raise ValueError(f"source lacks predicate authority for {a.id}")
-        if a.method in {"extracted", "mock"} and a.status == "approved" and claim_digest(a) not in source.reviewed_claims:
+        if a.method in {"extracted", "mock"} and a.status == "approved" and claim_digest(a) not in source.reviewed_claims and not (a.approval_id and reviewed.get(a.id)==a.approval_id):
             raise ValueError(f"extracted assertion needs explicit operator review for {a.id}")
+        if (a.approval_id is None)!=(a.approved_at is None) or (a.approval_id and reviewed.get(a.id)!=a.approval_id):
+            raise ValueError('unknown or incomplete approval audit')
         if a.predicate != "VERIFIED_CLEAR" and a.target_service_id:
             raise ValueError("target_service_id only applies to clearance")
         if a.predicate in RELATIONS:
@@ -133,6 +153,7 @@ def merge_bundle(old: Bundle, incoming: Bundle) -> Bundle:
         sources=merge(old.sources, incoming.sources, lambda x: x.key, revoke=True),
         assertions=merge(old.assertions, incoming.assertions, lambda x: x.id),
         inventories=list(inventories.values()),
+        reviews=merge(old.reviews,incoming.reviews,lambda r:r.id),
     )
     validate_bundle(result)
     return result
@@ -150,7 +171,7 @@ def extract_bundle(manifest: Bundle, adapter) -> Bundle:
                 raise ValueError("unreviewed extraction cannot supersede facts")
             assertions.append(Assertion(
                 **fields, id=f"extract-{identity}", source_id=source.id, source_version=source.version,
-                method=adapter.method, status="approved" if candidate.predicate in source.authority and claim_digest(candidate) in source.reviewed_claims else "proposal",
+                method=adapter.method, status="approved" if adapter.method=="mock" and candidate.predicate in source.authority and claim_digest(candidate) in source.reviewed_claims else "proposal",
             ))
     result = manifest.model_copy(update={"assertions": assertions})
     validate_bundle(result)

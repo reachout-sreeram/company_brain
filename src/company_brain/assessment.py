@@ -200,5 +200,5 @@ class Brain:
         result["coverage"]["gaps"] = gaps[:self.max_results]
         for aid in sorted(kept):
             a=active[aid]; source=sources[a.source_key]
-            result["evidence"].append({"assertion_id":aid,"source_id":source.id,"version":source.version,"content_hash":source.content_hash,"span_start":a.span_start,"span_end":a.span_end,"quote":a.quote,"method":a.method,"observed_at":a.observed_at.isoformat() if a.observed_at else None})
+            result["evidence"].append({"assertion_id":aid,"source_id":source.id,"version":source.version,"content_hash":source.content_hash,"span_start":a.span_start,"span_end":a.span_end,"quote":a.quote,"method":a.method,"approval_id":a.approval_id,"approved_at":a.approved_at.isoformat() if a.approved_at else None,"observed_at":a.observed_at.isoformat() if a.observed_at else None})
         return result

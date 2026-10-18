@@ -81,8 +81,10 @@ class Assertion(Model):
     method: Literal["seeded", "parsed", "extracted", "mock"]
     status: Literal["approved", "proposal"] = "approved"
     supersedes: list[str] = Field(default_factory=list)
+    approval_id: str | None = None
+    approved_at: datetime | None = None
 
-    _aware = field_validator("effective_from", "effective_until", "observed_at")(lambda v: aware(v) if v else v)
+    _aware = field_validator("effective_from", "effective_until", "observed_at", "approved_at")(lambda v: aware(v) if v else v)
 
     @model_validator(mode="after")
     def check(self):
@@ -111,11 +113,36 @@ class Inventory(Model):
     complete: bool = False
 
 
+class ReviewSelection(Model):
+    proposal_id: str
+    approved_id: str
+    source_key: str
+    claim_digest: str
+
+
+class ProposalReview(Model):
+    id: str
+    actor: str = Field(min_length=1, max_length=200)
+    actor_kind: Literal['operator','demonstration']
+    reviewed_at: datetime
+    input_revision: str
+    selections: list[ReviewSelection] = Field(min_length=1)
+    note: str = Field(min_length=1, max_length=4000)
+    _aware = field_validator('reviewed_at')(aware)
+
+    @model_validator(mode='after')
+    def label_demo(self):
+        if (self.actor_kind=='demonstration') != self.actor.startswith('demo:'):
+            raise ValueError('demonstration actor must be explicitly prefixed demo:')
+        return self
+
+
 class Bundle(Model):
     entities: list[Entity] = Field(default_factory=list)
     sources: list[Source] = Field(default_factory=list)
     assertions: list[Assertion] = Field(default_factory=list)
     inventories: list[Inventory] = Field(default_factory=list)
+    reviews: list[ProposalReview] = Field(default_factory=list)
 
     @property
     def revision(self) -> str:

@@ -17,6 +17,7 @@ def eligible(alias, *, include_end=True):
     return f"""{alias}.status='approved' AND {alias}.environment=$environment
       AND {alias}.region=$region AND {alias}.effective_from <= $planned{until}
       AND {alias}.recorded_at <= $known
+      AND ({alias}.approved_at IS NULL OR {alias}.approved_at <= $known)
       AND ({alias}.observed_at IS NULL OR {alias}.observed_at <= $known)
       AND (NOT {alias}.predicate IN ['RUNS_ON','DEPENDS_ON','REQUIRES','VERIFIED_CLEAR']
            OR {alias}.effective_from <= $known)
@@ -109,6 +110,7 @@ class FalkorStore:
                         effective_from=row.effective_from.timestamp(),
                         effective_until=row.effective_until.timestamp() if row.effective_until else None,
                         observed_at=row.observed_at.timestamp() if row.observed_at else None,
+                        approval_id=row.approval_id, approved_at=row.approved_at.timestamp() if row.approved_at else None,
                         source_id=row.source_id, source_version=row.source_version, source_key=row.source_key,
                         recorded_at=source.recorded_at.timestamp(), revoked=source.revoked,
                         source_visibility=source.visibility, subject_visibility=entities[row.subject_id].visibility,
@@ -117,6 +119,12 @@ class FalkorStore:
                 data.append({"id":key(row), "props":props})
             self.query(f"UNWIND $rows AS row MERGE (n:{label} {{rev:$rev,id:row.id}}) SET n += row.props",
                        {"rev":revision,"rows":data}, write=True)
+        for review in bundle.reviews:
+            self.query('MERGE (r:ProposalReview {rev:$rev,id:$id}) SET r.payload=$payload, r.actor=$actor, r.actor_kind=$kind, r.reviewed_at=$at',
+                {'rev':revision,'id':review.id,'payload':review.model_dump_json(),'actor':review.actor,'kind':review.actor_kind,'at':review.reviewed_at.timestamp()},write=True)
+            for selected in review.selections:
+                self.query('MATCH (r:ProposalReview {rev:$rev,id:$review}), (a:Assertion {rev:$rev,id:$approved}), (p:Assertion {rev:$rev,id:$proposal}) MERGE (r)-[:APPROVES]->(a) MERGE (a)-[:REVIEWED_FROM]->(p)',
+                    {'rev':revision,'review':review.id,'approved':selected.approved_id,'proposal':selected.proposal_id},write=True)
         for inv in bundle.inventories:
             self.query("MATCH (s:Source {rev:$rev,id:$source}) MERGE (i:Inventory {rev:$rev,payload:$payload}) MERGE (i)-[:INVENTORY_EVIDENCE]->(s)", {"rev":revision,"payload":inv.model_dump_json(),"source":inv.source_key},write=True)
         for a in bundle.assertions:
