@@ -138,3 +138,5 @@ COMPANY_BRAIN_KNOWN_AT=2026-10-17T12:00:00Z .venv/bin/python -m company_brain.li
 ```
 
 This resumes existing extraction/smoke evidence and runs both arms for the named cases. The report records selected cases, implementation commit and controls; its prior report is archived before replacement. Keep the original v3 scores separate from the corrected v4 cohort. The same-model/equal-budget design still favors consolidated assessments in work per call; it does not isolate traversal or establish a fair general performance ranking.
+
+The v4.1 follow-up discloses the initial numeric budgets and remaining data-tool calls in clearly labeled host_budget metadata for both arms. It encourages direct reuse of returned IDs/source keys and assessment before optional graph exploration. Every retry lookup, including an identical repeated miss, consumes the global empty-retry allowance. These controls do not expand the 12-call limit or guarantee complete answers. Both original v3 and first corrected v4 results remain evidence even when another measured cohort is run.

@@ -23,7 +23,7 @@ from .openrouter import (LUNA_MODEL,OpenRouterConfig,OpenRouterError,OpenRouterS
 from .store import FalkorStore,StoreUnavailable
 
 GRAPH='company_brain_demo_live_evaluation'
-PROTOCOL_REVISION='native-function-calls-v4-exact-references'
+PROTOCOL_REVISION='native-function-calls-v4.1-budget-aware-references'
 CASES=('initial','completion','migration','clear','invoice-owner-rationale','network-slip-billing')
 
 

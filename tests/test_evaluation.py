@@ -300,3 +300,33 @@ def test_local_validation_repair_cannot_rewrite_original_strict_score():
     expected=json.loads((ROOT/'evals/gold/questions.json').read_text())['cases'][0]
     assert score_answer(invalid,expected,registry.assertions)['unsupported_evidence']==1
     assert score_answer(answer,expected,registry.assertions)['unsupported_evidence']==0
+
+
+@pytest.mark.parametrize('arm,tool',[('graph','find_entities'),('search','search_records')])
+def test_repeated_identical_empty_query_still_consumes_retry_allowance(arm,tool):
+    class Client:
+        execution_label='scripted repeated miss'
+        def step(self,**kwargs):
+            queries=[m for m in kwargs['messages'] if m['role']=='assistant']
+            if len(queries)<3:
+                return {'tool':tool,'arguments':{'query':'nevermatches query'}}
+            return {'final':empty_answer()}
+    result=run_arm(Client(),Experiment('scripted/offline'),toolbox(),arm,'q',NOW)
+    assert result['status']=='completed' and result['tool_calls']==3
+    assert len([e for e in result['events'] if 'host_guidance' in e])==2
+
+
+@pytest.mark.parametrize('arm',['graph','search'])
+def test_both_arms_receive_actual_remaining_budget_and_finish_at_zero(arm):
+    class Client:
+        execution_label='scripted budget-aware finish'
+        def step(self,**kwargs):
+            if len(kwargs['messages'])==2:
+                controls=json.loads(kwargs['messages'][1]['content'])['budgets']
+                assert controls['data_tool_calls']==1
+                return {'tool':'find_entities' if arm=='graph' else 'search_records','arguments':{'query':'legacy-runner'}}
+            budget=json.loads(kwargs['messages'][-1]['content'])['host_budget']
+            assert budget['remaining_data_tool_calls']==0
+            return {'final':empty_answer()}
+    result=run_arm(Client(),Experiment('scripted/offline',max_tool_calls=1),toolbox(),arm,'q',NOW)
+    assert result['status']=='completed' and result['tool_calls']==1
