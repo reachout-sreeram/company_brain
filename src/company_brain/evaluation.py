@@ -113,6 +113,10 @@ with its exact source_key (source_id@version); inventory keys are not assertion 
 affected_workflows contains Workflow IDs; decisions contains Decision IDs, not descriptions.
 Put explanations, expiry dates and qualifications in explanation, gaps or conflicts.
 Cite all material claims using evidence actually returned by tools; source snippets alone are not assertions.
+Preserve all returned assessment findings and include every evidence ID in that scoped assessment packet,
+including support for dependency links and coverage qualifications. Never add entities to its blocker list.
+For record-derived findings, cite the returned relationship supporting each workflow, owner, decision or
+blocker role; an entity being mentioned or being a dependency target does not itself make it a blocker.
 A rejected final answer must be corrected or reported incomplete; never invent an ID to pass validation.
 Goldens are unavailable.
 """
@@ -225,6 +229,11 @@ class RetrievedReferences:
         self.owner_pairs=set()
         self.disposition=None
         self.gaps_required=False
+        self.assessment=None
+        self.role_support={}
+
+    def support(self,field,key,assertion_id):
+        self.role_support.setdefault((field,key),set()).add(assertion_id)
 
     def collect(self, value):
         if isinstance(value,dict):
@@ -232,10 +241,19 @@ class RetrievedReferences:
                 self.assertions[value['assertion_id']]=f"{value['source_id']}@{value['version']}"
             if 'predicate' in value and 'id' in value and 'source_version' in value:
                 self.assertions[value['id']]=f"{value['source_id']}@{value['source_version']}"
-                if value['predicate']=='OWNED_BY': self.owner_pairs.add((value['subject_id'],value['object_id']))
+                predicate=value['predicate']; subject=value['subject_id']; obj=value.get('object_id'); aid=value['id']
+                if predicate=='OWNED_BY':
+                    self.owner_pairs.add((subject,obj)); self.support('owner_pairs',(subject,obj),aid)
+                if predicate=='PERMITS_USE': self.support('decisions',subject,aid)
+                if predicate in {'RUNS_ON','DEPENDS_ON','REQUIRES'}:
+                    self.support('blocker_entities',subject,aid)
+                    if self.catalog[subject].kind=='Workflow': self.support('affected_workflows',subject,aid)
+                if predicate=='BLOCKED_BY': self.support('blocker_entities',obj,aid)
+                if predicate=='STATUS' and value.get('value')=='open': self.support('blocker_entities',subject,aid)
             if {'entity_id','owner_id','assertion_id'}<=value.keys():
                 self.owner_pairs.add((value['entity_id'],value['owner_id']))
             if 'coverage' in value and 'disposition' in value:
+                self.assessment=value
                 self.disposition=value['disposition']
                 self.gaps_required=bool(value['coverage'].get('gaps') or value['coverage'].get('truncated'))
             # get_evidence returns a source with a separately identified span.
@@ -272,6 +290,26 @@ class RetrievedReferences:
         if self.disposition is not None and parsed.disposition!=self.disposition:
             reject('disposition_override','disposition','Must match the retrieved assessment disposition.')
         if self.gaps_required and not parsed.gaps: reject('missing_coverage_gaps','gaps','Assessment reported incomplete coverage.')
+        cited=set(parsed.evidence_ids)
+        if self.assessment is not None:
+            packet=self.assessment
+            expected={'affected_workflows':set(packet['affected_workflows']),
+                      'blocker_entities':{b['entity_id'] for b in packet['blockers'] if 'entity_id' in b},
+                      'owner_pairs':{(o['entity_id'],o['owner_id']) for o in packet['owners']},
+                      'decisions':{d['decision_id'] for d in packet['decisions']}}
+            for field,required in expected.items():
+                actual={tuple(x) if field=='owner_pairs' else x for x in getattr(parsed,field)}
+                if actual!=required:
+                    reject('assessment_field_mismatch',field,{'missing':sorted(required-actual),'extra':sorted(actual-required)})
+            missing={e['assertion_id'] for e in packet['evidence']}-cited
+            if missing: reject('missing_returned_evidence','evidence_ids',sorted(missing))
+        else:
+            for field in ('affected_workflows','blocker_entities','owner_pairs','decisions'):
+                for value in getattr(parsed,field):
+                    key=tuple(value) if field=='owner_pairs' else value
+                    support=self.role_support.get((field,key),set())
+                    if not support: reject('unsupported_finding_role',field,value)
+                    elif not support & cited: reject('uncited_finding_support',field,value)
         return errors
 
 

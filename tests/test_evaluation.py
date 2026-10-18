@@ -40,6 +40,17 @@ def empty_answer(disposition='needs_verification'):
             'gaps':['Evidence is incomplete.'],'conflicts':[],'explanation':'Scripted contract probe only.'}
 
 
+def assessment_answer(response):
+    answer=empty_answer(response['disposition'])
+    answer.update(affected_workflows=response['affected_workflows'],
+        blocker_entities=sorted({b['entity_id'] for b in response['blockers'] if 'entity_id' in b}),
+        owner_pairs=[[o['entity_id'],o['owner_id']] for o in response['owners']],
+        evidence_ids=[e['assertion_id'] for e in response['evidence']],
+        source_references=[{'assertion_id':e['assertion_id'],'source_key':e['source_id']+'@'+e['version']} for e in response['evidence']],
+        decisions=[d['decision_id'] for d in response['decisions']],gaps=response['coverage']['gaps'])
+    return answer
+
+
 class ScriptedClient:
     execution_label='scripted test double; no model inference'
     def __init__(self): self.models=[]
@@ -49,7 +60,8 @@ class ScriptedClient:
             if kwargs['tools'][0]['name']=='find_entities':
                 return {'tool':'assess_retirement','arguments':{'service_id':'legacy-runner','scope':SCOPE.model_dump(),'planned_at':NOW.isoformat()}}
             return {'tool':'search_records','arguments':{'query':'legacy-runner'}}
-        return {'final':empty_answer('blocked' if kwargs['tools'][0]['name']=='find_entities' else 'needs_verification')}
+        response=json.loads(kwargs['messages'][-1]['content'])
+        return {'final':assessment_answer(response) if 'disposition' in response else empty_answer()}
 
 
 def test_pair_uses_identical_model_settings_and_same_records_digest():
@@ -198,11 +210,7 @@ class DecomposingClient:
                 return {'tool':'assess_retirement','arguments':{'service_id':runtime['object_id'],'scope':SCOPE.model_dump(),'planned_at':NOW.isoformat()}}
             requirement=next(a for a in rows if a['predicate']=='REQUIRES')
             return {'tool':'get_history','arguments':{'entity_id':requirement['object_id'],'scope':SCOPE.model_dump()}}
-        answer=empty_answer(response['disposition'])
-        answer['affected_workflows']=response['affected_workflows']
-        answer['evidence_ids']=[e['assertion_id'] for e in response['evidence']]
-        answer['source_references']=[{'assertion_id':e['assertion_id'],'source_key':e['source_id']+'@'+e['version']} for e in response['evidence']]
-        answer['decisions']=[d['decision_id'] for d in response['decisions']]
+        answer=assessment_answer(response)
         return {'final':answer}
 
 
@@ -239,9 +247,7 @@ def reference_registry():
     registry=RetrievedReferences(tools.search.entities)
     result=tools.call('graph','assess_retirement',{'service_id':'legacy-runner','scope':SCOPE.model_dump(),'planned_at':NOW.isoformat()})
     registry.collect(result)
-    answer=empty_answer(result['disposition'])
-    answer.update(evidence_ids=['permits-invoice'],source_references=[{'assertion_id':'permits-invoice','source_key':'source-permits-invoice@1'}],
-                  decisions=['temporary-exception'],affected_workflows=['monthly-billing'])
+    answer=assessment_answer(result)
     return registry,answer
 
 
