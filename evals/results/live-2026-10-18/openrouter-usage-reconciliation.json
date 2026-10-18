@@ -1,0 +1,10 @@
+{
+  "usage": 0.02273294,
+  "usage_daily": 0.016289795,
+  "usage_weekly": 0.02273294,
+  "usage_monthly": 0.02273294,
+  "limit": 3,
+  "limit_remaining": 2.97726706,
+  "limit_reset": null,
+  "byok_usage": 0
+}

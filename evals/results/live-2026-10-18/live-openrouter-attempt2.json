@@ -1,0 +1,3640 @@
+{
+  "model": "openai/gpt-6-luna",
+  "cap_usd": "3",
+  "status": "stopped",
+  "smoke": {
+    "passed": true,
+    "latency_ms": 2855.27883307077,
+    "generation_id": "gen-1792260785-dWuEWvZixtcIW5vvbLlM",
+    "model": "openai/gpt-6-luna",
+    "usage": {
+      "prompt_tokens": 29,
+      "completion_tokens": 12,
+      "total_tokens": 41,
+      "cost": 8.9e-06,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 8.9e-06,
+        "upstream_inference_prompt_cost": 2.9e-06,
+        "upstream_inference_completions_cost": 6e-06
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "extraction": [
+    {
+      "source_key": "source-run-invoice-legacy@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 2211.424667038955
+    },
+    {
+      "source_key": "source-requires-billing-invoice@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 1980.7975830044597
+    },
+    {
+      "source_key": "source-requires-reporting-report@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 1955.9630419826135
+    },
+    {
+      "source_key": "source-tracks-invoice-migration@1",
+      "status": "failed",
+      "error": "Extraction quote does not match the source span",
+      "latency_ms": 2371.343291946687
+    },
+    {
+      "source_key": "source-blocked-network@1",
+      "status": "failed",
+      "error": "Extraction returned invalid candidate structure",
+      "latency_ms": 2171.0625420091674
+    },
+    {
+      "source_key": "source-owns-invoice@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 2117.0435420935974
+    },
+    {
+      "source_key": "source-owns-report@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 1793.7722079223022
+    },
+    {
+      "source_key": "source-owns-network@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 1808.2374579971656
+    },
+    {
+      "source_key": "source-status-migration-open@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 1693.9567079534754
+    },
+    {
+      "source_key": "source-status-network-open@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 1961.8481249781325
+    },
+    {
+      "source_key": "source-run-report-legacy@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 2139.1944169299677
+    },
+    {
+      "source_key": "inventory-initial@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 2359.0736670885235
+    },
+    {
+      "source_key": "source-permits-invoice@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 1718.2571250014007
+    }
+  ],
+  "narrative": [
+    {
+      "source_key": "source-permits-invoice@1",
+      "status": "scored",
+      "counts": {
+        "expected": 1,
+        "proposed": 0,
+        "true_positive": 0,
+        "false_positive": 0,
+        "false_negative": 1
+      },
+      "candidates": [],
+      "latency_ms": 0.09479199070483446
+    },
+    {
+      "source_key": "source-status-migration-claimed-complete@1",
+      "status": "scored",
+      "counts": {
+        "expected": 1,
+        "proposed": 0,
+        "true_positive": 0,
+        "false_positive": 0,
+        "false_negative": 1
+      },
+      "candidates": [],
+      "latency_ms": 3359.089000034146
+    },
+    {
+      "source_key": "unapproved-chat@1",
+      "status": "scored",
+      "counts": {
+        "expected": 0,
+        "proposed": 0,
+        "true_positive": 0,
+        "false_positive": 0,
+        "false_negative": 0
+      },
+      "candidates": [],
+      "latency_ms": 2862.818125053309
+    }
+  ],
+  "evaluations": [
+    {
+      "case": "initial",
+      "fixture": "initial",
+      "model": "openai/gpt-6-luna",
+      "record_digest": "531d3300290f5948ea2c8fa7e6691b0f63e7370f7d037d45ee577516bafd8016",
+      "arms": {
+        "graph": {
+          "status": "failed",
+          "error": "model returned malformed action JSON",
+          "latency_ms": 4151.760042062961
+        },
+        "search": {
+          "status": "tool_budget_exhausted",
+          "tool_calls": 12,
+          "context_bytes": 17754,
+          "events": [
+            {
+              "request": {
+                "tool": "search_records",
+                "arguments": {
+                  "query": "legacy-runner production eu retirement business dependencies blockers owners conflicts permission expiry coverage inventory usage",
+                  "offset": 0,
+                  "limit": 5
+                }
+              },
+              "response": {
+                "graph_revision": "066340c1e9f46dcdbbe76d25919b604aedc8fa68775f23407c59a7a40081c1c2",
+                "matches": [
+                  {
+                    "source_key": "source-run-invoice-legacy@1",
+                    "snippet": "Configuration observation 2026-10-17T09:00:00Z: invoice-export runs on legacy-runner in production/eu."
+                  },
+                  {
+                    "source_key": "source-run-report-legacy@1",
+                    "snippet": "Configuration observation 2026-09-01T09:00:00Z: report-job runs on legacy-runner in production/eu."
+                  },
+                  {
+                    "source_key": "inventory-initial@1",
+                    "snippet": "Scoped catalog: all consumers of legacy-runner in production/eu are invoice-export and report-job. Inventory reviewed 2026-10-17T09:00:00Z."
+                  },
+                  {
+                    "source_key": "source-blocked-network@1",
+                    "snippet": "invoice-migration is blocked by network-approval in production/eu."
+                  },
+                  {
+                    "source_key": "source-owns-invoice@1",
+                    "snippet": "The approved roster assigns invoice-export to data-platform in production/eu."
+                  }
+                ],
+                "next_offset": 5,
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "read_record",
+                "arguments": {
+                  "source_key": "source-run-invoice-legacy@1"
+                }
+              },
+              "response": {
+                "graph_revision": "066340c1e9f46dcdbbe76d25919b604aedc8fa68775f23407c59a7a40081c1c2",
+                "record": {
+                  "source": {
+                    "id": "source-run-invoice-legacy",
+                    "version": "1",
+                    "text": "Configuration observation 2026-10-17T09:00:00Z: invoice-export runs on legacy-runner in production/eu.",
+                    "content_hash": "f7ba313ca82d636d8324f27164eb792ec62892c385f641e8198b47d9924a7a68",
+                    "recorded_at": "2026-10-17T10:00:00Z",
+                    "scope": {
+                      "environment": "production",
+                      "region": "eu"
+                    },
+                    "visibility": "public",
+                    "authority": [
+                      "RUNS_ON"
+                    ],
+                    "revoked": false,
+                    "reviewed_claims": []
+                  },
+                  "assertions": [
+                    {
+                      "id": "run-invoice-legacy",
+                      "subject_id": "invoice-export",
+                      "predicate": "RUNS_ON",
+                      "object_id": "legacy-runner",
+                      "value": null,
+                      "target_service_id": null,
+                      "source_id": "source-run-invoice-legacy",
+                      "source_version": "1",
+                      "quote": "Configuration observation 2026-10-17T09:00:00Z: invoice-export runs on legacy-runner in production/eu.",
+                      "span_start": 0,
+                      "span_end": 102,
+                      "scope": {
+                        "environment": "production",
+                        "region": "eu"
+                      },
+                      "effective_from": "2026-10-01T00:00:00Z",
+                      "effective_until": null,
+                      "observed_at": "2026-10-17T09:00:00Z",
+                      "method": "parsed",
+                      "status": "approved",
+                      "supersedes": []
+                    }
+                  ],
+                  "inventories": []
+                },
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "read_record",
+                "arguments": {
+                  "source_key": "source-run-report-legacy@1"
+                }
+              },
+              "response": {
+                "graph_revision": "066340c1e9f46dcdbbe76d25919b604aedc8fa68775f23407c59a7a40081c1c2",
+                "record": {
+                  "source": {
+                    "id": "source-run-report-legacy",
+                    "version": "1",
+                    "text": "Configuration observation 2026-09-01T09:00:00Z: report-job runs on legacy-runner in production/eu.",
+                    "content_hash": "9628ccd3bf79bcbb6da4de6197f0b762d4523836416b2f5d6cd9f05f37e8ef2f",
+                    "recorded_at": "2026-09-01T10:00:00Z",
+                    "scope": {
+                      "environment": "production",
+                      "region": "eu"
+                    },
+                    "visibility": "public",
+                    "authority": [
+                      "RUNS_ON"
+                    ],
+                    "revoked": false,
+                    "reviewed_claims": []
+                  },
+                  "assertions": [
+                    {
+                      "id": "run-report-legacy",
+                      "subject_id": "report-job",
+                      "predicate": "RUNS_ON",
+                      "object_id": "legacy-runner",
+                      "value": null,
+                      "target_service_id": null,
+                      "source_id": "source-run-report-legacy",
+                      "source_version": "1",
+                      "quote": "Configuration observation 2026-09-01T09:00:00Z: report-job runs on legacy-runner in production/eu.",
+                      "span_start": 0,
+                      "span_end": 98,
+                      "scope": {
+                        "environment": "production",
+                        "region": "eu"
+                      },
+                      "effective_from": "2026-09-01T09:00:00Z",
+                      "effective_until": null,
+                      "observed_at": "2026-09-01T09:00:00Z",
+                      "method": "parsed",
+                      "status": "approved",
+                      "supersedes": []
+                    }
+                  ],
+                  "inventories": []
+                },
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "read_record",
+                "arguments": {
+                  "source_key": "inventory-initial@1"
+                }
+              },
+              "response": {
+                "graph_revision": "066340c1e9f46dcdbbe76d25919b604aedc8fa68775f23407c59a7a40081c1c2",
+                "record": {
+                  "source": {
+                    "id": "inventory-initial",
+                    "version": "1",
+                    "text": "Scoped catalog: all consumers of legacy-runner in production/eu are invoice-export and report-job. Inventory reviewed 2026-10-17T09:00:00Z.",
+                    "content_hash": "273fb1897454e620dee29285cdbbec4c07f4c9f2ba6bbbbe36d2e66fb2c04152",
+                    "recorded_at": "2026-10-17T10:00:00Z",
+                    "scope": {
+                      "environment": "production",
+                      "region": "eu"
+                    },
+                    "visibility": "public",
+                    "authority": [
+                      "VERIFIED_CLEAR"
+                    ],
+                    "revoked": false,
+                    "reviewed_claims": []
+                  },
+                  "assertions": [],
+                  "inventories": [
+                    {
+                      "scope": {
+                        "environment": "production",
+                        "region": "eu"
+                      },
+                      "service_id": "legacy-runner",
+                      "consumer_ids": [
+                        "invoice-export",
+                        "report-job"
+                      ],
+                      "source_key": "inventory-initial@1",
+                      "complete": true
+                    }
+                  ]
+                },
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "search_records",
+                "arguments": {
+                  "query": "legacy-runner invoice-export report-job migration completion ticket blocker permission expiry owner production eu",
+                  "offset": 5,
+                  "limit": 5
+                }
+              },
+              "response": {
+                "graph_revision": "066340c1e9f46dcdbbe76d25919b604aedc8fa68775f23407c59a7a40081c1c2",
+                "matches": [
+                  {
+                    "source_key": "source-owns-invoice@1",
+                    "snippet": "The approved roster assigns invoice-export to data-platform in production/eu."
+                  },
+                  {
+                    "source_key": "source-owns-report@1",
+                    "snippet": "The approved roster assigns report-job to data-platform in production/eu."
+                  },
+                  {
+                    "source_key": "source-permits-invoice@1",
+                    "snippet": "Decision effective 2026-10-01T00:00:00Z through 2026-11-01T00:00:00Z: temporary-exception permits continued use by invoice-export in production/eu."
+                  },
+                  {
+                    "source_key": "source-requires-billing-invoice@1",
+                    "snippet": "Monthly billing requires invoice-export in production/eu."
+                  },
+                  {
+                    "source_key": "source-requires-reporting-report@1",
+                    "snippet": "Monthly reporting requires report-job in production/eu."
+                  }
+                ],
+                "next_offset": 10,
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "read_record",
+                "arguments": {
+                  "source_key": "source-owns-invoice@1"
+                }
+              },
+              "response": {
+                "graph_revision": "066340c1e9f46dcdbbe76d25919b604aedc8fa68775f23407c59a7a40081c1c2",
+                "record": {
+                  "source": {
+                    "id": "source-owns-invoice",
+                    "version": "1",
+                    "text": "The approved roster assigns invoice-export to data-platform in production/eu.",
+                    "content_hash": "abe5b4542ad8ee5a07f325187ff744734a7862bfabc363bdc3c58a8bbf13210f",
+                    "recorded_at": "2026-10-17T10:00:00Z",
+                    "scope": {
+                      "environment": "production",
+                      "region": "eu"
+                    },
+                    "visibility": "public",
+                    "authority": [
+                      "OWNED_BY"
+                    ],
+                    "revoked": false,
+                    "reviewed_claims": []
+                  },
+                  "assertions": [
+                    {
+                      "id": "owns-invoice",
+                      "subject_id": "invoice-export",
+                      "predicate": "OWNED_BY",
+                      "object_id": "data-platform",
+                      "value": null,
+                      "target_service_id": null,
+                      "source_id": "source-owns-invoice",
+                      "source_version": "1",
+                      "quote": "The approved roster assigns invoice-export to data-platform in production/eu.",
+                      "span_start": 0,
+                      "span_end": 77,
+                      "scope": {
+                        "environment": "production",
+                        "region": "eu"
+                      },
+                      "effective_from": "2026-10-01T00:00:00Z",
+                      "effective_until": null,
+                      "observed_at": "2026-10-17T09:00:00Z",
+                      "method": "seeded",
+                      "status": "approved",
+                      "supersedes": []
+                    }
+                  ],
+                  "inventories": []
+                },
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "read_record",
+                "arguments": {
+                  "source_key": "source-owns-report@1"
+                }
+              },
+              "response": {
+                "graph_revision": "066340c1e9f46dcdbbe76d25919b604aedc8fa68775f23407c59a7a40081c1c2",
+                "record": {
+                  "source": {
+                    "id": "source-owns-report",
+                    "version": "1",
+                    "text": "The approved roster assigns report-job to data-platform in production/eu.",
+                    "content_hash": "595c278bff59337abfdef344854d577229cf98b22ba844830c7bb216f1ebf5b4",
+                    "recorded_at": "2026-10-17T10:00:00Z",
+                    "scope": {
+                      "environment": "production",
+                      "region": "eu"
+                    },
+                    "visibility": "public",
+                    "authority": [
+                      "OWNED_BY"
+                    ],
+                    "revoked": false,
+                    "reviewed_claims": []
+                  },
+                  "assertions": [
+                    {
+                      "id": "owns-report",
+                      "subject_id": "report-job",
+                      "predicate": "OWNED_BY",
+                      "object_id": "data-platform",
+                      "value": null,
+                      "target_service_id": null,
+                      "source_id": "source-owns-report",
+                      "source_version": "1",
+                      "quote": "The approved roster assigns report-job to data-platform in production/eu.",
+                      "span_start": 0,
+                      "span_end": 73,
+                      "scope": {
+                        "environment": "production",
+                        "region": "eu"
+                      },
+                      "effective_from": "2026-10-01T00:00:00Z",
+                      "effective_until": null,
+                      "observed_at": "2026-10-17T09:00:00Z",
+                      "method": "seeded",
+                      "status": "approved",
+                      "supersedes": []
+                    }
+                  ],
+                  "inventories": []
+                },
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "read_record",
+                "arguments": {
+                  "source_key": "source-permits-invoice@1"
+                }
+              },
+              "response": {
+                "graph_revision": "066340c1e9f46dcdbbe76d25919b604aedc8fa68775f23407c59a7a40081c1c2",
+                "record": {
+                  "source": {
+                    "id": "source-permits-invoice",
+                    "version": "1",
+                    "text": "Decision effective 2026-10-01T00:00:00Z through 2026-11-01T00:00:00Z: temporary-exception permits continued use by invoice-export in production/eu.",
+                    "content_hash": "cd027b86ade9e5dc8446f02b7b040058f80565dc34ae2f1e43a131453a9f99d0",
+                    "recorded_at": "2026-10-17T10:00:00Z",
+                    "scope": {
+                      "environment": "production",
+                      "region": "eu"
+                    },
+                    "visibility": "public",
+                    "authority": [
+                      "PERMITS_USE"
+                    ],
+                    "revoked": false,
+                    "reviewed_claims": []
+                  },
+                  "assertions": [
+                    {
+                      "id": "permits-invoice",
+                      "subject_id": "temporary-exception",
+                      "predicate": "PERMITS_USE",
+                      "object_id": "invoice-export",
+                      "value": null,
+                      "target_service_id": null,
+                      "source_id": "source-permits-invoice",
+                      "source_version": "1",
+                      "quote": "Decision effective 2026-10-01T00:00:00Z through 2026-11-01T00:00:00Z: temporary-exception permits continued use by invoice-export in production/eu.",
+                      "span_start": 0,
+                      "span_end": 147,
+                      "scope": {
+                        "environment": "production",
+                        "region": "eu"
+                      },
+                      "effective_from": "2026-10-01T00:00:00Z",
+                      "effective_until": "2026-11-01T00:00:00Z",
+                      "observed_at": "2026-10-17T09:00:00Z",
+                      "method": "seeded",
+                      "status": "approved",
+                      "supersedes": []
+                    }
+                  ],
+                  "inventories": []
+                },
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "search_records",
+                "arguments": {
+                  "query": "Monthly billing requires invoice-export in production/eu monthly reporting requires report-job production eu legacy-runner network-approval blocked migration",
+                  "offset": 10,
+                  "limit": 5
+                }
+              },
+              "response": {
+                "graph_revision": "066340c1e9f46dcdbbe76d25919b604aedc8fa68775f23407c59a7a40081c1c2",
+                "matches": [
+                  {
+                    "source_key": "source-status-migration-open@1",
+                    "snippet": "Ticket invoice-migration is open in production/eu."
+                  },
+                  {
+                    "source_key": "source-status-network-open@1",
+                    "snippet": "Ticket network-approval is open in production/eu."
+                  },
+                  {
+                    "source_key": "inventory-initial@1",
+                    "snippet": "Scoped catalog: all consumers of legacy-runner in production/eu are invoice-export and report-job. Inventory reviewed 2026-10-17T09:00:00Z."
+                  }
+                ],
+                "next_offset": null,
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "read_record",
+                "arguments": {
+                  "source_key": "source-requires-billing-invoice@1"
+                }
+              },
+              "response": {
+                "graph_revision": "066340c1e9f46dcdbbe76d25919b604aedc8fa68775f23407c59a7a40081c1c2",
+                "record": {
+                  "source": {
+                    "id": "source-requires-billing-invoice",
+                    "version": "1",
+                    "text": "Monthly billing requires invoice-export in production/eu.",
+                    "content_hash": "d1fadec993e57b1f9449bdfa3ed93e99f65836bf5093f11b56ee907064869ef9",
+                    "recorded_at": "2026-10-17T10:00:00Z",
+                    "scope": {
+                      "environment": "production",
+                      "region": "eu"
+                    },
+                    "visibility": "public",
+                    "authority": [
+                      "REQUIRES"
+                    ],
+                    "revoked": false,
+                    "reviewed_claims": []
+                  },
+                  "assertions": [
+                    {
+                      "id": "requires-billing-invoice",
+                      "subject_id": "monthly-billing",
+                      "predicate": "REQUIRES",
+                      "object_id": "invoice-export",
+                      "value": null,
+                      "target_service_id": null,
+                      "source_id": "source-requires-billing-invoice",
+                      "source_version": "1",
+                      "quote": "Monthly billing requires invoice-export in production/eu.",
+                      "span_start": 0,
+                      "span_end": 57,
+                      "scope": {
+                        "environment": "production",
+                        "region": "eu"
+                      },
+                      "effective_from": "2026-10-01T00:00:00Z",
+                      "effective_until": null,
+                      "observed_at": "2026-10-17T09:00:00Z",
+                      "method": "seeded",
+                      "status": "approved",
+                      "supersedes": []
+                    }
+                  ],
+                  "inventories": []
+                },
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "read_record",
+                "arguments": {
+                  "source_key": "source-requires-reporting-report@1"
+                }
+              },
+              "response": {
+                "graph_revision": "066340c1e9f46dcdbbe76d25919b604aedc8fa68775f23407c59a7a40081c1c2",
+                "record": {
+                  "source": {
+                    "id": "source-requires-reporting-report",
+                    "version": "1",
+                    "text": "Monthly reporting requires report-job in production/eu.",
+                    "content_hash": "a0690066f18325a866c1253ff123c9c4900f0bdb4ba48c47e7b419517b937fc0",
+                    "recorded_at": "2026-10-17T10:00:00Z",
+                    "scope": {
+                      "environment": "production",
+                      "region": "eu"
+                    },
+                    "visibility": "public",
+                    "authority": [
+                      "REQUIRES"
+                    ],
+                    "revoked": false,
+                    "reviewed_claims": []
+                  },
+                  "assertions": [
+                    {
+                      "id": "requires-reporting-report",
+                      "subject_id": "monthly-reporting",
+                      "predicate": "REQUIRES",
+                      "object_id": "report-job",
+                      "value": null,
+                      "target_service_id": null,
+                      "source_id": "source-requires-reporting-report",
+                      "source_version": "1",
+                      "quote": "Monthly reporting requires report-job in production/eu.",
+                      "span_start": 0,
+                      "span_end": 55,
+                      "scope": {
+                        "environment": "production",
+                        "region": "eu"
+                      },
+                      "effective_from": "2026-10-01T00:00:00Z",
+                      "effective_until": null,
+                      "observed_at": "2026-10-17T09:00:00Z",
+                      "method": "seeded",
+                      "status": "approved",
+                      "supersedes": []
+                    }
+                  ],
+                  "inventories": []
+                },
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "read_record",
+                "arguments": {
+                  "source_key": "source-blocked-network@1"
+                }
+              },
+              "response": {
+                "graph_revision": "066340c1e9f46dcdbbe76d25919b604aedc8fa68775f23407c59a7a40081c1c2",
+                "record": {
+                  "source": {
+                    "id": "source-blocked-network",
+                    "version": "1",
+                    "text": "invoice-migration is blocked by network-approval in production/eu.",
+                    "content_hash": "be607613d9e8dbe8e9701b5e5404a27859846246280b07a1a5317b9eb721f3f8",
+                    "recorded_at": "2026-10-17T10:00:00Z",
+                    "scope": {
+                      "environment": "production",
+                      "region": "eu"
+                    },
+                    "visibility": "public",
+                    "authority": [
+                      "BLOCKED_BY"
+                    ],
+                    "revoked": false,
+                    "reviewed_claims": []
+                  },
+                  "assertions": [
+                    {
+                      "id": "blocked-network",
+                      "subject_id": "invoice-migration",
+                      "predicate": "BLOCKED_BY",
+                      "object_id": "network-approval",
+                      "value": null,
+                      "target_service_id": null,
+                      "source_id": "source-blocked-network",
+                      "source_version": "1",
+                      "quote": "invoice-migration is blocked by network-approval in production/eu.",
+                      "span_start": 0,
+                      "span_end": 66,
+                      "scope": {
+                        "environment": "production",
+                        "region": "eu"
+                      },
+                      "effective_from": "2026-10-01T00:00:00Z",
+                      "effective_until": null,
+                      "observed_at": "2026-10-17T09:00:00Z",
+                      "method": "seeded",
+                      "status": "approved",
+                      "supersedes": []
+                    }
+                  ],
+                  "inventories": []
+                },
+                "coverage_incomplete": false
+              }
+            }
+          ],
+          "latency_ms": 24650.051917065866
+        }
+      }
+    },
+    {
+      "case": "completion",
+      "fixture": "completion",
+      "model": "openai/gpt-6-luna",
+      "record_digest": "e3e74e009ff12d9e06ab21345291a220fce52395af498934aa81630694177f6c",
+      "arms": {
+        "search": {
+          "status": "tool_budget_exhausted",
+          "tool_calls": 12,
+          "context_bytes": 17851,
+          "events": [
+            {
+              "request": {
+                "tool": "search_records",
+                "arguments": {
+                  "query": "legacy-runner production eu retirement dependencies blockers owners permission expiry inventory usage",
+                  "offset": 0,
+                  "limit": 5
+                }
+              },
+              "response": {
+                "graph_revision": "17d8e0c78e34cf797b2dc15c161e49f6c4b3da2b771f3982c642eb5dd8f7a0dd",
+                "matches": [
+                  {
+                    "source_key": "source-run-invoice-legacy@1",
+                    "snippet": "Configuration observation 2026-10-17T09:00:00Z: invoice-export runs on legacy-runner in production/eu."
+                  },
+                  {
+                    "source_key": "source-run-report-legacy@1",
+                    "snippet": "Configuration observation 2026-09-01T09:00:00Z: report-job runs on legacy-runner in production/eu."
+                  },
+                  {
+                    "source_key": "inventory-initial@1",
+                    "snippet": "Scoped catalog: all consumers of legacy-runner in production/eu are invoice-export and report-job. Inventory reviewed 2026-10-17T09:00:00Z."
+                  },
+                  {
+                    "source_key": "source-blocked-network@1",
+                    "snippet": "invoice-migration is blocked by network-approval in production/eu."
+                  },
+                  {
+                    "source_key": "source-owns-invoice@1",
+                    "snippet": "The approved roster assigns invoice-export to data-platform in production/eu."
+                  }
+                ],
+                "next_offset": 5,
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "search_records",
+                "arguments": {
+                  "query": "legacy-runner production eu report-job owner permission expires sunset migration invoice-export network-approval fresh inventory usage",
+                  "offset": 5,
+                  "limit": 5
+                }
+              },
+              "response": {
+                "graph_revision": "17d8e0c78e34cf797b2dc15c161e49f6c4b3da2b771f3982c642eb5dd8f7a0dd",
+                "matches": [
+                  {
+                    "source_key": "source-owns-network@1",
+                    "snippet": "The approved roster assigns network-approval to security in production/eu."
+                  },
+                  {
+                    "source_key": "source-owns-report@1",
+                    "snippet": "The approved roster assigns report-job to data-platform in production/eu."
+                  },
+                  {
+                    "source_key": "source-permits-invoice@1",
+                    "snippet": "Decision effective 2026-10-01T00:00:00Z through 2026-11-01T00:00:00Z: temporary-exception permits continued use by invoice-export in production/eu."
+                  },
+                  {
+                    "source_key": "source-requires-billing-invoice@1",
+                    "snippet": "Monthly billing requires invoice-export in production/eu."
+                  },
+                  {
+                    "source_key": "source-requires-reporting-report@1",
+                    "snippet": "Monthly reporting requires report-job in production/eu."
+                  }
+                ],
+                "next_offset": 10,
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "search_records",
+                "arguments": {
+                  "limit": 5,
+                  "offset": 10,
+                  "query": "legacy-runner production/eu retirement assertion IDs invoice-export report-job permission expiry revocation supersession ticket runtime clearance usage observation inventory coverage"
+                }
+              },
+              "response": {
+                "graph_revision": "17d8e0c78e34cf797b2dc15c161e49f6c4b3da2b771f3982c642eb5dd8f7a0dd",
+                "matches": [
+                  {
+                    "source_key": "inventory-initial@1",
+                    "snippet": "Scoped catalog: all consumers of legacy-runner in production/eu are invoice-export and report-job. Inventory reviewed 2026-10-17T09:00:00Z."
+                  },
+                  {
+                    "source_key": "source-blocked-network@1",
+                    "snippet": "invoice-migration is blocked by network-approval in production/eu."
+                  },
+                  {
+                    "source_key": "source-status-network-open@1",
+                    "snippet": "Ticket network-approval is open in production/eu."
+                  },
+                  {
+                    "source_key": "source-owns-network@1",
+                    "snippet": "The approved roster assigns network-approval to security in production/eu."
+                  }
+                ],
+                "next_offset": null,
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "read_record",
+                "arguments": {
+                  "source_key": "source-run-invoice-legacy@1"
+                }
+              },
+              "response": {
+                "graph_revision": "17d8e0c78e34cf797b2dc15c161e49f6c4b3da2b771f3982c642eb5dd8f7a0dd",
+                "record": {
+                  "source": {
+                    "id": "source-run-invoice-legacy",
+                    "version": "1",
+                    "text": "Configuration observation 2026-10-17T09:00:00Z: invoice-export runs on legacy-runner in production/eu.",
+                    "content_hash": "f7ba313ca82d636d8324f27164eb792ec62892c385f641e8198b47d9924a7a68",
+                    "recorded_at": "2026-10-17T10:00:00Z",
+                    "scope": {
+                      "environment": "production",
+                      "region": "eu"
+                    },
+                    "visibility": "public",
+                    "authority": [
+                      "RUNS_ON"
+                    ],
+                    "revoked": false,
+                    "reviewed_claims": []
+                  },
+                  "assertions": [
+                    {
+                      "id": "run-invoice-legacy",
+                      "subject_id": "invoice-export",
+                      "predicate": "RUNS_ON",
+                      "object_id": "legacy-runner",
+                      "value": null,
+                      "target_service_id": null,
+                      "source_id": "source-run-invoice-legacy",
+                      "source_version": "1",
+                      "quote": "Configuration observation 2026-10-17T09:00:00Z: invoice-export runs on legacy-runner in production/eu.",
+                      "span_start": 0,
+                      "span_end": 102,
+                      "scope": {
+                        "environment": "production",
+                        "region": "eu"
+                      },
+                      "effective_from": "2026-10-01T00:00:00Z",
+                      "effective_until": null,
+                      "observed_at": "2026-10-17T09:00:00Z",
+                      "method": "parsed",
+                      "status": "approved",
+                      "supersedes": []
+                    }
+                  ],
+                  "inventories": []
+                },
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "read_record",
+                "arguments": {
+                  "source_key": "source-run-report-legacy@1"
+                }
+              },
+              "response": {
+                "graph_revision": "17d8e0c78e34cf797b2dc15c161e49f6c4b3da2b771f3982c642eb5dd8f7a0dd",
+                "record": {
+                  "source": {
+                    "id": "source-run-report-legacy",
+                    "version": "1",
+                    "text": "Configuration observation 2026-09-01T09:00:00Z: report-job runs on legacy-runner in production/eu.",
+                    "content_hash": "9628ccd3bf79bcbb6da4de6197f0b762d4523836416b2f5d6cd9f05f37e8ef2f",
+                    "recorded_at": "2026-09-01T10:00:00Z",
+                    "scope": {
+                      "environment": "production",
+                      "region": "eu"
+                    },
+                    "visibility": "public",
+                    "authority": [
+                      "RUNS_ON"
+                    ],
+                    "revoked": false,
+                    "reviewed_claims": []
+                  },
+                  "assertions": [
+                    {
+                      "id": "run-report-legacy",
+                      "subject_id": "report-job",
+                      "predicate": "RUNS_ON",
+                      "object_id": "legacy-runner",
+                      "value": null,
+                      "target_service_id": null,
+                      "source_id": "source-run-report-legacy",
+                      "source_version": "1",
+                      "quote": "Configuration observation 2026-09-01T09:00:00Z: report-job runs on legacy-runner in production/eu.",
+                      "span_start": 0,
+                      "span_end": 98,
+                      "scope": {
+                        "environment": "production",
+                        "region": "eu"
+                      },
+                      "effective_from": "2026-09-01T09:00:00Z",
+                      "effective_until": null,
+                      "observed_at": "2026-09-01T09:00:00Z",
+                      "method": "parsed",
+                      "status": "approved",
+                      "supersedes": []
+                    }
+                  ],
+                  "inventories": []
+                },
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "read_record",
+                "arguments": {
+                  "source_key": "inventory-initial@1"
+                }
+              },
+              "response": {
+                "graph_revision": "17d8e0c78e34cf797b2dc15c161e49f6c4b3da2b771f3982c642eb5dd8f7a0dd",
+                "record": {
+                  "source": {
+                    "id": "inventory-initial",
+                    "version": "1",
+                    "text": "Scoped catalog: all consumers of legacy-runner in production/eu are invoice-export and report-job. Inventory reviewed 2026-10-17T09:00:00Z.",
+                    "content_hash": "273fb1897454e620dee29285cdbbec4c07f4c9f2ba6bbbbe36d2e66fb2c04152",
+                    "recorded_at": "2026-10-17T10:00:00Z",
+                    "scope": {
+                      "environment": "production",
+                      "region": "eu"
+                    },
+                    "visibility": "public",
+                    "authority": [
+                      "VERIFIED_CLEAR"
+                    ],
+                    "revoked": false,
+                    "reviewed_claims": []
+                  },
+                  "assertions": [],
+                  "inventories": [
+                    {
+                      "scope": {
+                        "environment": "production",
+                        "region": "eu"
+                      },
+                      "service_id": "legacy-runner",
+                      "consumer_ids": [
+                        "invoice-export",
+                        "report-job"
+                      ],
+                      "source_key": "inventory-initial@1",
+                      "complete": true
+                    }
+                  ]
+                },
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "read_record",
+                "arguments": {
+                  "source_key": "source-blocked-network@1"
+                }
+              },
+              "response": {
+                "graph_revision": "17d8e0c78e34cf797b2dc15c161e49f6c4b3da2b771f3982c642eb5dd8f7a0dd",
+                "record": {
+                  "source": {
+                    "id": "source-blocked-network",
+                    "version": "1",
+                    "text": "invoice-migration is blocked by network-approval in production/eu.",
+                    "content_hash": "be607613d9e8dbe8e9701b5e5404a27859846246280b07a1a5317b9eb721f3f8",
+                    "recorded_at": "2026-10-17T10:00:00Z",
+                    "scope": {
+                      "environment": "production",
+                      "region": "eu"
+                    },
+                    "visibility": "public",
+                    "authority": [
+                      "BLOCKED_BY"
+                    ],
+                    "revoked": false,
+                    "reviewed_claims": []
+                  },
+                  "assertions": [
+                    {
+                      "id": "blocked-network",
+                      "subject_id": "invoice-migration",
+                      "predicate": "BLOCKED_BY",
+                      "object_id": "network-approval",
+                      "value": null,
+                      "target_service_id": null,
+                      "source_id": "source-blocked-network",
+                      "source_version": "1",
+                      "quote": "invoice-migration is blocked by network-approval in production/eu.",
+                      "span_start": 0,
+                      "span_end": 66,
+                      "scope": {
+                        "environment": "production",
+                        "region": "eu"
+                      },
+                      "effective_from": "2026-10-01T00:00:00Z",
+                      "effective_until": null,
+                      "observed_at": "2026-10-17T09:00:00Z",
+                      "method": "seeded",
+                      "status": "approved",
+                      "supersedes": []
+                    }
+                  ],
+                  "inventories": []
+                },
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "read_record",
+                "arguments": {
+                  "source_key": "source-status-network-open@1"
+                }
+              },
+              "response": {
+                "graph_revision": "17d8e0c78e34cf797b2dc15c161e49f6c4b3da2b771f3982c642eb5dd8f7a0dd",
+                "record": {
+                  "source": {
+                    "id": "source-status-network-open",
+                    "version": "1",
+                    "text": "Ticket network-approval is open in production/eu.",
+                    "content_hash": "49691a6a1c156b780d3ed4d9f9667bd9e5fb2fcf8994958551c83d2df56409e1",
+                    "recorded_at": "2026-10-17T10:00:00Z",
+                    "scope": {
+                      "environment": "production",
+                      "region": "eu"
+                    },
+                    "visibility": "public",
+                    "authority": [
+                      "STATUS"
+                    ],
+                    "revoked": false,
+                    "reviewed_claims": []
+                  },
+                  "assertions": [
+                    {
+                      "id": "status-network-open",
+                      "subject_id": "network-approval",
+                      "predicate": "STATUS",
+                      "object_id": null,
+                      "value": "open",
+                      "target_service_id": null,
+                      "source_id": "source-status-network-open",
+                      "source_version": "1",
+                      "quote": "Ticket network-approval is open in production/eu.",
+                      "span_start": 0,
+                      "span_end": 49,
+                      "scope": {
+                        "environment": "production",
+                        "region": "eu"
+                      },
+                      "effective_from": "2026-10-01T00:00:00Z",
+                      "effective_until": null,
+                      "observed_at": "2026-10-17T09:00:00Z",
+                      "method": "seeded",
+                      "status": "approved",
+                      "supersedes": []
+                    }
+                  ],
+                  "inventories": []
+                },
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "read_record",
+                "arguments": {
+                  "source_key": "source-owns-invoice@1"
+                }
+              },
+              "response": {
+                "graph_revision": "17d8e0c78e34cf797b2dc15c161e49f6c4b3da2b771f3982c642eb5dd8f7a0dd",
+                "record": {
+                  "source": {
+                    "id": "source-owns-invoice",
+                    "version": "1",
+                    "text": "The approved roster assigns invoice-export to data-platform in production/eu.",
+                    "content_hash": "abe5b4542ad8ee5a07f325187ff744734a7862bfabc363bdc3c58a8bbf13210f",
+                    "recorded_at": "2026-10-17T10:00:00Z",
+                    "scope": {
+                      "environment": "production",
+                      "region": "eu"
+                    },
+                    "visibility": "public",
+                    "authority": [
+                      "OWNED_BY"
+                    ],
+                    "revoked": false,
+                    "reviewed_claims": []
+                  },
+                  "assertions": [
+                    {
+                      "id": "owns-invoice",
+                      "subject_id": "invoice-export",
+                      "predicate": "OWNED_BY",
+                      "object_id": "data-platform",
+                      "value": null,
+                      "target_service_id": null,
+                      "source_id": "source-owns-invoice",
+                      "source_version": "1",
+                      "quote": "The approved roster assigns invoice-export to data-platform in production/eu.",
+                      "span_start": 0,
+                      "span_end": 77,
+                      "scope": {
+                        "environment": "production",
+                        "region": "eu"
+                      },
+                      "effective_from": "2026-10-01T00:00:00Z",
+                      "effective_until": null,
+                      "observed_at": "2026-10-17T09:00:00Z",
+                      "method": "seeded",
+                      "status": "approved",
+                      "supersedes": []
+                    }
+                  ],
+                  "inventories": []
+                },
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "read_record",
+                "arguments": {
+                  "source_key": "source-owns-report@1"
+                }
+              },
+              "response": {
+                "graph_revision": "17d8e0c78e34cf797b2dc15c161e49f6c4b3da2b771f3982c642eb5dd8f7a0dd",
+                "record": {
+                  "source": {
+                    "id": "source-owns-report",
+                    "version": "1",
+                    "text": "The approved roster assigns report-job to data-platform in production/eu.",
+                    "content_hash": "595c278bff59337abfdef344854d577229cf98b22ba844830c7bb216f1ebf5b4",
+                    "recorded_at": "2026-10-17T10:00:00Z",
+                    "scope": {
+                      "environment": "production",
+                      "region": "eu"
+                    },
+                    "visibility": "public",
+                    "authority": [
+                      "OWNED_BY"
+                    ],
+                    "revoked": false,
+                    "reviewed_claims": []
+                  },
+                  "assertions": [
+                    {
+                      "id": "owns-report",
+                      "subject_id": "report-job",
+                      "predicate": "OWNED_BY",
+                      "object_id": "data-platform",
+                      "value": null,
+                      "target_service_id": null,
+                      "source_id": "source-owns-report",
+                      "source_version": "1",
+                      "quote": "The approved roster assigns report-job to data-platform in production/eu.",
+                      "span_start": 0,
+                      "span_end": 73,
+                      "scope": {
+                        "environment": "production",
+                        "region": "eu"
+                      },
+                      "effective_from": "2026-10-01T00:00:00Z",
+                      "effective_until": null,
+                      "observed_at": "2026-10-17T09:00:00Z",
+                      "method": "seeded",
+                      "status": "approved",
+                      "supersedes": []
+                    }
+                  ],
+                  "inventories": []
+                },
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "read_record",
+                "arguments": {
+                  "source_key": "source-owns-network@1"
+                }
+              },
+              "response": {
+                "graph_revision": "17d8e0c78e34cf797b2dc15c161e49f6c4b3da2b771f3982c642eb5dd8f7a0dd",
+                "record": {
+                  "source": {
+                    "id": "source-owns-network",
+                    "version": "1",
+                    "text": "The approved roster assigns network-approval to security in production/eu.",
+                    "content_hash": "3267b92892fcd333c4d649b946dee84031af6c858d5683fb16d922f5ea0699a9",
+                    "recorded_at": "2026-10-17T10:00:00Z",
+                    "scope": {
+                      "environment": "production",
+                      "region": "eu"
+                    },
+                    "visibility": "public",
+                    "authority": [
+                      "OWNED_BY"
+                    ],
+                    "revoked": false,
+                    "reviewed_claims": []
+                  },
+                  "assertions": [
+                    {
+                      "id": "owns-network",
+                      "subject_id": "network-approval",
+                      "predicate": "OWNED_BY",
+                      "object_id": "security",
+                      "value": null,
+                      "target_service_id": null,
+                      "source_id": "source-owns-network",
+                      "source_version": "1",
+                      "quote": "The approved roster assigns network-approval to security in production/eu.",
+                      "span_start": 0,
+                      "span_end": 74,
+                      "scope": {
+                        "environment": "production",
+                        "region": "eu"
+                      },
+                      "effective_from": "2026-10-01T00:00:00Z",
+                      "effective_until": null,
+                      "observed_at": "2026-10-17T09:00:00Z",
+                      "method": "seeded",
+                      "status": "approved",
+                      "supersedes": []
+                    }
+                  ],
+                  "inventories": []
+                },
+                "coverage_incomplete": false
+              }
+            },
+            {
+              "request": {
+                "tool": "read_record",
+                "arguments": {
+                  "source_key": "source-permits-invoice@1"
+                }
+              },
+              "response": {
+                "graph_revision": "17d8e0c78e34cf797b2dc15c161e49f6c4b3da2b771f3982c642eb5dd8f7a0dd",
+                "record": {
+                  "source": {
+                    "id": "source-permits-invoice",
+                    "version": "1",
+                    "text": "Decision effective 2026-10-01T00:00:00Z through 2026-11-01T00:00:00Z: temporary-exception permits continued use by invoice-export in production/eu.",
+                    "content_hash": "cd027b86ade9e5dc8446f02b7b040058f80565dc34ae2f1e43a131453a9f99d0",
+                    "recorded_at": "2026-10-17T10:00:00Z",
+                    "scope": {
+                      "environment": "production",
+                      "region": "eu"
+                    },
+                    "visibility": "public",
+                    "authority": [
+                      "PERMITS_USE"
+                    ],
+                    "revoked": false,
+                    "reviewed_claims": []
+                  },
+                  "assertions": [
+                    {
+                      "id": "permits-invoice",
+                      "subject_id": "temporary-exception",
+                      "predicate": "PERMITS_USE",
+                      "object_id": "invoice-export",
+                      "value": null,
+                      "target_service_id": null,
+                      "source_id": "source-permits-invoice",
+                      "source_version": "1",
+                      "quote": "Decision effective 2026-10-01T00:00:00Z through 2026-11-01T00:00:00Z: temporary-exception permits continued use by invoice-export in production/eu.",
+                      "span_start": 0,
+                      "span_end": 147,
+                      "scope": {
+                        "environment": "production",
+                        "region": "eu"
+                      },
+                      "effective_from": "2026-10-01T00:00:00Z",
+                      "effective_until": "2026-11-01T00:00:00Z",
+                      "observed_at": "2026-10-17T09:00:00Z",
+                      "method": "seeded",
+                      "status": "approved",
+                      "supersedes": []
+                    }
+                  ],
+                  "inventories": []
+                },
+                "coverage_incomplete": false
+              }
+            }
+          ],
+          "latency_ms": 23527.686208020896
+        },
+        "graph": {
+          "status": "failed",
+          "error": "OpenRouter request timed out; cost unresolved, run halted",
+          "latency_ms": 37478.21875009686
+        }
+      }
+    }
+  ],
+  "limits": "Small synthetic run; no customer or production validation; JSON-action harness, not external MCP client UI.",
+  "ledger": {
+    "actual_usd": "0.005634970",
+    "conservative_usd": "0.00468431250",
+    "halted": true,
+    "limit_usd": "3",
+    "model": "openai/gpt-6-luna",
+    "reservations": {
+      "0336d12a1e5c41bab5b95cdedaa08b1a": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000114505",
+            "actual_usd": "0.000114505",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 22351,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00533606250"
+      },
+      "03bcbca2e4cd43dc8972a7e87ba14cf3": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00012269",
+            "actual_usd": "0.00012269",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 25747,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00580301250"
+      },
+      "086cc1f9f3e9427bbd7460695a29b93e": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00009733",
+            "actual_usd": "0.00009733",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 16059,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00447091250"
+      },
+      "19acbbab1de24501b25603da1e81512f": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000117545",
+            "actual_usd": "0.000117545",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 24053,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00557008750"
+      },
+      "21976a49dd5b4d08a16889188d9744cc": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000105225",
+            "actual_usd": "0.000105225",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 18920,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00486430000"
+      },
+      "2831f4af77114807b346e496959c78fb": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000178175",
+            "actual_usd": "0.000178175",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 9563,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00357771250"
+      },
+      "28f987c9454a4eacb0b7319208317c0f": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000093375",
+            "actual_usd": "0.000093375",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 12546,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00398787500"
+      },
+      "2ca4c6ca3fef4b83b182606f97ce7b9e": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00009719",
+            "actual_usd": "0.00009719",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 14296,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00422850000"
+      },
+      "2de0b706541845339adac933883cf092": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000086505",
+            "actual_usd": "0.000086505",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 13041,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00405593750"
+      },
+      "31cda550c1454a69a8474a0fae0d6a9b": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001132",
+            "actual_usd": "0.0001132",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 8221,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00339318750"
+      },
+      "39b7c85a2e81452eaf1998896a74f561": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001237",
+            "actual_usd": "0.0001237",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6201,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00311543750"
+      },
+      "3b246d1aef184f30a4cee0abf5c11e21": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001047",
+            "actual_usd": "0.0001047",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6104,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00310210000"
+      },
+      "3e683eb60c7d4a85a551ff8ab0548bd2": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00468431250",
+            "actual_usd": null,
+            "reason": "timeout_unresolved"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 17611,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00468431250"
+      },
+      "40e012b83a6e422897c0912e9e4ac5cd": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000089",
+            "actual_usd": "0.0000089",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 128,
+        "prompt_token_bound": 4576,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00070960000"
+      },
+      "4be5aa70c41645ebb3548b1776b6d276": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001282",
+            "actual_usd": "0.0001282",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6201,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00311543750"
+      },
+      "4c43a68c9dca465aae48cdb74d5ff5d0": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000721",
+            "actual_usd": "0.0000721",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7135,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00324386250"
+      },
+      "4c5b284dd832464c820755c49137032f": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000071",
+            "actual_usd": "0.000071",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7106,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00323987500"
+      },
+      "4d305e9325e043ddab146e911769f23e": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00010149",
+            "actual_usd": "0.00010149",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 17265,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00463673750"
+      },
+      "4f64b0aec33545df98d4572744407fad": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000761",
+            "actual_usd": "0.0000761",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7302,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00326682500"
+      },
+      "51da7eac01964e3e8b51ff2a4431e191": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001291",
+            "actual_usd": "0.0001291",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6453,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00315008750"
+      },
+      "56f96c4cd6b54ce29d4dbc236e1ff1ca": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00009024",
+            "actual_usd": "0.00009024",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 11766,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00388062500"
+      },
+      "5951442bf99b476f8f2d6897e230f698": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001398",
+            "actual_usd": "0.0001398",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6354,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00313647500"
+      },
+      "605d840e60a143f19148af0645c550e9": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000071",
+            "actual_usd": "0.000071",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7137,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00324413750"
+      },
+      "65df26c883044f6ab4207209734fbdd0": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00010987",
+            "actual_usd": "0.00010987",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 20614,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00509722500"
+      },
+      "666d48877df14f84a804e015fb738842": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000073",
+            "actual_usd": "0.000073",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7181,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00325018750"
+      },
+      "677c3806de774eee968f39ccbc359d4e": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000103",
+            "actual_usd": "0.000103",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7101,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00323918750"
+      },
+      "681bc28ec227488991cab4cf180b5f62": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000777",
+            "actual_usd": "0.0000777",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6201,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00311543750"
+      },
+      "6a840d37c3f64e439987269922b31ce4": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000703",
+            "actual_usd": "0.0000703",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7100,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00323905000"
+      },
+      "6c2d28e64ca4414cad88a13dbeb37cdb": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00010136",
+            "actual_usd": "0.00010136",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 17737,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00470163750"
+      },
+      "6e902ae0e3f34b5d97b24c4f96f6dc4e": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001098",
+            "actual_usd": "0.0001098",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7118,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00324152500"
+      },
+      "6fa5ef31bce04b94a6d8c148484be3b8": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001679",
+            "actual_usd": "0.0001679",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6102,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00310182500"
+      },
+      "705741cfad1c442f8472415bba19f40e": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000892",
+            "actual_usd": "0.0000892",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6201,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00311543750"
+      },
+      "714087cc7b814aee8d049d2ced0f9b50": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000753",
+            "actual_usd": "0.0000753",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6852,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00320495000"
+      },
+      "7b5e42fc563f40d2b6b105be6f04a506": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00018205",
+            "actual_usd": "0.00018205",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 10016,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00364000000"
+      },
+      "813bc2f1a6a34136ac1726837647d6d2": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000651",
+            "actual_usd": "0.0000651",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6453,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00315008750"
+      },
+      "842b8994c6554c90937b20e8452abc4d": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001088",
+            "actual_usd": "0.0001088",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7870,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00334492500"
+      },
+      "86bae9c3e6034c9fbb0578c5acf50b52": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001039",
+            "actual_usd": "0.0001039",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 8249,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00339703750"
+      },
+      "897e4ed590884079b8e0938a0505d483": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000702",
+            "actual_usd": "0.0000702",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7088,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00323740000"
+      },
+      "9a8db7d7886a468f83fad741838be280": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00012833",
+            "actual_usd": "0.00012833",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 19620,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00496055000"
+      },
+      "a5a8b84eb4b14d6c858cbd276b4b00fc": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000704",
+            "actual_usd": "0.0000704",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7101,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00323918750"
+      },
+      "a74a83b53c8a42d2b83ed1f9c5d566bb": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000706",
+            "actual_usd": "0.0000706",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7109,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00324028750"
+      },
+      "ae77e63a1c434462827cd5c3c9984fd8": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000777",
+            "actual_usd": "0.0000777",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7247,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00325926250"
+      },
+      "ae9642a9d40943ea8cb5a04e5abdffb1": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000089325",
+            "actual_usd": "0.000089325",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 20647,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00510176250"
+      },
+      "af4eb3022e194a6bad6e9a243aad7e85": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000996",
+            "actual_usd": "0.0000996",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6356,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00313675000"
+      },
+      "b2de07cc6d9247f0b01ba07eba56def0": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00011346",
+            "actual_usd": "0.00011346",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 22292,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00532795000"
+      },
+      "b5258f26d9a84fbc9f3603228d8426dc": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00006814",
+            "actual_usd": "0.00006814",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 10779,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00374491250"
+      },
+      "bf3524f660e64bf589e52c294c6e39d4": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001487",
+            "actual_usd": "0.0001487",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7247,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00325926250"
+      },
+      "c4f2c1d4bb5e4ad099126ddef0058054": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001156",
+            "actual_usd": "0.0001156",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6453,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00315008750"
+      },
+      "c5bf53e8692a4559b7f25e0bdd553665": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000085515",
+            "actual_usd": "0.000085515",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 15571,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00440381250"
+      },
+      "cb60c774508044b39ad3da8cc9a2b8c2": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000727",
+            "actual_usd": "0.0000727",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7169,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00324853750"
+      },
+      "d2316de3b3344547875b368c2f26f267": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00011849",
+            "actual_usd": "0.00011849",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 23977,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00555963750"
+      },
+      "d56428060d864efb9f1dcdf91ab0aa68": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000705",
+            "actual_usd": "0.0000705",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7104,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00323960000"
+      },
+      "d7df03bf07314a5598b72739c9ca8e10": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00008067",
+            "actual_usd": "0.00008067",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 14365,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00423798750"
+      },
+      "d836c89a18eb4aac9f7178bc11f1ed4e": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001216",
+            "actual_usd": "0.0001216",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6453,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00315008750"
+      },
+      "d88034bdc52842ef88d29e4bbf1c14c8": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000722",
+            "actual_usd": "0.0000722",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7140,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00324455000"
+      },
+      "eb54d6a164ef4ca3bc3770de88880b50": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000703",
+            "actual_usd": "0.0000703",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7091,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00323781250"
+      },
+      "ed6ac29214a84a67b3c1eb7b779d99ea": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00013479",
+            "actual_usd": "0.00013479",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 25860,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00581855000"
+      },
+      "f7da230024cf4716a30c1fd749720668": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000768",
+            "actual_usd": "0.0000768",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6852,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00320495000"
+      }
+    },
+    "version": 1,
+    "reserved_usd": "0",
+    "accounted_usd": "0.01031928250"
+  },
+  "provider_responses": [
+    {
+      "sequence": 1,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 7247,
+      "id": "gen-1792261007-D1GXT8IpjzWfWNqzV0SS",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"find_entities\",\"arguments_json\":\"{\\\"query\\\":\\\"legacy-runner\\\",\\\"kind\\\":\\\"Service\\\"}\",\"answer_json\":null}\n\n{\"action\":\"final\",\"tool\":null,\"arguments_json\":null,\"answer_json\":\"{}\"} Reviewed: none \u2014 this is a **transition boundary**. The service has not been identified, so no retirement assessment, evidence review, or history lookup has been performed. I cannot determine dependencies, blockers, owners, permission expiry, or coverage gaps, and I will not invent evidence IDs. Use the service entity ID from discovery to continue the investigation.\"} \u0d2e\u0d4a\n\n{\"action\":\"tool\",\"tool\":\"find_entities\",\"arguments_json\":\"{\\\"query\\\":\\\"legacy-runner\\\",\\\"kind\\\":\\\"Service\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 582,
+        "completion_tokens": 181,
+        "total_tokens": 763,
+        "cost": 0.0001487,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0001487,
+          "upstream_inference_prompt_cost": 5.82e-05,
+          "upstream_inference_completions_cost": 9.05e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 2,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 6852,
+      "id": "gen-1792261011-bA5zw0jZ3xD54LCAOkbs",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"search_records\",\"arguments_json\":\"{\\\"query\\\":\\\"legacy-runner production eu retirement business dependencies blockers owners conflicts permission expiry coverage inventory usage\\\",\\\"offset\\\":0,\\\"limit\\\":5}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 493,
+        "completion_tokens": 55,
+        "total_tokens": 548,
+        "cost": 7.68e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 7.68e-05,
+          "upstream_inference_prompt_cost": 4.93e-05,
+          "upstream_inference_completions_cost": 2.75e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 3,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 8249,
+      "id": "gen-1792261013-IxI001gH1XmV5ZaH7TKw",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"read_record\",\"arguments_json\":\"{\\\"source_key\\\":\\\"source-run-invoice-legacy@1\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 834,
+        "completion_tokens": 41,
+        "total_tokens": 875,
+        "cost": 0.0001039,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0001039,
+          "upstream_inference_prompt_cost": 8.34e-05,
+          "upstream_inference_completions_cost": 2.05e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 4,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 10016,
+      "id": "gen-1792261015-9obfkrh7p4joVLSPNvAN",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"read_record\",\"arguments_json\":\"{\\\"source_key\\\":\\\"source-run-report-legacy@1\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1297,
+        "completion_tokens": 40,
+        "total_tokens": 1337,
+        "cost": 0.00018205,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1294,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00018205,
+          "upstream_inference_prompt_cost": 0.00016205,
+          "upstream_inference_completions_cost": 2e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 5,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 11766,
+      "id": "gen-1792261016-BNyqYV6mOVh2ZX04Zoub",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"read_record\",\"arguments_json\":\"{\\\"source_key\\\":\\\"inventory-initial@1\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1761,
+        "completion_tokens": 38,
+        "total_tokens": 1799,
+        "cost": 9.024e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 1294,
+          "cache_write_tokens": 464,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 9.024e-05,
+          "upstream_inference_prompt_cost": 7.124e-05,
+          "upstream_inference_completions_cost": 1.9e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 6,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 13041,
+      "id": "gen-1792261018-xOFAjCSv7WQrqxRnAn5v",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"search_records\",\"arguments_json\":\"{\\\"query\\\":\\\"legacy-runner invoice-export report-job migration completion ticket blocker permission expiry owner production eu\\\",\\\"offset\\\":5,\\\"limit\\\":5}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 2090,
+        "completion_tokens": 55,
+        "total_tokens": 2145,
+        "cost": 8.6505e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 1758,
+          "cache_write_tokens": 329,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 8.6505e-05,
+          "upstream_inference_prompt_cost": 5.9005e-05,
+          "upstream_inference_completions_cost": 2.75e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 7,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 14365,
+      "id": "gen-1792261020-DvcPwB5oWgOPFOI4kE5m",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"read_record\",\"arguments_json\":\"{\\\"source_key\\\":\\\"source-owns-invoice@1\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 2406,
+        "completion_tokens": 40,
+        "total_tokens": 2446,
+        "cost": 8.067e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 2087,
+          "cache_write_tokens": 316,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 8.067e-05,
+          "upstream_inference_prompt_cost": 6.067e-05,
+          "upstream_inference_completions_cost": 2e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 8,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 16059,
+      "id": "gen-1792261022-mY3VTeoXqDHw3K6FL0hB",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"read_record\",\"arguments_json\":\"{\\\"source_key\\\":\\\"source-owns-report@1\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 2834,
+        "completion_tokens": 39,
+        "total_tokens": 2873,
+        "cost": 9.733e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 2403,
+          "cache_write_tokens": 428,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 9.733e-05,
+          "upstream_inference_prompt_cost": 7.783e-05,
+          "upstream_inference_completions_cost": 1.95e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 9,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 17737,
+      "id": "gen-1792261024-sweUEWop91eQ1kxTotpQ",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"read_record\",\"arguments_json\":\"{\\\"source_key\\\":\\\"source-permits-invoice@1\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 3256,
+        "completion_tokens": 40,
+        "total_tokens": 3296,
+        "cost": 0.00010136,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 2831,
+          "cache_write_tokens": 422,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00010136,
+          "upstream_inference_prompt_cost": 8.136e-05,
+          "upstream_inference_completions_cost": 2e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 10,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 19620,
+      "id": "gen-1792261025-Akj7YjKg4yJEY9IdFRyi",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"search_records\",\"arguments_json\":\"{\\\"query\\\":\\\"Monthly billing requires invoice-export in production/eu monthly reporting requires report-job production eu legacy-runner network-approval blocked migration\\\",\\\"offset\\\":10,\\\"limit\\\":5}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 3768,
+        "completion_tokens": 63,
+        "total_tokens": 3831,
+        "cost": 0.00012833,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 3253,
+          "cache_write_tokens": 512,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00012833,
+          "upstream_inference_prompt_cost": 9.683e-05,
+          "upstream_inference_completions_cost": 3.15e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 11,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 20647,
+      "id": "gen-1792261028-PnkKFM27Quu45lwCt8lT",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"read_record\",\"arguments_json\":\"{\\\"source_key\\\":\\\"source-requires-billing-invoice@1\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 4011,
+        "completion_tokens": 42,
+        "total_tokens": 4053,
+        "cost": 8.9325e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 3765,
+          "cache_write_tokens": 243,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 8.9325e-05,
+          "upstream_inference_prompt_cost": 6.8325e-05,
+          "upstream_inference_completions_cost": 2.1e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 12,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 22351,
+      "id": "gen-1792261029-ItUzR7scdWsOWurs1Zsv",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"read_record\",\"arguments_json\":\"{\\\"source_key\\\":\\\"source-requires-reporting-report@1\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 4440,
+        "completion_tokens": 41,
+        "total_tokens": 4481,
+        "cost": 0.000114505,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 4008,
+          "cache_write_tokens": 429,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000114505,
+          "upstream_inference_prompt_cost": 9.4005e-05,
+          "upstream_inference_completions_cost": 2.05e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 13,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 24053,
+      "id": "gen-1792261031-Nh22gKukQBLQ4Y6N4CYa",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"read_record\",\"arguments_json\":\"{\\\"source_key\\\":\\\"source-blocked-network@1\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 4867,
+        "completion_tokens": 39,
+        "total_tokens": 4906,
+        "cost": 0.000117545,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 4437,
+          "cache_write_tokens": 427,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000117545,
+          "upstream_inference_prompt_cost": 9.8045e-05,
+          "upstream_inference_completions_cost": 1.95e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 14,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 25747,
+      "id": "gen-1792261033-0QFrT6jdwlubfrttEe7p",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"read_record\",\"arguments_json\":\"{\\\"source_key\\\":\\\"source-status-migration-open@1\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 5297,
+        "completion_tokens": 40,
+        "total_tokens": 5337,
+        "cost": 0.00012269,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 4864,
+          "cache_write_tokens": 430,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00012269,
+          "upstream_inference_prompt_cost": 0.00010269,
+          "upstream_inference_completions_cost": 2e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 15,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 6852,
+      "id": "gen-1792261035-bd9jFJBlZqVlkNd4iuvi",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"search_records\",\"arguments_json\":\"{\\\"query\\\":\\\"legacy-runner production eu retirement dependencies blockers owners permission expiry inventory usage\\\",\\\"offset\\\":0,\\\"limit\\\":5}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 493,
+        "completion_tokens": 52,
+        "total_tokens": 545,
+        "cost": 7.53e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 7.53e-05,
+          "upstream_inference_prompt_cost": 4.93e-05,
+          "upstream_inference_completions_cost": 2.6e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 16,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 8221,
+      "id": "gen-1792261037-aclTUGTfDUDBtD7B1lO6",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"search_records\",\"arguments_json\":\"{\\\"query\\\":\\\"legacy-runner production eu report-job owner permission expires sunset migration invoice-export network-approval fresh inventory usage\\\",\\\"offset\\\":5,\\\"limit\\\":5}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 837,
+        "completion_tokens": 59,
+        "total_tokens": 896,
+        "cost": 0.0001132,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0001132,
+          "upstream_inference_prompt_cost": 8.37e-05,
+          "upstream_inference_completions_cost": 2.95e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 17,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 9563,
+      "id": "gen-1792261039-X2XcU3GAW09abAqHzQ00",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"search_records\",\"arguments_json\":\"{\\\"limit\\\":5,\\\"offset\\\":10,\\\"query\\\":\\\"legacy-runner production/eu retirement assertion IDs invoice-export report-job permission expiry revocation supersession ticket runtime clearance usage observation inventory coverage\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1162,
+        "completion_tokens": 66,
+        "total_tokens": 1228,
+        "cost": 0.000178175,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1159,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000178175,
+          "upstream_inference_prompt_cost": 0.000145175,
+          "upstream_inference_completions_cost": 3.3e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 18,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 10779,
+      "id": "gen-1792261041-aHRAYzlCYbtXVUoP3lgg",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"read_record\",\"arguments_json\":\"{\\\"source_key\\\":\\\"source-run-invoice-legacy@1\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1448,
+        "completion_tokens": 41,
+        "total_tokens": 1489,
+        "cost": 6.814e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 1159,
+          "cache_write_tokens": 286,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 6.814e-05,
+          "upstream_inference_prompt_cost": 4.764e-05,
+          "upstream_inference_completions_cost": 2.05e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 19,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 12546,
+      "id": "gen-1792261043-EMk6oK44oQbQVXF1Llis",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"read_record\",\"arguments_json\":\"{\\\"source_key\\\":\\\"source-run-report-legacy@1\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1917,
+        "completion_tokens": 40,
+        "total_tokens": 1957,
+        "cost": 9.3375e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 1445,
+          "cache_write_tokens": 469,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 9.3375e-05,
+          "upstream_inference_prompt_cost": 7.3375e-05,
+          "upstream_inference_completions_cost": 2e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 20,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 14296,
+      "id": "gen-1792261045-o8uqA4erRKAZ09DbWz00",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"read_record\",\"arguments_json\":\"{\\\"source_key\\\":\\\"inventory-initial@1\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 2387,
+        "completion_tokens": 38,
+        "total_tokens": 2425,
+        "cost": 9.719e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 1914,
+          "cache_write_tokens": 470,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 9.719e-05,
+          "upstream_inference_prompt_cost": 7.819e-05,
+          "upstream_inference_completions_cost": 1.9e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 21,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 15571,
+      "id": "gen-1792261046-4zGlGX99eFVVpanX5BHd",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"read_record\",\"arguments_json\":\"{\\\"source_key\\\":\\\"source-blocked-network@1\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 2722,
+        "completion_tokens": 39,
+        "total_tokens": 2761,
+        "cost": 8.5515e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 2384,
+          "cache_write_tokens": 335,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 8.5515e-05,
+          "upstream_inference_prompt_cost": 6.6015e-05,
+          "upstream_inference_completions_cost": 1.95e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 22,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 17265,
+      "id": "gen-1792261048-t7NcVoisbn4qrWxvGBOY",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"read_record\",\"arguments_json\":\"{\\\"source_key\\\":\\\"source-status-network-open@1\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 3158,
+        "completion_tokens": 39,
+        "total_tokens": 3197,
+        "cost": 0.00010149,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 2719,
+          "cache_write_tokens": 436,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00010149,
+          "upstream_inference_prompt_cost": 8.199e-05,
+          "upstream_inference_completions_cost": 1.95e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 23,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 18920,
+      "id": "gen-1792261050-lf5bCUnQbnwPq5PuxT5e",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"read_record\",\"arguments_json\":\"{\\\"source_key\\\":\\\"source-owns-invoice@1\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 3585,
+        "completion_tokens": 40,
+        "total_tokens": 3625,
+        "cost": 0.000105225,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 3155,
+          "cache_write_tokens": 427,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000105225,
+          "upstream_inference_prompt_cost": 8.5225e-05,
+          "upstream_inference_completions_cost": 2e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 24,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 20614,
+      "id": "gen-1792261052-JbIswKmClucCZmutgOsv",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"read_record\",\"arguments_json\":\"{\\\"source_key\\\":\\\"source-owns-report@1\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 4019,
+        "completion_tokens": 39,
+        "total_tokens": 4058,
+        "cost": 0.00010987,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 3582,
+          "cache_write_tokens": 434,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00010987,
+          "upstream_inference_prompt_cost": 9.037e-05,
+          "upstream_inference_completions_cost": 1.95e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 25,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 22292,
+      "id": "gen-1792261053-N6qVPALLFXyw0jFB9RBb",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"read_record\",\"arguments_json\":\"{\\\"source_key\\\":\\\"source-owns-network@1\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 4447,
+        "completion_tokens": 39,
+        "total_tokens": 4486,
+        "cost": 0.00011346,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 4016,
+          "cache_write_tokens": 428,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00011346,
+          "upstream_inference_prompt_cost": 9.396e-05,
+          "upstream_inference_completions_cost": 1.95e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 26,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 23977,
+      "id": "gen-1792261055-bHXl4uiuIfZ2vqWxxWuG",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"read_record\",\"arguments_json\":\"{\\\"source_key\\\":\\\"source-permits-invoice@1\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 4877,
+        "completion_tokens": 40,
+        "total_tokens": 4917,
+        "cost": 0.00011849,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 4444,
+          "cache_write_tokens": 430,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00011849,
+          "upstream_inference_prompt_cost": 9.849e-05,
+          "upstream_inference_completions_cost": 2e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 27,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 25860,
+      "id": "gen-1792261057-wqdvpuxj5upNhu4aldbn",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"read_record\",\"arguments_json\":\"{\\\"source_key\\\":\\\"source-requires-billing-invoice@1\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 5395,
+        "completion_tokens": 42,
+        "total_tokens": 5437,
+        "cost": 0.00013479,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 4874,
+          "cache_write_tokens": 518,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00013479,
+          "upstream_inference_prompt_cost": 0.00011379,
+          "upstream_inference_completions_cost": 2.1e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 28,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 7247,
+      "id": "gen-1792261059-wYYQlzasBjvG5S2AfJ7d",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"find_entities\",\"arguments_json\":\"{\\\"query\\\":\\\"legacy-runner\\\",\\\"kind\\\":\\\"Service\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 582,
+        "completion_tokens": 39,
+        "total_tokens": 621,
+        "cost": 7.77e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 7.77e-05,
+          "upstream_inference_prompt_cost": 5.82e-05,
+          "upstream_inference_completions_cost": 1.95e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 29,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 7870,
+      "id": "gen-1792261060-KPCwVUEs8qudWYrMc15L",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"action\":\"tool\",\"tool\":\"assess_retirement\",\"arguments_json\":\"{\\\"service_id\\\":\\\"legacy-runner\\\",\\\"scope\\\":{\\\"environment\\\":\\\"production\\\",\\\"region\\\":\\\"eu\\\"},\\\"planned_at\\\":\\\"2026-10-17T12:00:00+00:00\\\"}\",\"answer_json\":null}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 738,
+        "completion_tokens": 70,
+        "total_tokens": 808,
+        "cost": 0.0001088,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0001088,
+          "upstream_inference_prompt_cost": 7.38e-05,
+          "upstream_inference_completions_cost": 3.5e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    }
+  ],
+  "raw_pipeline": {
+    "revision": "db7a6789156647b16b9a3fb8700c1518125f2952520acf125b4abfe221de3a4b",
+    "approved": 0,
+    "proposals": 0,
+    "assessment": {
+      "service_id": "legacy-runner",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "planned_at": "2026-10-17T12:00:00+00:00",
+      "known_at": "2026-10-17T12:00:00+00:00",
+      "graph_revision": "db7a6789156647b16b9a3fb8700c1518125f2952520acf125b4abfe221de3a4b",
+      "disposition": "needs_verification",
+      "affected_workflows": [],
+      "dependency_paths": [],
+      "blockers": [],
+      "conflicts": [],
+      "owners": [],
+      "decisions": [],
+      "coverage": {
+        "gaps": [
+          "consumer verification missing or stale: invoice-export",
+          "consumer verification missing or stale: report-job"
+        ],
+        "truncated": false,
+        "inventory_source": "inventory-initial@1",
+        "declared_consumer_count": 2
+      },
+      "evidence": []
+    }
+  },
+  "protocol_revision": "strict-single-action-v2",
+  "previous_protocol_attempt": "live-openrouter-attempt1.json",
+  "error": "cost ledger halted during comparison"
+}

@@ -1,0 +1,1992 @@
+{
+  "model": "openai/gpt-6-luna",
+  "cap_usd": "3",
+  "status": "completed",
+  "smoke": {
+    "passed": true,
+    "latency_ms": 2855.27883307077,
+    "generation_id": "gen-1792260785-dWuEWvZixtcIW5vvbLlM",
+    "model": "openai/gpt-6-luna",
+    "usage": {
+      "prompt_tokens": 29,
+      "completion_tokens": 12,
+      "total_tokens": 41,
+      "cost": 8.9e-06,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 8.9e-06,
+        "upstream_inference_prompt_cost": 2.9e-06,
+        "upstream_inference_completions_cost": 6e-06
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "extraction": [
+    {
+      "source_key": "source-run-invoice-legacy@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 2211.424667038955
+    },
+    {
+      "source_key": "source-requires-billing-invoice@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 1980.7975830044597
+    },
+    {
+      "source_key": "source-requires-reporting-report@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 1955.9630419826135
+    },
+    {
+      "source_key": "source-tracks-invoice-migration@1",
+      "status": "failed",
+      "error": "Extraction quote does not match the source span",
+      "latency_ms": 2371.343291946687
+    },
+    {
+      "source_key": "source-blocked-network@1",
+      "status": "failed",
+      "error": "Extraction returned invalid candidate structure",
+      "latency_ms": 2171.0625420091674
+    },
+    {
+      "source_key": "source-owns-invoice@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 2117.0435420935974
+    },
+    {
+      "source_key": "source-owns-report@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 1793.7722079223022
+    },
+    {
+      "source_key": "source-owns-network@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 1808.2374579971656
+    },
+    {
+      "source_key": "source-status-migration-open@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 1693.9567079534754
+    },
+    {
+      "source_key": "source-status-network-open@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 1961.8481249781325
+    },
+    {
+      "source_key": "source-run-report-legacy@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 2139.1944169299677
+    },
+    {
+      "source_key": "inventory-initial@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 2359.0736670885235
+    },
+    {
+      "source_key": "source-permits-invoice@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 1718.2571250014007
+    }
+  ],
+  "narrative": [
+    {
+      "source_key": "source-permits-invoice@1",
+      "status": "scored",
+      "counts": {
+        "expected": 1,
+        "proposed": 0,
+        "true_positive": 0,
+        "false_positive": 0,
+        "false_negative": 1
+      },
+      "candidates": [],
+      "latency_ms": 0.09479199070483446
+    },
+    {
+      "source_key": "source-status-migration-claimed-complete@1",
+      "status": "scored",
+      "counts": {
+        "expected": 1,
+        "proposed": 0,
+        "true_positive": 0,
+        "false_positive": 0,
+        "false_negative": 1
+      },
+      "candidates": [],
+      "latency_ms": 3359.089000034146
+    },
+    {
+      "source_key": "unapproved-chat@1",
+      "status": "scored",
+      "counts": {
+        "expected": 0,
+        "proposed": 0,
+        "true_positive": 0,
+        "false_positive": 0,
+        "false_negative": 0
+      },
+      "candidates": [],
+      "latency_ms": 2862.818125053309
+    }
+  ],
+  "evaluations": [
+    {
+      "case": "initial",
+      "fixture": "initial",
+      "model": "openai/gpt-6-luna",
+      "record_digest": "531d3300290f5948ea2c8fa7e6691b0f63e7370f7d037d45ee577516bafd8016",
+      "arms": {
+        "graph": {
+          "status": "failed",
+          "error": "model returned malformed action JSON",
+          "latency_ms": 2620.596667053178
+        },
+        "search": {
+          "status": "failed",
+          "error": "model returned malformed action JSON",
+          "latency_ms": 2799.3974999990314
+        }
+      }
+    },
+    {
+      "case": "completion",
+      "fixture": "completion",
+      "model": "openai/gpt-6-luna",
+      "record_digest": "e3e74e009ff12d9e06ab21345291a220fce52395af498934aa81630694177f6c",
+      "arms": {
+        "search": {
+          "status": "failed",
+          "error": "model returned malformed action JSON",
+          "latency_ms": 2367.691250052303
+        },
+        "graph": {
+          "status": "failed",
+          "error": "model returned malformed action JSON",
+          "latency_ms": 3588.4432500461116
+        }
+      }
+    },
+    {
+      "case": "migration",
+      "fixture": "migration",
+      "model": "openai/gpt-6-luna",
+      "record_digest": "d6bdab424926cd049ad9b20f187a0905e06da95da4768b2ba97ab604f3770ff2",
+      "arms": {
+        "graph": {
+          "status": "failed",
+          "error": "model returned malformed action JSON",
+          "latency_ms": 1909.0189170092344
+        },
+        "search": {
+          "status": "failed",
+          "error": "model returned malformed action JSON",
+          "latency_ms": 2899.005291983485
+        }
+      }
+    },
+    {
+      "case": "clear",
+      "fixture": "clear",
+      "model": "openai/gpt-6-luna",
+      "record_digest": "8df542152bf8fba06e8eaf815d7847d9cf4bdcf40de70a8f05bbdb8816fa605e",
+      "arms": {
+        "search": {
+          "status": "failed",
+          "error": "model returned malformed action JSON",
+          "latency_ms": 2195.1612079283223
+        },
+        "graph": {
+          "status": "failed",
+          "error": "model returned malformed action JSON",
+          "latency_ms": 3110.6759160757065
+        }
+      }
+    },
+    {
+      "case": "invoice-owner-rationale",
+      "fixture": "initial",
+      "model": "openai/gpt-6-luna",
+      "record_digest": "531d3300290f5948ea2c8fa7e6691b0f63e7370f7d037d45ee577516bafd8016",
+      "arms": {
+        "graph": {
+          "status": "failed",
+          "error": "model returned malformed action JSON",
+          "latency_ms": 2459.411667077802
+        },
+        "search": {
+          "status": "failed",
+          "error": "model returned malformed action JSON",
+          "latency_ms": 2312.836250057444
+        }
+      }
+    },
+    {
+      "case": "network-slip-billing",
+      "fixture": "initial",
+      "model": "openai/gpt-6-luna",
+      "record_digest": "531d3300290f5948ea2c8fa7e6691b0f63e7370f7d037d45ee577516bafd8016",
+      "arms": {
+        "search": {
+          "status": "failed",
+          "error": "model returned malformed action JSON",
+          "latency_ms": 3465.126583003439
+        },
+        "graph": {
+          "status": "failed",
+          "error": "model returned malformed action JSON",
+          "latency_ms": 3697.2999999998137
+        }
+      }
+    }
+  ],
+  "limits": "Small synthetic run; no customer or production validation; JSON-action harness, not external MCP client UI.",
+  "ledger": {
+    "actual_usd": "0.0025143",
+    "conservative_usd": "0",
+    "halted": false,
+    "limit_usd": "3",
+    "model": "openai/gpt-6-luna",
+    "reservations": {
+      "39b7c85a2e81452eaf1998896a74f561": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001237",
+            "actual_usd": "0.0001237",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6201,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00311543750"
+      },
+      "3b246d1aef184f30a4cee0abf5c11e21": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001047",
+            "actual_usd": "0.0001047",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6104,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00310210000"
+      },
+      "40e012b83a6e422897c0912e9e4ac5cd": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000089",
+            "actual_usd": "0.0000089",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 128,
+        "prompt_token_bound": 4576,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00070960000"
+      },
+      "4be5aa70c41645ebb3548b1776b6d276": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001282",
+            "actual_usd": "0.0001282",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6201,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00311543750"
+      },
+      "4c43a68c9dca465aae48cdb74d5ff5d0": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000721",
+            "actual_usd": "0.0000721",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7135,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00324386250"
+      },
+      "4c5b284dd832464c820755c49137032f": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000071",
+            "actual_usd": "0.000071",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7106,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00323987500"
+      },
+      "4f64b0aec33545df98d4572744407fad": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000761",
+            "actual_usd": "0.0000761",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7302,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00326682500"
+      },
+      "51da7eac01964e3e8b51ff2a4431e191": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001291",
+            "actual_usd": "0.0001291",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6453,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00315008750"
+      },
+      "5951442bf99b476f8f2d6897e230f698": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001398",
+            "actual_usd": "0.0001398",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6354,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00313647500"
+      },
+      "605d840e60a143f19148af0645c550e9": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000071",
+            "actual_usd": "0.000071",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7137,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00324413750"
+      },
+      "666d48877df14f84a804e015fb738842": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000073",
+            "actual_usd": "0.000073",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7181,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00325018750"
+      },
+      "677c3806de774eee968f39ccbc359d4e": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000103",
+            "actual_usd": "0.000103",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7101,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00323918750"
+      },
+      "681bc28ec227488991cab4cf180b5f62": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000777",
+            "actual_usd": "0.0000777",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6201,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00311543750"
+      },
+      "6a840d37c3f64e439987269922b31ce4": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000703",
+            "actual_usd": "0.0000703",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7100,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00323905000"
+      },
+      "6e902ae0e3f34b5d97b24c4f96f6dc4e": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001098",
+            "actual_usd": "0.0001098",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7118,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00324152500"
+      },
+      "6fa5ef31bce04b94a6d8c148484be3b8": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001679",
+            "actual_usd": "0.0001679",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6102,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00310182500"
+      },
+      "705741cfad1c442f8472415bba19f40e": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000892",
+            "actual_usd": "0.0000892",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6201,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00311543750"
+      },
+      "813bc2f1a6a34136ac1726837647d6d2": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000651",
+            "actual_usd": "0.0000651",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6453,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00315008750"
+      },
+      "897e4ed590884079b8e0938a0505d483": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000702",
+            "actual_usd": "0.0000702",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7088,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00323740000"
+      },
+      "a5a8b84eb4b14d6c858cbd276b4b00fc": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000704",
+            "actual_usd": "0.0000704",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7101,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00323918750"
+      },
+      "a74a83b53c8a42d2b83ed1f9c5d566bb": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000706",
+            "actual_usd": "0.0000706",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7109,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00324028750"
+      },
+      "af4eb3022e194a6bad6e9a243aad7e85": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000996",
+            "actual_usd": "0.0000996",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6356,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00313675000"
+      },
+      "c4f2c1d4bb5e4ad099126ddef0058054": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001156",
+            "actual_usd": "0.0001156",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6453,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00315008750"
+      },
+      "cb60c774508044b39ad3da8cc9a2b8c2": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000727",
+            "actual_usd": "0.0000727",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7169,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00324853750"
+      },
+      "d56428060d864efb9f1dcdf91ab0aa68": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000705",
+            "actual_usd": "0.0000705",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7104,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00323960000"
+      },
+      "d836c89a18eb4aac9f7178bc11f1ed4e": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001216",
+            "actual_usd": "0.0001216",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6453,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00315008750"
+      },
+      "d88034bdc52842ef88d29e4bbf1c14c8": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000722",
+            "actual_usd": "0.0000722",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7140,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00324455000"
+      },
+      "eb54d6a164ef4ca3bc3770de88880b50": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000703",
+            "actual_usd": "0.0000703",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7091,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00323781250"
+      }
+    },
+    "version": 1,
+    "reserved_usd": "0",
+    "accounted_usd": "0.0025143"
+  },
+  "provider_responses": [
+    {
+      "sequence": 1,
+      "status_code": 200,
+      "max_output_tokens": 128,
+      "prompt_token_bound": 4576,
+      "id": "gen-1792260785-dWuEWvZixtcIW5vvbLlM",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"ok\":true}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 29,
+        "completion_tokens": 12,
+        "total_tokens": 41,
+        "cost": 8.9e-06,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 8.9e-06,
+          "upstream_inference_prompt_cost": 2.9e-06,
+          "upstream_inference_completions_cost": 6e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 2,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 7140,
+      "id": "gen-1792260788-DUrYMEXdibsd7wUekEm7",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 662,
+        "completion_tokens": 12,
+        "total_tokens": 674,
+        "cost": 7.22e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 7.22e-05,
+          "upstream_inference_prompt_cost": 6.62e-05,
+          "upstream_inference_completions_cost": 6e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 3,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 7101,
+      "id": "gen-1792260790-zwnVu7CKepepmkatLwak",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 644,
+        "completion_tokens": 12,
+        "total_tokens": 656,
+        "cost": 7.04e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 7.04e-05,
+          "upstream_inference_prompt_cost": 6.44e-05,
+          "upstream_inference_completions_cost": 6e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 4,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 7100,
+      "id": "gen-1792260792-w7J6QNfQsce4myTEVdVg",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 643,
+        "completion_tokens": 12,
+        "total_tokens": 655,
+        "cost": 7.03e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 7.03e-05,
+          "upstream_inference_prompt_cost": 6.43e-05,
+          "upstream_inference_completions_cost": 6e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 5,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 7118,
+      "id": "gen-1792260794-G9fyUuxMvOHW9EwLI2Vo",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[{\"subject_id\":\"invoice-export\",\"predicate\":\"MIGRATION_TRACKED_BY\",\"object_id\":\"invoice-migration\",\"scope\":{\"environment\":\"production\",\"region\":\"eu\"},\"effective_from\":\"2026-12-01T00:00:00Z\",\"span_start\":0,\"span_end\":67,\"quote\":\"invoice-export migration is tracked by invoice-migration in production/eu.\"}]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 648,
+        "completion_tokens": 90,
+        "total_tokens": 738,
+        "cost": 0.0001098,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0001098,
+          "upstream_inference_prompt_cost": 6.48e-05,
+          "upstream_inference_completions_cost": 4.5e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 6,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 7101,
+      "id": "gen-1792260796-aNc50iD9J4jLqc1SnFVY",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[{\"subject_id\":\"invoice-migration\",\"predicate\":\"BLOCKED_BY\",\"object_id\":\"network-approval\",\"scope\":{\"environment\":\"production\",\"region\":\"eu\"},\"effective_from\":\"undated\",\"span_start\":0,\"span_end\":59,\"quote\":\"invoice-migration is blocked by network-approval in production/eu.\"}]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 645,
+        "completion_tokens": 77,
+        "total_tokens": 722,
+        "cost": 0.000103,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000103,
+          "upstream_inference_prompt_cost": 6.45e-05,
+          "upstream_inference_completions_cost": 3.85e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 7,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 7109,
+      "id": "gen-1792260799-sPhG3lBGA4VciM5lKyA7",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 646,
+        "completion_tokens": 12,
+        "total_tokens": 658,
+        "cost": 7.06e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 7.06e-05,
+          "upstream_inference_prompt_cost": 6.46e-05,
+          "upstream_inference_completions_cost": 6e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 8,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 7104,
+      "id": "gen-1792260801-K49Imv0LmN3zpU1SdyHW",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 645,
+        "completion_tokens": 12,
+        "total_tokens": 657,
+        "cost": 7.05e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 7.05e-05,
+          "upstream_inference_prompt_cost": 6.45e-05,
+          "upstream_inference_completions_cost": 6e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 9,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 7106,
+      "id": "gen-1792260802-ePAwWeIwTmvQcBjfDcUa",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\": []}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 645,
+        "completion_tokens": 13,
+        "total_tokens": 658,
+        "cost": 7.1e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 7.1e-05,
+          "upstream_inference_prompt_cost": 6.45e-05,
+          "upstream_inference_completions_cost": 6.5e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 10,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 7091,
+      "id": "gen-1792260804-RhHTlNNa5sI70h2QsaCw",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 643,
+        "completion_tokens": 12,
+        "total_tokens": 655,
+        "cost": 7.03e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 7.03e-05,
+          "upstream_inference_prompt_cost": 6.43e-05,
+          "upstream_inference_completions_cost": 6e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 11,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 7088,
+      "id": "gen-1792260806-UcocR1rtci6EHT7EjD8s",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 642,
+        "completion_tokens": 12,
+        "total_tokens": 654,
+        "cost": 7.02e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 7.02e-05,
+          "upstream_inference_prompt_cost": 6.42e-05,
+          "upstream_inference_completions_cost": 6e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 12,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 7135,
+      "id": "gen-1792260808-3Ai3DhOq4h1V0Ovmhyt4",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 661,
+        "completion_tokens": 12,
+        "total_tokens": 673,
+        "cost": 7.21e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 7.21e-05,
+          "upstream_inference_prompt_cost": 6.61e-05,
+          "upstream_inference_completions_cost": 6e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 13,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 7169,
+      "id": "gen-1792260810-XCeOv0pj1CYLLFgyxISZ",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 667,
+        "completion_tokens": 12,
+        "total_tokens": 679,
+        "cost": 7.27e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 7.27e-05,
+          "upstream_inference_prompt_cost": 6.67e-05,
+          "upstream_inference_completions_cost": 6e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 14,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 7302,
+      "id": "gen-1792260812-64wyqb1ycWrGSisppxOz",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 701,
+        "completion_tokens": 12,
+        "total_tokens": 713,
+        "cost": 7.61e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 7.61e-05,
+          "upstream_inference_prompt_cost": 7.01e-05,
+          "upstream_inference_completions_cost": 6e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 15,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 7181,
+      "id": "gen-1792260814-PI1PMIGz2hYoJQV0UJ9G",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 670,
+        "completion_tokens": 12,
+        "total_tokens": 682,
+        "cost": 7.3e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 7.3e-05,
+          "upstream_inference_prompt_cost": 6.7e-05,
+          "upstream_inference_completions_cost": 6e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 16,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 7137,
+      "id": "gen-1792260818-Ne9fIuJ6VTaqI0HRaIc7",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 650,
+        "completion_tokens": 12,
+        "total_tokens": 662,
+        "cost": 7.1e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 7.1e-05,
+          "upstream_inference_prompt_cost": 6.5e-05,
+          "upstream_inference_completions_cost": 6e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 17,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 6453,
+      "id": "gen-1792260821-AmsRfRd25n5wJKPYhFRu",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"tool\":\"find_entities\",\"arguments\":{\"query\":\"legacy-runner\",\"kind\":\"service\"}}\n\n{\"disposition\":\"Unable to assess: no evidence has been retrieved yet.\",\"affected_workflows\":[],\"blocker_entities\":[],\"owner_pairs\":[],\"evidence_ids\":[],\"decisions\":[],\"gaps\":[\"Service identity, production/eu dependencies, blocker status, ownership, permissions, and inventory coverage are unverified.\"],\"conflicts\":[],\"explanation\":\"No records have been returned by tools, so I cannot cite evidence IDs or determine whether legacy-runner can be retired. A service lookup and scoped retirement assessment are needed.\"}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 436,
+        "completion_tokens": 144,
+        "total_tokens": 580,
+        "cost": 0.0001156,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0001156,
+          "upstream_inference_prompt_cost": 4.36e-05,
+          "upstream_inference_completions_cost": 7.2e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 18,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 6201,
+      "id": "gen-1792260823-kPgiO2OSbvWE5LfOEmys",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"tool\":\"search_records\",\"arguments\":{\"query\":\"legacy-runner production eu retirement dependencies blockers permission expiry inventory\",\"offset\":0,\"limit\":5}}\n\n{\"disposition\":\"Unable to determine whether legacy-runner can be retired in production/eu from evidence returned so far.\",\"affected_workflows\":[],\"blocker_entities\":[],\"owner_pairs\":[],\"evidence_ids\":[],\"decisions\":[],\"gaps\":[\"No records were returned; dependencies, runtime usage, retirement blockers, owners, permission expiry, and inventory coverage cannot be assessed.\"],\"conflicts\":[],\"explanation\":\"No evidence IDs or source keys are available to cite. A complete, fresh scoped inventory and relevant usage, permission, and dependency evidence are needed. Ticket completion alone would not establish runtime clearance.\"}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 377,
+        "completion_tokens": 172,
+        "total_tokens": 549,
+        "cost": 0.0001237,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0001237,
+          "upstream_inference_prompt_cost": 3.77e-05,
+          "upstream_inference_completions_cost": 8.6e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 19,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 6201,
+      "id": "gen-1792260826-NE71std9opfYhngN6dP6",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"tool\":\"search_records\",\"arguments\":{\"query\":\"legacy-runner production eu retirement dependencies blockers owners permission expiry inventory usage\",\"offset\":0,\"limit\":5}}\n\n{\"tool\":\"search_records\",\"arguments\":{\"query\":\"legacy-runner\",\"offset\":0,\"limit\":5}}\n\n{\"tool\":\"search_records\",\"arguments\":{\"query\":\"legacy-runner\",\"offset\":0,\"limit\":5}}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 377,
+        "completion_tokens": 103,
+        "total_tokens": 480,
+        "cost": 8.92e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 8.92e-05,
+          "upstream_inference_prompt_cost": 3.77e-05,
+          "upstream_inference_completions_cost": 5.15e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 20,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 6453,
+      "id": "gen-1792260828-GogGvorVL3mOdaiACdXK",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"tool\":\"find_entities\",\"arguments\":{\"query\":\"legacy-runner\",\"kind\":\"service\"}}\n\n{\"tool\":\"find_entities\",\"arguments\":{\"query\":\"legacy-runner\",\"kind\":\"service\"}}\n\n{\"disposition\":\"undetermined\",\"affected_workflows\":[],\"blocker_entities\":[],\"owner_pairs\":[],\"evidence_ids\":[],\"decisions\":[],\"gaps\":[\"No entity or evidence records have been returned, so service identity, dependencies, blockers, owners, permissions, and inventory coverage cannot be verified for production/eu at 2026-10-17T12:00:00+00:00.\"],\"conflicts\":[],\"explanation\":\"Retirement cannot be assessed from the available records. No shutdown authorization is implied.\"}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 436,
+        "completion_tokens": 171,
+        "total_tokens": 607,
+        "cost": 0.0001291,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0001291,
+          "upstream_inference_prompt_cost": 4.36e-05,
+          "upstream_inference_completions_cost": 8.55e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 21,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 6453,
+      "id": "gen-1792260832-QFu8vVSFnb1MhkBngUs4",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "We need investigate entity.\n\n{\"tool\":\"find_entities\",\"arguments\":{\"query\":\"legacy-runner\",\"kind\":\"service\"}}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 436,
+        "completion_tokens": 43,
+        "total_tokens": 479,
+        "cost": 6.51e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 6.51e-05,
+          "upstream_inference_prompt_cost": 4.36e-05,
+          "upstream_inference_completions_cost": 2.15e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 22,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 6201,
+      "id": "gen-1792260834-i0Pgcs0ihlI2M7lHTqR7",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"tool\":\"search_records\",\"arguments\":{\"query\":\"legacy-runner production eu retirement service inventory dependencies blockers ownership permission expiry\",\"offset\":0,\"limit\":5}}\n\n{\"tool\":\"search_records\",\"arguments\":{\"query\":\"legacy-runner\",\"offset\":0,\"limit\":5}}\n\n{\"final\":{\"disposition\":\"undetermined\",\"affected_workflows\":[],\"blocker_entities\":[],\"owner_pairs\":[],\"evidence_ids\":[],\"decisions\":[],\"gaps\":[\"No records were returned, so scope-specific service status, fresh usage evidence, business dependencies, blockers, owners, permissions, and inventory coverage cannot be established.\"],\"conflicts\":[],\"explanation\":\"There is insufficient returned evidence to determine whether legacy-runner can be retired in production/eu. No shutdown authorization is established.\"}}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 377,
+        "completion_tokens": 181,
+        "total_tokens": 558,
+        "cost": 0.0001282,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0001282,
+          "upstream_inference_prompt_cost": 3.77e-05,
+          "upstream_inference_completions_cost": 9.05e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 23,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 6201,
+      "id": "gen-1792260837-VVuxkukmjbMGtjT95gbT",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"tool\":\"search_records\",\"arguments\":{\"query\":\"legacy-runner production eu retirement dependencies blockers permission expiry coverage\",\"offset\":0,\"limit\":5}}\n\n{\"tool\":\"search_records\",\"arguments\":{\"query\":\"legacy-runner production eu retirement dependencies blockers permission expiry coverage\",\"offset\":0,\"limit\":5}}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 377,
+        "completion_tokens": 80,
+        "total_tokens": 457,
+        "cost": 7.77e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 7.77e-05,
+          "upstream_inference_prompt_cost": 3.77e-05,
+          "upstream_inference_completions_cost": 4e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 24,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 6453,
+      "id": "gen-1792260839-IXhrubuGfj1srDV5H17p",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"tool\":\"find_entities\",\"arguments\":{\"query\":\"legacy-runner\",\"kind\":\"service\"}}\u0ac7\u0aa3\n[assistant to=find_entities]  pf?\n\n{\"tool\":\"find_entities\",\"arguments\":{\"query\":\"legacy-runner\"}}\n\n{\"disposition\":\"undetermined\",\"affected_workflows\":[],\"blocker_entities\":[],\"owner_pairs\":[],\"evidence_ids\":[],\"decisions\":[],\"gaps\":[\"Entity lookup returned no usable records, so the service identity and its production/eu evidence could not be established.\"],\"conflicts\":[],\"explanation\":\"Retirement cannot be assessed without a confirmed service record and scoped evidence. No shutdown or retirement authorization is implied.\"}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 436,
+        "completion_tokens": 156,
+        "total_tokens": 592,
+        "cost": 0.0001216,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0001216,
+          "upstream_inference_prompt_cost": 4.36e-05,
+          "upstream_inference_completions_cost": 7.8e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 25,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 6356,
+      "id": "gen-1792260842-7MhAS5kGV9quKJ7HE6VS",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"disposition\":\"undetermined\",\"affected_workflows\":[],\"blocker_entities\":[],\"owner_pairs\":[],\"evidence_ids\":[],\"decisions\":[],\"gaps\":[\"No service or workflow has been identified, so ownership and the reason invoice export remains on the old runner cannot be established.\",\"No evidence or complete fresh inventory checks were returned; retirement readiness cannot be assessed.\"],\"conflicts\":[],\"explanation\":\"Need identify the relevant service before investigating retirement. No tool records have been returned, so there are no supported evidence IDs to cite.\"}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 421,
+        "completion_tokens": 115,
+        "total_tokens": 536,
+        "cost": 9.96e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 9.96e-05,
+          "upstream_inference_prompt_cost": 4.21e-05,
+          "upstream_inference_completions_cost": 5.75e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 26,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 6104,
+      "id": "gen-1792260845-9WYM79eeUj82RrUyDPbZ",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"tool\":\"search_records\",\"arguments\":{\"query\":\"invoice export old runner production eu owner\",\"offset\":0,\"limit\":5}}\n\n{\"disposition\":\"undetermined\",\"affected_workflows\":[\"invoice export\"],\"blocker_entities\":[],\"owner_pairs\":[],\"evidence_ids\":[],\"decisions\":[],\"gaps\":[\"No records were retrieved, so ownership and the reason invoice export remains on the old runner cannot be established for production in eu.\"],\"conflicts\":[],\"explanation\":\"No evidence supports identifying an owner or explaining the runner status. No shutdown or retirement conclusion can be drawn.\"}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 362,
+        "completion_tokens": 137,
+        "total_tokens": 499,
+        "cost": 0.0001047,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0001047,
+          "upstream_inference_prompt_cost": 3.62e-05,
+          "upstream_inference_completions_cost": 6.85e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 27,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 6102,
+      "id": "gen-1792260847-IjhIBHoUdTU7hx3Gn6iU",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"tool\":\"search_records\",\"arguments\":{\"query\":\"billing network approval production eu planned_at network approval slip service retirement\",\"offset\":0,\"limit\":5}}\n\n{\"tool\":\"search_records\",\"arguments\":{\"query\":\"billing production eu network approval permission usage dependency retirement\",\"offset\":5,\"limit\":10}}\n\n{\"disposition\":\"insufficient_evidence\",\"affected_workflows\":[],\"blocker_entities\":[],\"owner_pairs\":[],\"evidence_ids\":[],\"decisions\":[{\"question\":\"What breaks for billing if the network approval slips a week?\",\"answer\":\"Cannot determine from the available records. No returned evidence establishes a production billing dependency on the network approval, what the approval authorizes, or the impact of a one-week delay.\"}],\"gaps\":[\"No relevant records were returned for billing, the network approval, or the declared production/eu scope.\",\"No fresh, complete inventory evidence was returned to establish whether any blockers exist.\",\"A hypothetical future approval delay does not establish successful future work or runtime impact.\"],\"conflicts\":[],\"explanation\":\"No evidence IDs can be cited because no records were returned. This is not a finding that billing has no blockers, and it does not authorize shutdown.\"}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 359,
+        "completion_tokens": 264,
+        "total_tokens": 623,
+        "cost": 0.0001679,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0001679,
+          "upstream_inference_prompt_cost": 3.59e-05,
+          "upstream_inference_completions_cost": 0.000132
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 28,
+      "status_code": 200,
+      "max_output_tokens": 4096,
+      "prompt_token_bound": 6354,
+      "id": "gen-1792260851-nj42oDj9uaeCUsqarRVR",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"tool\":\"find_entities\",\"arguments\":{\"query\":\"billing network approval\",\"kind\":\"service\"}}\n\n{\"tool\":\"find_entities\",\"arguments\":{\"query\":\"billing\",\"kind\":\"service\"}}\n\n{\"disposition\":\"Cannot determine from available evidence; no assessment performed.\",\"affected_workflows\":[],\"blocker_entities\":[],\"owner_pairs\":[],\"evidence_ids\":[],\"decisions\":[],\"gaps\":[\"The available tools returned no service records or evidence, so billing service identity and its network approval dependency could not be established.\",\"The effect of a one-week approval delay relative to planned_at (2026-10-24T12:00:00+00:00) is unknown.\"],\"conflicts\":[],\"explanation\":\"No tool results or assertion IDs were available to support a retirement-impact assessment. I cannot identify what would break for billing or infer successful future work.\"}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 418,
+        "completion_tokens": 196,
+        "total_tokens": 614,
+        "cost": 0.0001398,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0001398,
+          "upstream_inference_prompt_cost": 4.18e-05,
+          "upstream_inference_completions_cost": 9.8e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    }
+  ],
+  "raw_pipeline": {
+    "revision": "db7a6789156647b16b9a3fb8700c1518125f2952520acf125b4abfe221de3a4b",
+    "approved": 0,
+    "proposals": 0,
+    "assessment": {
+      "service_id": "legacy-runner",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "planned_at": "2026-10-17T12:00:00+00:00",
+      "known_at": "2026-10-17T12:00:00+00:00",
+      "graph_revision": "db7a6789156647b16b9a3fb8700c1518125f2952520acf125b4abfe221de3a4b",
+      "disposition": "needs_verification",
+      "affected_workflows": [],
+      "dependency_paths": [],
+      "blockers": [],
+      "conflicts": [],
+      "owners": [],
+      "decisions": [],
+      "coverage": {
+        "gaps": [
+          "consumer verification missing or stale: invoice-export",
+          "consumer verification missing or stale: report-job"
+        ],
+        "truncated": false,
+        "inventory_source": "inventory-initial@1",
+        "declared_consumer_count": 2
+      },
+      "evidence": []
+    }
+  }
+}

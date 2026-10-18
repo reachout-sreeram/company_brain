@@ -105,18 +105,19 @@ export COMPANY_BRAIN_GRAPH=company_brain_demo_raw
 
 This exercises raw source → **explicit deterministic mock extraction** → validation → FalkorDB → the same MCP tools. It makes no API call. Never call its results real model extraction.
 
-The OpenRouter adapter is ready and its HTTP contract/error handling is tested using mocked responses. A future live run requires approval of model, spending limit, and secure process-environment credential setup first. Do not paste a key into chat or commit it. After those decisions, the opt-in command is:
+The authorized synthetic evaluation used exactly `openai/gpt-6-luna`, the existing ignored/untracked project `.env.local` credential, and a USD 3 total cap. The loader reads only the named OPEN_ROUTER (or canonical OPENROUTER_API_KEY) value into process memory; never paste a key into chat, commit it, or export it globally. The opt-in runner uses the actual isolated FalkorDBLite graph and durable `.local/openrouter-budget.json`; importing modules does not make a call.
+
+The completed run is preserved at [live evidence](../../evals/results/live-2026-10-18/README.md). A future deliberate rerun uses:
 
 ```sh
-# OPENROUTER_API_KEY must already be securely available to this process.
-.venv/bin/company-brain extract-ingest data/raw_demo/manifest.json --allow-paid-api --model APPROVED_MODEL --max-tokens 2048
+COMPANY_BRAIN_KNOWN_AT=2026-10-17T12:00:00Z .venv/bin/python -m company_brain.live_evaluation --execute-approved-usd3 --confirm-graph company_brain_demo_live_evaluation
 ```
 
-No default model, retry loop or live call occurs automatically. The token cap bounds output, not total dollar cost; this slice has no enforceable dollar-budget controller. Provider errors are sanitized, redirect following/environment proxies are disabled, and credentials are never logged. Real extraction and its end-to-end fact accuracy remain unverified. Do not upload real company records through this demo.
+The exact graph confirmation permits its reset. --comparison-only resumes extraction/smoke evidence and reruns the complete paired cohort; it is not a process-resume command. Check no earlier run is active first. Old reports are archived byte-for-byte before replacement. All paid attempts reserve a conservative amount against the shared durable USD 3 ledger; unresolved timeouts retain allowance. Never reset the ledger to regain budget, raise the cap, silently retry uncertain requests, or change model/provider to obtain a successful answer. Provider errors and report strings are credential-redacted. Do not upload real company records through this demo.
 
 ## Remaining evaluation
 
-Functional replay and adapter tests do not establish customer demand, production reliability, search improvement, or FalkorDB speed superiority. Search-only comparison execution, relationship ablation, independently authored unseen branches, comprehensive authority policy, production identity, and client intent/answer evaluation remain Stage 8 work. The Stage 3 p95 <2 seconds and reset <30 seconds targets require declared hardware/sample/cache settings before acceptance.
+Functional replay and adapter tests do not establish customer demand, production reliability, search improvement, or FalkorDB speed superiority. A small same-model search comparison has executed; broader repeated comparison, relationship ablation, independently authored unseen branches, comprehensive authority policy, production identity, and client intent/answer evaluation remain Stage 8 work. The Stage 3 p95 <2 seconds and reset <30 seconds targets require declared hardware/sample/cache settings before acceptance.
 
 Official API references: [FalkorDBLite](https://github.com/FalkorDB/falkordblite), [FalkorDB Python client](https://github.com/FalkorDB/falkordb-py), [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk), and [OpenRouter API](https://openrouter.ai/docs/api-reference/chat-completion).
 

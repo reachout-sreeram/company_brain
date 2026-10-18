@@ -1,0 +1,2384 @@
+{
+  "model": "openai/gpt-6-luna",
+  "cap_usd": "3",
+  "status": "stopped",
+  "smoke": {
+    "passed": true,
+    "latency_ms": 2401.7527499236166,
+    "generation_id": "gen-1792299613-GJ5SqeMHQfZgKHLnTAD0",
+    "model": "openai/gpt-6-luna",
+    "usage": {
+      "prompt_tokens": 29,
+      "completion_tokens": 12,
+      "total_tokens": 41,
+      "cost": 8.9e-06,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 8.9e-06,
+        "upstream_inference_prompt_cost": 2.9e-06,
+        "upstream_inference_completions_cost": 6e-06
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  "extraction": [
+    {
+      "source_key": "source-run-invoice-legacy@1",
+      "status": "validated",
+      "assertions": [
+        {
+          "id": "extract-f7af9cbc61edad1cf55a8b7e",
+          "subject_id": "invoice-export",
+          "predicate": "RUNS_ON",
+          "object_id": "legacy-runner",
+          "value": null,
+          "target_service_id": null,
+          "source_id": "source-run-invoice-legacy",
+          "source_version": "1",
+          "quote": "invoice-export runs on legacy-runner in production/eu",
+          "span_start": 48,
+          "span_end": 101,
+          "scope": {
+            "environment": "production",
+            "region": "eu"
+          },
+          "effective_from": "2026-10-17T09:00:00Z",
+          "effective_until": null,
+          "observed_at": "2026-10-17T09:00:00Z",
+          "method": "extracted",
+          "status": "proposal",
+          "supersedes": []
+        }
+      ],
+      "latency_ms": 2081.0068750288337
+    },
+    {
+      "source_key": "source-requires-billing-invoice@1",
+      "status": "failed",
+      "error": "Dependency needs an explicit observation time; recorded_at is not runtime evidence",
+      "latency_ms": 1828.8733750814572
+    },
+    {
+      "source_key": "source-requires-reporting-report@1",
+      "status": "failed",
+      "error": "Dependency needs an explicit observation time; recorded_at is not runtime evidence",
+      "latency_ms": 2879.458000068553
+    },
+    {
+      "source_key": "source-tracks-invoice-migration@1",
+      "status": "validated",
+      "assertions": [
+        {
+          "id": "extract-e895864e4f91dc165ce8e864",
+          "subject_id": "invoice-export",
+          "predicate": "MIGRATION_TRACKED_BY",
+          "object_id": "invoice-migration",
+          "value": null,
+          "target_service_id": null,
+          "source_id": "source-tracks-invoice-migration",
+          "source_version": "1",
+          "quote": "invoice-export migration is tracked by invoice-migration",
+          "span_start": 0,
+          "span_end": 56,
+          "scope": {
+            "environment": "production",
+            "region": "eu"
+          },
+          "effective_from": "2026-10-17T10:00:00Z",
+          "effective_until": null,
+          "observed_at": null,
+          "method": "extracted",
+          "status": "proposal",
+          "supersedes": []
+        }
+      ],
+      "latency_ms": 2052.922417060472
+    },
+    {
+      "source_key": "source-blocked-network@1",
+      "status": "validated",
+      "assertions": [
+        {
+          "id": "extract-71a696c1cd54fd00fb291b94",
+          "subject_id": "invoice-migration",
+          "predicate": "BLOCKED_BY",
+          "object_id": "network-approval",
+          "value": null,
+          "target_service_id": null,
+          "source_id": "source-blocked-network",
+          "source_version": "1",
+          "quote": "invoice-migration is blocked by network-approval",
+          "span_start": 0,
+          "span_end": 48,
+          "scope": {
+            "environment": "production",
+            "region": "eu"
+          },
+          "effective_from": "2026-10-17T10:00:00Z",
+          "effective_until": null,
+          "observed_at": null,
+          "method": "extracted",
+          "status": "proposal",
+          "supersedes": []
+        }
+      ],
+      "latency_ms": 1855.1012501120567
+    },
+    {
+      "source_key": "source-owns-invoice@1",
+      "status": "validated",
+      "assertions": [
+        {
+          "id": "extract-c3cde50f1ebcc1908156600a",
+          "subject_id": "invoice-export",
+          "predicate": "OWNED_BY",
+          "object_id": "data-platform",
+          "value": null,
+          "target_service_id": null,
+          "source_id": "source-owns-invoice",
+          "source_version": "1",
+          "quote": "assigns invoice-export to data-platform",
+          "span_start": 20,
+          "span_end": 59,
+          "scope": {
+            "environment": "production",
+            "region": "eu"
+          },
+          "effective_from": "2026-10-17T10:00:00Z",
+          "effective_until": null,
+          "observed_at": null,
+          "method": "extracted",
+          "status": "proposal",
+          "supersedes": []
+        }
+      ],
+      "latency_ms": 2147.036458016373
+    },
+    {
+      "source_key": "source-owns-report@1",
+      "status": "validated",
+      "assertions": [
+        {
+          "id": "extract-aa455e102957350eda76c746",
+          "subject_id": "report-job",
+          "predicate": "OWNED_BY",
+          "object_id": "data-platform",
+          "value": null,
+          "target_service_id": null,
+          "source_id": "source-owns-report",
+          "source_version": "1",
+          "quote": "The approved roster assigns report-job to data-platform in production/eu",
+          "span_start": 0,
+          "span_end": 72,
+          "scope": {
+            "environment": "production",
+            "region": "eu"
+          },
+          "effective_from": "2026-10-17T10:00:00Z",
+          "effective_until": null,
+          "observed_at": null,
+          "method": "extracted",
+          "status": "proposal",
+          "supersedes": []
+        }
+      ],
+      "latency_ms": 2430.0865409895778
+    },
+    {
+      "source_key": "source-owns-network@1",
+      "status": "validated",
+      "assertions": [
+        {
+          "id": "extract-35bc47d20eb3ce5322573ce7",
+          "subject_id": "network-approval",
+          "predicate": "OWNED_BY",
+          "object_id": "security",
+          "value": null,
+          "target_service_id": null,
+          "source_id": "source-owns-network",
+          "source_version": "1",
+          "quote": "The approved roster assigns network-approval to security in production/eu.",
+          "span_start": 0,
+          "span_end": 74,
+          "scope": {
+            "environment": "production",
+            "region": "eu"
+          },
+          "effective_from": "2026-10-17T10:00:00Z",
+          "effective_until": null,
+          "observed_at": null,
+          "method": "extracted",
+          "status": "proposal",
+          "supersedes": []
+        }
+      ],
+      "latency_ms": 1763.3571670157835
+    },
+    {
+      "source_key": "source-status-migration-open@1",
+      "status": "validated",
+      "assertions": [
+        {
+          "id": "extract-c4efd279ccb49485d7d62fa9",
+          "subject_id": "invoice-migration",
+          "predicate": "STATUS",
+          "object_id": null,
+          "value": "open",
+          "target_service_id": null,
+          "source_id": "source-status-migration-open",
+          "source_version": "1",
+          "quote": "Ticket invoice-migration is open",
+          "span_start": 0,
+          "span_end": 32,
+          "scope": {
+            "environment": "production",
+            "region": "eu"
+          },
+          "effective_from": "2026-10-17T10:00:00Z",
+          "effective_until": null,
+          "observed_at": null,
+          "method": "extracted",
+          "status": "proposal",
+          "supersedes": []
+        }
+      ],
+      "latency_ms": 1864.1325840726495
+    },
+    {
+      "source_key": "source-status-network-open@1",
+      "status": "validated",
+      "assertions": [
+        {
+          "id": "extract-75e816eb1a1865431db92661",
+          "subject_id": "network-approval",
+          "predicate": "STATUS",
+          "object_id": null,
+          "value": "open",
+          "target_service_id": null,
+          "source_id": "source-status-network-open",
+          "source_version": "1",
+          "quote": "Ticket network-approval is open in production/eu.",
+          "span_start": 0,
+          "span_end": 49,
+          "scope": {
+            "environment": "production",
+            "region": "eu"
+          },
+          "effective_from": "2026-10-17T10:00:00Z",
+          "effective_until": null,
+          "observed_at": null,
+          "method": "extracted",
+          "status": "proposal",
+          "supersedes": []
+        }
+      ],
+      "latency_ms": 1884.009417030029
+    },
+    {
+      "source_key": "source-run-report-legacy@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 1658.6552090011537
+    },
+    {
+      "source_key": "inventory-initial@1",
+      "status": "validated",
+      "assertions": [],
+      "latency_ms": 3324.5833750115708
+    },
+    {
+      "source_key": "source-permits-invoice@1",
+      "status": "validated",
+      "assertions": [
+        {
+          "id": "extract-2615dca58332b9bbc4ef1b48",
+          "subject_id": "temporary-exception",
+          "predicate": "PERMITS_USE",
+          "object_id": "invoice-export",
+          "value": null,
+          "target_service_id": null,
+          "source_id": "source-permits-invoice",
+          "source_version": "1",
+          "quote": "invoice-export may continue using its current runner while network approval is outstanding",
+          "span_start": 112,
+          "span_end": 202,
+          "scope": {
+            "environment": "production",
+            "region": "eu"
+          },
+          "effective_from": "2026-10-01T00:00:00Z",
+          "effective_until": "2026-11-01T00:00:00Z",
+          "observed_at": null,
+          "method": "extracted",
+          "status": "proposal",
+          "supersedes": []
+        }
+      ],
+      "latency_ms": 1853.97399996873
+    }
+  ],
+  "narrative": [
+    {
+      "source_key": "source-permits-invoice@1",
+      "status": "scored",
+      "counts": {
+        "expected": 1,
+        "proposed": 1,
+        "true_positive": 1,
+        "false_positive": 0,
+        "false_negative": 0
+      },
+      "candidates": [
+        {
+          "id": "extract-2615dca58332b9bbc4ef1b48",
+          "subject_id": "temporary-exception",
+          "predicate": "PERMITS_USE",
+          "object_id": "invoice-export",
+          "value": null,
+          "target_service_id": null,
+          "source_id": "source-permits-invoice",
+          "source_version": "1",
+          "quote": "invoice-export may continue using its current runner while network approval is outstanding",
+          "span_start": 112,
+          "span_end": 202,
+          "scope": {
+            "environment": "production",
+            "region": "eu"
+          },
+          "effective_from": "2026-10-01T00:00:00Z",
+          "effective_until": "2026-11-01T00:00:00Z",
+          "observed_at": null,
+          "method": "extracted",
+          "status": "proposal",
+          "supersedes": []
+        }
+      ],
+      "latency_ms": 0.11833303142338991
+    },
+    {
+      "source_key": "source-status-migration-claimed-complete@1",
+      "status": "scored",
+      "counts": {
+        "expected": 1,
+        "proposed": 1,
+        "true_positive": 1,
+        "false_positive": 0,
+        "false_negative": 0
+      },
+      "candidates": [
+        {
+          "subject_id": "invoice-migration",
+          "predicate": "STATUS",
+          "object_id": null,
+          "value": "complete",
+          "target_service_id": null,
+          "scope": {
+            "environment": "production",
+            "region": "eu"
+          },
+          "effective_from": "2026-10-16T12:00:00Z",
+          "effective_until": null,
+          "observed_at": null,
+          "span_start": 0,
+          "span_end": 40,
+          "quote": "Ticket invoice-migration claims complete",
+          "supersedes": []
+        }
+      ],
+      "latency_ms": 2701.8289159750566
+    },
+    {
+      "source_key": "unapproved-chat@1",
+      "status": "scored",
+      "counts": {
+        "expected": 0,
+        "proposed": 0,
+        "true_positive": 0,
+        "false_positive": 0,
+        "false_negative": 0
+      },
+      "candidates": [],
+      "latency_ms": 1696.1105410009623
+    }
+  ],
+  "evaluations": [
+    {
+      "case": "initial",
+      "fixture": "initial",
+      "model": "openai/gpt-6-luna",
+      "record_digest": "531d3300290f5948ea2c8fa7e6691b0f63e7370f7d037d45ee577516bafd8016",
+      "arms": {
+        "graph": {
+          "status": "failed",
+          "error": "OpenRouter request failed (HTTP 404); cost unresolved",
+          "latency_ms": 398.2054169755429
+        }
+      }
+    }
+  ],
+  "protocol_revision": "native-function-calls-v3",
+  "limits": "Small synthetic run; no customer or production validation; native OpenRouter function-call harness over read-only tools, not an external MCP client UI.",
+  "ledger": {
+    "actual_usd": "0.008339995",
+    "conservative_usd": "0.00677908750",
+    "halted": true,
+    "limit_usd": "3",
+    "model": "openai/gpt-6-luna",
+    "reconciliations": [
+      {
+        "api_limit_unchanged_usd": "3",
+        "api_usage_usd": "0.006443145",
+        "individual_timeout_cost": "unavailable; no generation ID returned",
+        "known_request_cost_usd": "0.005634970",
+        "local_process_check": "no evaluation process running",
+        "method": "settled_key_usage_upper_bound",
+        "retained_conservative_allowance_usd": "0.00468431250"
+      }
+    ],
+    "reservations": {
+      "0336d12a1e5c41bab5b95cdedaa08b1a": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000114505",
+            "actual_usd": "0.000114505",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 22351,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00533606250"
+      },
+      "03bcbca2e4cd43dc8972a7e87ba14cf3": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00012269",
+            "actual_usd": "0.00012269",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 25747,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00580301250"
+      },
+      "086cc1f9f3e9427bbd7460695a29b93e": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00009733",
+            "actual_usd": "0.00009733",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 16059,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00447091250"
+      },
+      "09888cb2542b4bd5b0253dcf0a7d8a70": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000188925",
+            "actual_usd": "0.000188925",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 1500,
+        "prompt_token_bound": 10260,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00224575000"
+      },
+      "0a220d922c044705b4cc0ef97b59e693": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000154425",
+            "actual_usd": "0.000154425",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 1500,
+        "prompt_token_bound": 10216,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00223970000"
+      },
+      "19acbbab1de24501b25603da1e81512f": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000117545",
+            "actual_usd": "0.000117545",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 24053,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00557008750"
+      },
+      "1dd92fa432cf443fada952adcc192dfe": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000181425",
+            "actual_usd": "0.000181425",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 1500,
+        "prompt_token_bound": 10188,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00223585000"
+      },
+      "21976a49dd5b4d08a16889188d9744cc": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000105225",
+            "actual_usd": "0.000105225",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 18920,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00486430000"
+      },
+      "2831f4af77114807b346e496959c78fb": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000178175",
+            "actual_usd": "0.000178175",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 9563,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00357771250"
+      },
+      "28f987c9454a4eacb0b7319208317c0f": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000093375",
+            "actual_usd": "0.000093375",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 12546,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00398787500"
+      },
+      "2ca4c6ca3fef4b83b182606f97ce7b9e": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00009719",
+            "actual_usd": "0.00009719",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 14296,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00422850000"
+      },
+      "2de0b706541845339adac933883cf092": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000086505",
+            "actual_usd": "0.000086505",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 13041,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00405593750"
+      },
+      "31cda550c1454a69a8474a0fae0d6a9b": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001132",
+            "actual_usd": "0.0001132",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 8221,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00339318750"
+      },
+      "355a194e23cb4fc78d11da9c81109caf": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0002043",
+            "actual_usd": "0.0002043",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 1500,
+        "prompt_token_bound": 10381,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00226238750"
+      },
+      "364844c8f0d44d9dbd9fdaa208ff3a25": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001833",
+            "actual_usd": "0.0001833",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 1500,
+        "prompt_token_bound": 10180,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00223475000"
+      },
+      "39b7c85a2e81452eaf1998896a74f561": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001237",
+            "actual_usd": "0.0001237",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6201,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00311543750"
+      },
+      "3b246d1aef184f30a4cee0abf5c11e21": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001047",
+            "actual_usd": "0.0001047",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6104,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00310210000"
+      },
+      "3e683eb60c7d4a85a551ff8ab0548bd2": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00468431250",
+            "actual_usd": null,
+            "reason": "timeout_unresolved"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 17611,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00468431250"
+      },
+      "40e012b83a6e422897c0912e9e4ac5cd": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000089",
+            "actual_usd": "0.0000089",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 128,
+        "prompt_token_bound": 4576,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00070960000"
+      },
+      "4128835b31c644f395c6ac95dc6f9d77": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00017955",
+            "actual_usd": "0.00017955",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 1500,
+        "prompt_token_bound": 10170,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00223337500"
+      },
+      "4be5aa70c41645ebb3548b1776b6d276": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001282",
+            "actual_usd": "0.0001282",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6201,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00311543750"
+      },
+      "4c43a68c9dca465aae48cdb74d5ff5d0": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000721",
+            "actual_usd": "0.0000721",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7135,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00324386250"
+      },
+      "4c5b284dd832464c820755c49137032f": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000071",
+            "actual_usd": "0.000071",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7106,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00323987500"
+      },
+      "4d305e9325e043ddab146e911769f23e": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00010149",
+            "actual_usd": "0.00010149",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 17265,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00463673750"
+      },
+      "4f64b0aec33545df98d4572744407fad": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000761",
+            "actual_usd": "0.0000761",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7302,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00326682500"
+      },
+      "51da7eac01964e3e8b51ff2a4431e191": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001291",
+            "actual_usd": "0.0001291",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6453,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00315008750"
+      },
+      "56f96c4cd6b54ce29d4dbc236e1ff1ca": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00009024",
+            "actual_usd": "0.00009024",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 11766,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00388062500"
+      },
+      "5951442bf99b476f8f2d6897e230f698": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001398",
+            "actual_usd": "0.0001398",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6354,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00313647500"
+      },
+      "605d840e60a143f19148af0645c550e9": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000071",
+            "actual_usd": "0.000071",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7137,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00324413750"
+      },
+      "633158c57080459ab41efbfb02f6b9c8": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001843",
+            "actual_usd": "0.0001843",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 1500,
+        "prompt_token_bound": 10183,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00223516250"
+      },
+      "63b3f22435f940af80918f4cb52fbff6": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001558",
+            "actual_usd": "0.0001558",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 1500,
+        "prompt_token_bound": 10214,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00223942500"
+      },
+      "65df26c883044f6ab4207209734fbdd0": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00010987",
+            "actual_usd": "0.00010987",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 20614,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00509722500"
+      },
+      "666d48877df14f84a804e015fb738842": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000073",
+            "actual_usd": "0.000073",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7181,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00325018750"
+      },
+      "677c3806de774eee968f39ccbc359d4e": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000103",
+            "actual_usd": "0.000103",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7101,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00323918750"
+      },
+      "681bc28ec227488991cab4cf180b5f62": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000777",
+            "actual_usd": "0.0000777",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6201,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00311543750"
+      },
+      "6a840d37c3f64e439987269922b31ce4": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000703",
+            "actual_usd": "0.0000703",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7100,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00323905000"
+      },
+      "6c05a7af47fb4ce9b2bf9a0e07d0a7dd": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001843",
+            "actual_usd": "0.0001843",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 1500,
+        "prompt_token_bound": 10185,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00223543750"
+      },
+      "6c2d28e64ca4414cad88a13dbeb37cdb": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00010136",
+            "actual_usd": "0.00010136",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 17737,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00470163750"
+      },
+      "6dde17d7c3fc4dbebadef3ee9b535806": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00018255",
+            "actual_usd": "0.00018255",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 1500,
+        "prompt_token_bound": 10179,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00223461250"
+      },
+      "6e902ae0e3f34b5d97b24c4f96f6dc4e": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001098",
+            "actual_usd": "0.0001098",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7118,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00324152500"
+      },
+      "6fa5ef31bce04b94a6d8c148484be3b8": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001679",
+            "actual_usd": "0.0001679",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6102,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00310182500"
+      },
+      "705741cfad1c442f8472415bba19f40e": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000892",
+            "actual_usd": "0.0000892",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6201,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00311543750"
+      },
+      "714087cc7b814aee8d049d2ced0f9b50": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000753",
+            "actual_usd": "0.0000753",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6852,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00320495000"
+      },
+      "76c8120e686c4091bef0faff2353ddca": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000181425",
+            "actual_usd": "0.000181425",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 1500,
+        "prompt_token_bound": 10167,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00223296250"
+      },
+      "7b5e42fc563f40d2b6b105be6f04a506": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00018205",
+            "actual_usd": "0.00018205",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 10016,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00364000000"
+      },
+      "813bc2f1a6a34136ac1726837647d6d2": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000651",
+            "actual_usd": "0.0000651",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6453,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00315008750"
+      },
+      "842b8994c6554c90937b20e8452abc4d": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001088",
+            "actual_usd": "0.0001088",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7870,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00334492500"
+      },
+      "86bae9c3e6034c9fbb0578c5acf50b52": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001039",
+            "actual_usd": "0.0001039",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 8249,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00339703750"
+      },
+      "891501facb914dbcb3052064fa7b8689": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000191925",
+            "actual_usd": "0.000191925",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 1500,
+        "prompt_token_bound": 10219,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00224011250"
+      },
+      "897e4ed590884079b8e0938a0505d483": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000702",
+            "actual_usd": "0.0000702",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7088,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00323740000"
+      },
+      "9a8db7d7886a468f83fad741838be280": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00012833",
+            "actual_usd": "0.00012833",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 19620,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00496055000"
+      },
+      "a5a8b84eb4b14d6c858cbd276b4b00fc": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000704",
+            "actual_usd": "0.0000704",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7101,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00323918750"
+      },
+      "a74a83b53c8a42d2b83ed1f9c5d566bb": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000706",
+            "actual_usd": "0.0000706",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7109,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00324028750"
+      },
+      "ae77e63a1c434462827cd5c3c9984fd8": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000777",
+            "actual_usd": "0.0000777",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7247,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00325926250"
+      },
+      "ae9642a9d40943ea8cb5a04e5abdffb1": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000089325",
+            "actual_usd": "0.000089325",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 20647,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00510176250"
+      },
+      "af4eb3022e194a6bad6e9a243aad7e85": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000996",
+            "actual_usd": "0.0000996",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6356,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00313675000"
+      },
+      "b2de07cc6d9247f0b01ba07eba56def0": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00011346",
+            "actual_usd": "0.00011346",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 22292,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00532795000"
+      },
+      "b5258f26d9a84fbc9f3603228d8426dc": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00006814",
+            "actual_usd": "0.00006814",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 10779,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00374491250"
+      },
+      "bf3524f660e64bf589e52c294c6e39d4": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001487",
+            "actual_usd": "0.0001487",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7247,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00325926250"
+      },
+      "c4f2c1d4bb5e4ad099126ddef0058054": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001156",
+            "actual_usd": "0.0001156",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6453,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00315008750"
+      },
+      "c5bf53e8692a4559b7f25e0bdd553665": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000085515",
+            "actual_usd": "0.000085515",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 15571,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00440381250"
+      },
+      "c7c2a8cf29f242b78e57b11b4e861fa0": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00209477500",
+            "actual_usd": null,
+            "reason": "missing_or_invalid_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 1500,
+        "prompt_token_bound": 9162,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00209477500"
+      },
+      "cb60c774508044b39ad3da8cc9a2b8c2": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000727",
+            "actual_usd": "0.0000727",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7169,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00324853750"
+      },
+      "d2316de3b3344547875b368c2f26f267": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00011849",
+            "actual_usd": "0.00011849",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 23977,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00555963750"
+      },
+      "d49fb445113b4dc0bded90a9ba827243": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000182675",
+            "actual_usd": "0.000182675",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 1500,
+        "prompt_token_bound": 10180,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00223475000"
+      },
+      "d56428060d864efb9f1dcdf91ab0aa68": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000705",
+            "actual_usd": "0.0000705",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7104,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00323960000"
+      },
+      "d7df03bf07314a5598b72739c9ca8e10": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00008067",
+            "actual_usd": "0.00008067",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 14365,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00423798750"
+      },
+      "d836c89a18eb4aac9f7178bc11f1ed4e": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0001216",
+            "actual_usd": "0.0001216",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6453,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00315008750"
+      },
+      "d88034bdc52842ef88d29e4bbf1c14c8": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000722",
+            "actual_usd": "0.0000722",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7140,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00324455000"
+      },
+      "eb54d6a164ef4ca3bc3770de88880b50": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000703",
+            "actual_usd": "0.0000703",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 7091,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00323781250"
+      },
+      "ed6ac29214a84a67b3c1eb7b779d99ea": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00013479",
+            "actual_usd": "0.00013479",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 25860,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00581855000"
+      },
+      "f0914459c07941d1a8716cfce3d5bc90": {
+        "attempts": [
+          {
+            "accounted_usd": "0.000184675",
+            "actual_usd": "0.000184675",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 1500,
+        "prompt_token_bound": 10197,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00223708750"
+      },
+      "f7da230024cf4716a30c1fd749720668": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000768",
+            "actual_usd": "0.0000768",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 4096,
+        "prompt_token_bound": 6852,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00320495000"
+      },
+      "fdb26a462e294d53922db5e15a5a1ea1": {
+        "attempts": [
+          {
+            "accounted_usd": "0.00015655",
+            "actual_usd": "0.00015655",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 1500,
+        "prompt_token_bound": 10248,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00224410000"
+      },
+      "ffc4f61cde2443158bca6855159df8fd": {
+        "attempts": [
+          {
+            "accounted_usd": "0.0000089",
+            "actual_usd": "0.0000089",
+            "reason": "reported_cost"
+          }
+        ],
+        "open": false,
+        "output_token_limit": 128,
+        "prompt_token_bound": 4576,
+        "remaining_attempts": 0,
+        "reserved_usd": "0",
+        "unit_usd": "0.00070960000"
+      }
+    },
+    "version": 1,
+    "reserved_usd": "0",
+    "accounted_usd": "0.01511908250"
+  },
+  "provider_responses": [
+    {
+      "sequence": 1,
+      "status_code": 200,
+      "max_output_tokens": 128,
+      "prompt_token_bound": 4576,
+      "request_bytes": 480,
+      "id": "gen-1792299613-GJ5SqeMHQfZgKHLnTAD0",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"ok\":true}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 29,
+        "completion_tokens": 12,
+        "total_tokens": 41,
+        "cost": 8.9e-06,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 8.9e-06,
+          "upstream_inference_prompt_cost": 2.9e-06,
+          "upstream_inference_completions_cost": 6e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 2,
+      "status_code": 200,
+      "max_output_tokens": 1500,
+      "prompt_token_bound": 10219,
+      "request_bytes": 6123,
+      "id": "gen-1792299615-9yazekISByhqIBOPxE78",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[{\"subject_id\":\"invoice-export\",\"predicate\":\"RUNS_ON\",\"object_id\":\"legacy-runner\",\"value\":null,\"target_service_id\":null,\"quote\":\"invoice-export runs on legacy-runner in production/eu\",\"effective_from\":null,\"effective_until\":null,\"observed_at\":\"2026-10-17T09:00:00Z\"}]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1196,
+        "completion_tokens": 85,
+        "total_tokens": 1281,
+        "cost": 0.000191925,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1193,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000191925,
+          "upstream_inference_prompt_cost": 0.000149425,
+          "upstream_inference_completions_cost": 4.25e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 3,
+      "status_code": 200,
+      "max_output_tokens": 1500,
+      "prompt_token_bound": 10180,
+      "request_bytes": 6084,
+      "id": "gen-1792299617-nL6BwWfh5ZM0yxqc8376",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[{\"subject_id\":\"monthly-billing\",\"predicate\":\"REQUIRES\",\"object_id\":\"invoice-export\",\"value\":null,\"target_service_id\":null,\"quote\":\"Monthly billing requires invoice-export in production/eu.\",\"effective_from\":null,\"effective_until\":null,\"observed_at\":null}]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1178,
+        "completion_tokens": 71,
+        "total_tokens": 1249,
+        "cost": 0.000182675,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1175,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000182675,
+          "upstream_inference_prompt_cost": 0.000147175,
+          "upstream_inference_completions_cost": 3.55e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 4,
+      "status_code": 200,
+      "max_output_tokens": 1500,
+      "prompt_token_bound": 10179,
+      "request_bytes": 6083,
+      "id": "gen-1792299620-D721Azy9NjU265E422Vt",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[{\"subject_id\":\"monthly-reporting\",\"predicate\":\"REQUIRES\",\"object_id\":\"report-job\",\"value\":null,\"target_service_id\":null,\"quote\":\"Monthly reporting requires report-job in production/eu\",\"effective_from\":null,\"effective_until\":null,\"observed_at\":null}]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1177,
+        "completion_tokens": 71,
+        "total_tokens": 1248,
+        "cost": 0.00018255,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1174,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00018255,
+          "upstream_inference_prompt_cost": 0.00014705,
+          "upstream_inference_completions_cost": 3.55e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 5,
+      "status_code": 200,
+      "max_output_tokens": 1500,
+      "prompt_token_bound": 10197,
+      "request_bytes": 6101,
+      "id": "gen-1792299622-1UdADdpY3ffjZvynZJHz",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[{\"subject_id\":\"invoice-export\",\"predicate\":\"MIGRATION_TRACKED_BY\",\"object_id\":\"invoice-migration\",\"value\":null,\"target_service_id\":null,\"quote\":\"invoice-export migration is tracked by invoice-migration\",\"effective_from\":null,\"effective_until\":null,\"observed_at\":null}]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1182,
+        "completion_tokens": 74,
+        "total_tokens": 1256,
+        "cost": 0.000184675,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1179,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000184675,
+          "upstream_inference_prompt_cost": 0.000147675,
+          "upstream_inference_completions_cost": 3.7e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 6,
+      "status_code": 200,
+      "max_output_tokens": 1500,
+      "prompt_token_bound": 10180,
+      "request_bytes": 6084,
+      "id": "gen-1792299624-LcQqBu7sDT9MZiqkJTEC",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[{\"subject_id\":\"invoice-migration\",\"predicate\":\"BLOCKED_BY\",\"object_id\":\"network-approval\",\"value\":null,\"target_service_id\":null,\"quote\":\"invoice-migration is blocked by network-approval\",\"effective_from\":null,\"effective_until\":null,\"observed_at\":null}]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1179,
+        "completion_tokens": 72,
+        "total_tokens": 1251,
+        "cost": 0.0001833,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1176,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0001833,
+          "upstream_inference_prompt_cost": 0.0001473,
+          "upstream_inference_completions_cost": 3.6e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 7,
+      "status_code": 200,
+      "max_output_tokens": 1500,
+      "prompt_token_bound": 10188,
+      "request_bytes": 6092,
+      "id": "gen-1792299626-SUDnB962s8XFZWEQAv93",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[{\"subject_id\":\"invoice-export\",\"predicate\":\"OWNED_BY\",\"object_id\":\"data-platform\",\"value\":null,\"target_service_id\":null,\"quote\":\"assigns invoice-export to data-platform\",\"effective_from\":null,\"effective_until\":null,\"observed_at\":null}]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1180,
+        "completion_tokens": 68,
+        "total_tokens": 1248,
+        "cost": 0.000181425,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1177,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000181425,
+          "upstream_inference_prompt_cost": 0.000147425,
+          "upstream_inference_completions_cost": 3.4e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 8,
+      "status_code": 200,
+      "max_output_tokens": 1500,
+      "prompt_token_bound": 10183,
+      "request_bytes": 6087,
+      "id": "gen-1792299628-ShGsGdvQK2dCalCo2vpq",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[{\"subject_id\":\"report-job\",\"predicate\":\"OWNED_BY\",\"object_id\":\"data-platform\",\"value\":null,\"target_service_id\":null,\"quote\":\"The approved roster assigns report-job to data-platform in production/eu\",\"effective_from\":null,\"effective_until\":null,\"observed_at\":null}]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1179,
+        "completion_tokens": 74,
+        "total_tokens": 1253,
+        "cost": 0.0001843,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1176,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0001843,
+          "upstream_inference_prompt_cost": 0.0001473,
+          "upstream_inference_completions_cost": 3.7e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 9,
+      "status_code": 200,
+      "max_output_tokens": 1500,
+      "prompt_token_bound": 10185,
+      "request_bytes": 6089,
+      "id": "gen-1792299630-OHNsjZW7PKEswn7hfgQn",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[{\"subject_id\":\"network-approval\",\"predicate\":\"OWNED_BY\",\"object_id\":\"security\",\"value\":null,\"target_service_id\":null,\"quote\":\"The approved roster assigns network-approval to security in production/eu.\",\"effective_from\":null,\"effective_until\":null,\"observed_at\":null}]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1179,
+        "completion_tokens": 74,
+        "total_tokens": 1253,
+        "cost": 0.0001843,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1176,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0001843,
+          "upstream_inference_prompt_cost": 0.0001473,
+          "upstream_inference_completions_cost": 3.7e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 10,
+      "status_code": 200,
+      "max_output_tokens": 1500,
+      "prompt_token_bound": 10170,
+      "request_bytes": 6074,
+      "id": "gen-1792299632-R01TiJnSiM7ZG4jGtMFB",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[{\"subject_id\":\"invoice-migration\",\"predicate\":\"STATUS\",\"object_id\":null,\"value\":\"open\",\"target_service_id\":null,\"quote\":\"Ticket invoice-migration is open\",\"effective_from\":null,\"effective_until\":null,\"observed_at\":null}]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1177,
+        "completion_tokens": 65,
+        "total_tokens": 1242,
+        "cost": 0.00017955,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1174,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00017955,
+          "upstream_inference_prompt_cost": 0.00014705,
+          "upstream_inference_completions_cost": 3.25e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 11,
+      "status_code": 200,
+      "max_output_tokens": 1500,
+      "prompt_token_bound": 10167,
+      "request_bytes": 6071,
+      "id": "gen-1792299634-RfSTmY1tit4nRsi8NLmA",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[{\"subject_id\":\"network-approval\",\"predicate\":\"STATUS\",\"object_id\":null,\"value\":\"open\",\"target_service_id\":null,\"quote\":\"Ticket network-approval is open in production/eu.\",\"effective_from\":null,\"effective_until\":null,\"observed_at\":null}]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1176,
+        "completion_tokens": 69,
+        "total_tokens": 1245,
+        "cost": 0.000181425,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1173,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000181425,
+          "upstream_inference_prompt_cost": 0.000146925,
+          "upstream_inference_completions_cost": 3.45e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 12,
+      "status_code": 200,
+      "max_output_tokens": 1500,
+      "prompt_token_bound": 10214,
+      "request_bytes": 6118,
+      "id": "gen-1792299636-7VbUmL4ibWKc3OuBXSW8",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1195,
+        "completion_tokens": 13,
+        "total_tokens": 1208,
+        "cost": 0.0001558,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1192,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0001558,
+          "upstream_inference_prompt_cost": 0.0001493,
+          "upstream_inference_completions_cost": 6.5e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 13,
+      "status_code": 200,
+      "max_output_tokens": 1500,
+      "prompt_token_bound": 10248,
+      "request_bytes": 6152,
+      "id": "gen-1792299639-ILyXiC9o2ok1ibhfNnAS",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1201,
+        "completion_tokens": 13,
+        "total_tokens": 1214,
+        "cost": 0.00015655,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1198,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00015655,
+          "upstream_inference_prompt_cost": 0.00015005,
+          "upstream_inference_completions_cost": 6.5e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 14,
+      "status_code": 200,
+      "max_output_tokens": 1500,
+      "prompt_token_bound": 10381,
+      "request_bytes": 6285,
+      "id": "gen-1792299641-8YWYM8AyLLxQEQ4v7NCL",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[{\"subject_id\":\"temporary-exception\",\"predicate\":\"PERMITS_USE\",\"object_id\":\"invoice-export\",\"value\":null,\"target_service_id\":null,\"quote\":\"invoice-export may continue using its current runner while network approval is outstanding\",\"effective_from\":\"2026-10-01T00:00:00Z\",\"effective_until\":\"2026-11-01T00:00:00Z\",\"observed_at\":null}]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1235,
+        "completion_tokens": 100,
+        "total_tokens": 1335,
+        "cost": 0.0002043,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1232,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0002043,
+          "upstream_inference_prompt_cost": 0.0001543,
+          "upstream_inference_completions_cost": 5e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 15,
+      "status_code": 200,
+      "max_output_tokens": 1500,
+      "prompt_token_bound": 10260,
+      "request_bytes": 6164,
+      "id": "gen-1792299643-gUtwK6FFXjDWjexRRwdS",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[{\"subject_id\":\"invoice-migration\",\"predicate\":\"STATUS\",\"object_id\":null,\"value\":\"complete\",\"target_service_id\":null,\"quote\":\"Ticket invoice-migration claims complete\",\"effective_from\":\"2026-10-16T12:00:00Z\",\"effective_until\":null,\"observed_at\":null}]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1204,
+        "completion_tokens": 77,
+        "total_tokens": 1281,
+        "cost": 0.000188925,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1201,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000188925,
+          "upstream_inference_prompt_cost": 0.000150425,
+          "upstream_inference_completions_cost": 3.85e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 16,
+      "status_code": 200,
+      "max_output_tokens": 1500,
+      "prompt_token_bound": 10216,
+      "request_bytes": 6120,
+      "id": "gen-1792299645-RVLfoxdPFon8jg6rP9Nt",
+      "model": "openai/gpt-6-luna",
+      "choices": [
+        {
+          "index": 0,
+          "logprobs": null,
+          "finish_reason": "stop",
+          "native_finish_reason": "completed",
+          "message": {
+            "role": "assistant",
+            "content": "{\"assertions\":[]}",
+            "refusal": null,
+            "reasoning": null
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 1184,
+        "completion_tokens": 13,
+        "total_tokens": 1197,
+        "cost": 0.000154425,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 1181,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.000154425,
+          "upstream_inference_prompt_cost": 0.000147925,
+          "upstream_inference_completions_cost": 6.5e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      }
+    },
+    {
+      "sequence": 17,
+      "status_code": 404,
+      "max_output_tokens": 1500,
+      "prompt_token_bound": 9162,
+      "request_bytes": 5066,
+      "error": {
+        "message": "No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/guides/routing/provider-selection",
+        "code": 404,
+        "metadata": {
+          "routing_funnel": [
+            {
+              "step": "Initial Endpoints",
+              "endpoint_count": 7
+            },
+            {
+              "step": "Filter by Regional Surcharge",
+              "endpoint_count": 4
+            },
+            {
+              "step": "Filter by Tier Endpoint Rows",
+              "endpoint_count": 2,
+              "reason": "Excluded tier endpoint rows the request did not opt into"
+            },
+            {
+              "step": "Filter by Allowed Providers",
+              "endpoint_count": 1,
+              "reason": "not in your request's provider.only preference"
+            }
+          ],
+          "failed_routing_step": "Filter by Parameters"
+        }
+      }
+    }
+  ],
+  "raw_pipeline": {
+    "revision": "c064686f3d283410c6db761bee9d841256242ed688316ce2284baab0d076ea8c",
+    "approved": 0,
+    "proposals": 9,
+    "assessment": {
+      "service_id": "legacy-runner",
+      "scope": {
+        "environment": "production",
+        "region": "eu"
+      },
+      "planned_at": "2026-10-17T12:00:00+00:00",
+      "known_at": "2026-10-17T12:00:00+00:00",
+      "graph_revision": "c064686f3d283410c6db761bee9d841256242ed688316ce2284baab0d076ea8c",
+      "disposition": "needs_verification",
+      "affected_workflows": [],
+      "dependency_paths": [],
+      "blockers": [],
+      "conflicts": [],
+      "owners": [],
+      "decisions": [],
+      "coverage": {
+        "gaps": [
+          "consumer verification missing or stale: invoice-export",
+          "consumer verification missing or stale: report-job"
+        ],
+        "truncated": false,
+        "inventory_source": "inventory-initial@1",
+        "declared_consumer_count": 2
+      },
+      "evidence": []
+    }
+  },
+  "error": "cost ledger halted during comparison"
+}

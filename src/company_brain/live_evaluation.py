@@ -65,6 +65,28 @@ def checked_final(body):
         raise OpenRouterError('smoke output malformed or incomplete') from None
 
 
+def archive_report(output):
+    """Keep prior evidence byte-for-byte before another authorized run."""
+    if not output.exists(): return None
+    for number in range(1,10000):
+        archive=output.with_name(f'{output.stem}-archive-{number}{output.suffix}')
+        try:
+            with archive.open('x') as target: target.write(output.read_text())
+            return archive.name
+        except FileExistsError: continue
+    raise OpenRouterError('report archive slots exhausted')
+
+
+def resume_comparison(previous,archive):
+    if previous.get('model')!=LUNA_MODEL or not previous.get('smoke',{}).get('passed'):
+        raise OpenRouterError('comparison resume requires a successful same-model smoke report')
+    report=dict(previous)
+    report.pop('error',None)
+    report.update(status='not_started',evaluations=[],protocol_revision='native-function-calls-v3',
+                  previous_protocol_attempt=archive)
+    return report
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--execute-approved-usd3',action='store_true',required=True)
@@ -81,12 +103,9 @@ def main():
             'limits':'Small synthetic run; no customer or production validation; native OpenRouter function-call harness over read-only tools, not an external MCP client UI.'}
     if args.comparison_only:
         previous=json.loads(output.read_text())
-        if previous.get('model')!=LUNA_MODEL or not previous.get('smoke',{}).get('passed'):
-            raise OpenRouterError('comparison resume requires a successful same-model smoke report')
-        report=previous
-        report['evaluations']=[]
-        report['protocol_revision']='native-function-calls-v3'
-        report['previous_protocol_attempt']='live-openrouter-attempt1.json'
+        report=resume_comparison(previous,archive_report(output))
+    else:
+        archive_report(output)
     database=None
     session=None
     ledger=SpendLedger(root/'.local/openrouter-budget.json')

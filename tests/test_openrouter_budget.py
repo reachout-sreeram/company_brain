@@ -218,3 +218,23 @@ def test_free_text_multiple_actions_are_rejected_not_silently_salvaged():
     client=OpenRouterEvaluationClient(session(lambda _:response({'tool':'search_records','arguments':{}})))
     with pytest.raises(OpenRouterError,match='native function'):
         client.step(model=LUNA_MODEL,temperature=None,max_output_tokens=200,messages=MESSAGES,tools=[])
+
+
+def test_comparison_resume_archives_evidence_and_clears_only_current_errors(tmp_path):
+    from company_brain.live_evaluation import archive_report,resume_comparison
+    previous={'model':LUNA_MODEL,'smoke':{'passed':True},'status':'stopped',
+              'error':'old failure','evaluations':[{'case':'old'}],'extraction':[{'status':'validated'}]}
+    output=tmp_path/'report.json'
+    original=json.dumps(previous,indent=2)
+    output.write_text(original)
+    first=archive_report(output)
+    second=archive_report(output)
+    assert first!=second
+    assert (tmp_path/first).read_text()==original
+    resumed=resume_comparison(previous,first)
+    assert resumed['status']=='not_started' and 'error' not in resumed
+    assert resumed['evaluations']==[] and resumed['extraction']==previous['extraction']
+    assert resumed['previous_protocol_attempt']==first
+    assert previous['error']=='old failure' and len(previous['evaluations'])==1
+    with pytest.raises(OpenRouterError,match='same-model smoke'):
+        resume_comparison({**previous,'model':'another-model'},first)
