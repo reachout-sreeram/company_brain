@@ -6,7 +6,143 @@ Company Brain connects these records in **real FalkorDB**, then returns a determ
 
 The synthetic Lumora story follows **monthly billing → invoice export → legacy runner**. Invoice migration is blocked by network approval. Data Platform owns the export; Security owns the approval. A temporary exception permits continued use until **2026-11-01T00:00:00Z (exclusive)**. Permission to keep using a service does not prove migration or authorize retirement.
 
-## See the graph
+## Graph map
+
+Everything the brain knows lives in FalkorDB as a typed property graph. There are two layers: a readable **current graph** of business entities and their relationships, and an **evidence layer** that records where every relationship came from.
+
+### Schema
+
+```mermaid
+flowchart LR
+    W[Workflow] -->|REQUIRES| J[Job]
+    J -->|RUNS_ON / DEPENDS_ON| S[Service]
+    J -->|MIGRATION_TRACKED_BY| T[MigrationTask]
+    T -->|BLOCKED_BY| T2[MigrationTask]
+    J -->|OWNED_BY| Team[Team / Person]
+    T2 -->|OWNED_BY| Team
+    D[Decision] -->|PERMITS_USE| J
+
+    A((Assertion)) -.->|SUBJECT / OBJECT| J
+    A -.->|EVIDENCE| Src[Source version]
+    A -.->|SUPERSEDES| A0((older Assertion))
+    R[ProposalReview] -.->|APPROVES| A
+```
+
+| Node label | What it is |
+|---|---|
+| `CurrentEntity` | The live view of a service, job, workflow, team, migration task or decision. The previous view is relabeled `HistoricalEntity`, so nothing is lost |
+| `Assertion` | One fact (e.g. "invoice-export RUNS_ON legacy-runner") with status, scope, validity interval, observation time and visibility |
+| `Source` | An immutable record version (ticket, config observation, decision record, chat) with content hash and quoted span |
+| `Revision` / `Meta` | Immutable graph revisions; `Meta` points at the current head, published with compare-and-set |
+| `ProposalReview` | An operator's approval of selected extracted facts, with actor, time and digests |
+
+| Relationship | Meaning |
+|---|---|
+| `REQUIRES` | A workflow needs a job to function |
+| `RUNS_ON`, `DEPENDS_ON` | Runtime usage, observed at a known time; goes stale after 7 days |
+| `MIGRATION_TRACKED_BY`, `BLOCKED_BY` | Migration work and what blocks it |
+| `OWNED_BY` | Accountable team or person |
+| `PERMITS_USE` | A dated exception that allows continued use. It is permission, not proof of usage |
+| `SUBJECT`, `OBJECT`, `EVIDENCE` | Link each fact to its entities and its source |
+| `SUPERSEDES` | A newer approved fact replaces an older one, without deleting history |
+
+Every business edge carries an `assertion_id`, so any line in an answer can be traced back to the exact source record and quote.
+
+### The demo graph (initial state)
+
+The synthetic Lumora graph that the four-state demo starts from. Edge labels show the `assertion_id` each edge carries.
+
+```mermaid
+flowchart RL
+    billing[monthly-billing<br/>Workflow] -->|REQUIRES<br/>requires-billing-invoice| invoice[invoice-export<br/>Job]
+    reporting[monthly-reporting<br/>Workflow] -->|REQUIRES<br/>requires-reporting-report| report[report-job<br/>Job]
+    invoice -->|RUNS_ON<br/>run-invoice-legacy| legacy[(legacy-runner<br/>Service)]
+    report -->|RUNS_ON<br/>run-report-legacy| legacy
+    invoice -->|MIGRATION_TRACKED_BY| mig[invoice-migration<br/>MigrationTask: open]
+    mig -->|BLOCKED_BY| net[network-approval<br/>MigrationTask: open]
+    invoice -->|OWNED_BY| dp[data-platform<br/>Team]
+    report -->|OWNED_BY| dp
+    net -->|OWNED_BY| sec[security<br/>Team]
+    exc[temporary-exception<br/>Decision] -->|PERMITS_USE<br/>until 2026-11-01| invoice
+```
+
+## The graph doing the work
+
+The question is "can we retire `legacy-runner`?". Nobody lists the answer anywhere; it only exists as paths through the graph. The outputs below are copied from a real run: FalkorDBLite 0.10.0 (FalkorDB 4.18.3), `data/synthetic/initial.json` ingested, revision `82d41f66…`.
+
+**1. Walk backwards from the service to everything that depends on it**
+
+```cypher
+MATCH p=(c:CurrentEntity)-[:RUNS_ON|DEPENDS_ON|REQUIRES*1..8]->(:CurrentEntity {id:'legacy-runner'})
+RETURN [n IN nodes(p) | n.id] AS path, [r IN relationships(p) | r.assertion_id] AS evidence, length(p) AS hops
+ORDER BY hops DESC
+```
+
+```text
+['monthly-reporting', 'report-job', 'legacy-runner']    ['requires-reporting-report', 'run-report-legacy']  2
+['monthly-billing', 'invoice-export', 'legacy-runner']  ['requires-billing-invoice', 'run-invoice-legacy']  2
+['report-job', 'legacy-runner']                         ['run-report-legacy']                               1
+['invoice-export', 'legacy-runner']                     ['run-invoice-legacy']                              1
+```
+
+No record says "billing depends on legacy-runner". That fact only appears by joining a catalog record (billing requires invoice export) with a runtime observation (invoice export runs on legacy-runner). The graph does that join.
+
+**2. Follow each consumer to its blockers and who owns them**
+
+```cypher
+MATCH (job:CurrentEntity)-[:RUNS_ON]->(:CurrentEntity {id:'legacy-runner'})
+MATCH (job)-[:MIGRATION_TRACKED_BY]->(task)-[:BLOCKED_BY*0..3]->(blocker)
+OPTIONAL MATCH (blocker)-[:OWNED_BY]->(owner)
+RETURN job.id, task.id, blocker.id, owner.id
+```
+
+```text
+invoice-export  invoice-migration  network-approval   security
+invoice-export  invoice-migration  invoice-migration  null      <- owner gap, reported as a coverage gap
+```
+
+**3. Find exceptions that touch those consumers**
+
+```cypher
+MATCH (d:CurrentEntity)-[e:PERMITS_USE]->(job:CurrentEntity) RETURN d.id, job.id, e.assertion_id
+```
+
+```text
+temporary-exception  invoice-export  permits-invoice
+```
+
+**4. The production query.** `assess_retirement` runs one bounded Cypher statement (shown in full under [Exact main Cypher](#exact-main-cypher)). Before traversing, it filters every assertion inside FalkorDB on approval status, scope, validity interval, knowledge time, revocation, caller visibility and transitive supersession (`SUPERSEDES*1..16`). It then returns the dependency and blocker paths in the same query. Python applies the policy (freshness, conflicts, inventory coverage) to those rows. Python does not traverse.
+
+**5. New evidence changes the graph, and the answer follows.** Same question, same scope and time, real output after each ingest:
+
+| Ingested | Verdict | Affected workflows | What the graph saw |
+|---|---|---|---|
+| `initial.json` | `blocked` | billing, reporting | Two paths into legacy-runner; migration blocked by network approval (Security) |
+| `completion.json` | `blocked` | billing, reporting | The ticket claims complete as of 16 Oct, but the runtime observation of invoice-export on legacy-runner is from 17 Oct, which is newer. Conflicts `completion_vs_usage` and `task_status_conflict` are raised; the path stays |
+| `migration.json` | `needs_verification` | reporting | A verified observation of invoice-export on runner-v2 supersedes `run-invoice-legacy`, and both tickets are verified complete. The billing path disappears from query 1 |
+| `clear.json` | `no_known_blockers` | none | Fresh, target-scoped verification of report-job closes the last gap in the declared inventory |
+
+After `migration.json`, query 1 returns only:
+
+```text
+['monthly-reporting', 'report-job', 'legacy-runner']  ['requires-reporting-report', 'run-report-legacy']  2
+['report-job', 'legacy-runner']                       ['run-report-legacy']                               1
+```
+
+**6. Graph tools compared with searching the same records.** The same model (`openai/gpt-6-luna`) got the same records and budgets six times. With our graph tools it gave the right verdict 6/6 times, using 2–6 tool calls per case. Reading and searching the records directly, it got 4/6, using 11–12 tool calls per case, and missed the migration and clear states. This is a small known synthetic set, not a general benchmark. [Full report](evals/results/final-stage7-2026-10-18/README.md).
+
+Reproduce the outputs above:
+
+```sh
+export COMPANY_BRAIN_LITE_PATH="$PWD/.local/readme.rdb" COMPANY_BRAIN_GRAPH=company_brain_demo_readme COMPANY_BRAIN_KNOWN_AT=2026-10-17T12:00:00Z
+.venv/bin/company-brain ingest data/synthetic/initial.json
+.venv/bin/company-brain assess legacy-runner --environment production --region eu --planned-at 2026-10-17T12:00:00Z --known-at 2026-10-17T12:00:00Z
+# then ingest completion.json, migration.json, clear.json and assess again
+```
+
+Queries 1–3 can be pasted into FalkorDB Browser or run with `GRAPH.RO_QUERY company_brain_demo_readme "<query>"`.
+
+## Architecture
 
 ![Current architecture diagram](presentation-assets/company-brain-architecture-current/company-brain-current-architecture.svg)
 
