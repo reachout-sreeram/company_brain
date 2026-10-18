@@ -1,5 +1,7 @@
 # Retrieval and exact-reference corrections — 18 October 2026
 
+> Independent review identified an introduced comparison-policy confound in this historical v4.1 cohort: shared instructions required assess_retirement even for search, which lacks that tool. Search clear-state explicitly relied on this unavailable requirement and falsely claimed exhaustion after 10/12 calls. Original raw bytes and scores remain unchanged. Treat this cohort as confounded; it cannot support a fair graph/search advantage claim. The separately recorded v4.2 correction removes the requirement from search.
+
 The requested defects are corrected in the harness and measured separately from the [original v3 results](../live-2026-10-18/README.md). This is a small, known synthetic evaluation, not a benchmark advantage, external MCP client validation, or framework acceptance.
 
 ## Changes and evidence

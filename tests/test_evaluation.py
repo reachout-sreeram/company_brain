@@ -330,3 +330,74 @@ def test_both_arms_receive_actual_remaining_budget_and_finish_at_zero(arm):
             return {'final':empty_answer()}
     result=run_arm(Client(),Experiment('scripted/offline',max_tool_calls=1),toolbox(),arm,'q',NOW)
     assert result['status']=='completed' and result['tool_calls']==1
+
+
+@pytest.mark.parametrize('arm',['graph','search'])
+def test_policy_and_remaining_budget_only_require_available_arm_tools(arm):
+    from company_brain.evaluation import policy_for
+    class Client:
+        execution_label='scripted arm-policy probe'
+        def step(self,**kwargs):
+            policy=kwargs['messages'][0]['content']
+            assert policy==policy_for(arm)
+            if arm=='search':
+                assert 'Derive the retirement disposition directly' in policy
+                assert 'no consolidated assessment action is required' in policy
+                for name in ('assess_retirement','find_entities','get_history','get_evidence'):
+                    assert name not in policy
+            else:
+                assert 'call assess_retirement' in policy
+                assert 'Preserve its disposition' in policy
+            if len(kwargs['messages'])==2:
+                return {'tool':'find_entities' if arm=='graph' else 'search_records','arguments':{'query':'legacy-runner'}}
+            budget=json.loads(kwargs['messages'][-1]['content'])['host_budget']
+            assert budget['used_data_tool_calls']==1 and budget['remaining_data_tool_calls']==11
+            assert budget['data_tool_budget_exhausted'] is False
+            assert ('assess_retirement' in budget['instruction'])==(arm=='graph')
+            return {'final':empty_answer()}
+    result=run_arm(Client(),Experiment('scripted/offline'),toolbox(),arm,'q',NOW)
+    assert result['status']=='completed' and result['remaining_data_tool_calls']==11
+    assert result['data_tool_budget_exhausted'] is False
+
+
+def test_search_derives_supported_blocked_verdict_without_graph_assessment():
+    class Client:
+        execution_label='scripted same-record verdict'
+        def step(self,**kwargs):
+            if len(kwargs['messages'])==2:
+                return {'tool':'read_record','arguments':{'source_key':'source-run-invoice-legacy@1'}}
+            row=json.loads(kwargs['messages'][-1]['content'])['record']['assertions'][0]
+            assert row['predicate']=='RUNS_ON' and datetime.fromisoformat(row['observed_at'])<=NOW
+            answer=empty_answer('blocked')
+            answer.update(blocker_entities=[row['subject_id']],evidence_ids=[row['id']],
+                          source_references=[{'assertion_id':row['id'],'source_key':row['source_id']+'@'+row['source_version']}])
+            return {'final':answer}
+    result=run_arm(Client(),Experiment('scripted/offline'),toolbox(),'search','q',NOW)
+    assert result['status']=='completed' and result['answer']['disposition']=='blocked'
+    assert result['tool_calls']==1 and not result['final_attempts']
+
+
+@pytest.mark.parametrize('arm',['graph','search'])
+def test_false_budget_exhaustion_is_rejected_with_actual_remaining_calls(arm):
+    class Client:
+        execution_label='scripted false budget claim'
+        def step(self,**kwargs):
+            if len(kwargs['messages'])==2:
+                return {'final':{**empty_answer(),'gaps':['Data-tool budget is exhausted before more evidence could be read.']}}
+            errors=json.loads(kwargs['messages'][-1]['content'])['validation_errors']
+            assert errors==[{'code':'false_budget_exhaustion','field':'gaps','used_data_tool_calls':0,
+                            'remaining_data_tool_calls':12,'message':'Calls remain. Describe missing evidence or voluntary stopping accurately, not budget exhaustion.'}]
+            return {'final':empty_answer()}
+    result=run_arm(Client(),Experiment('scripted/offline'),toolbox(),arm,'q',NOW)
+    assert result['status']=='completed' and len(result['final_attempts'])==1
+    assert result['remaining_data_tool_calls']==12 and result['tool_calls']==0
+
+
+def test_budget_guard_reproduces_reviewed_ten_of_twelve_claim_without_changing_scores():
+    from company_brain.evaluation import budget_claim_errors
+    answer={**empty_answer(),'gaps':['Data-tool budget is exhausted before retirement assessment.'],
+            'explanation':'The remaining data budget was exhausted before more evidence could be read.'}
+    assert {e['field'] for e in budget_claim_errors(answer,10,12)}=={'gaps','explanation'}
+    assert all(e['remaining_data_tool_calls']==2 for e in budget_claim_errors(answer,10,12))
+    assert budget_claim_errors(answer,12,12)==[]
+    assert budget_claim_errors({**empty_answer(),'explanation':'The budget is not exhausted; evidence is incomplete.'},10,12)==[]

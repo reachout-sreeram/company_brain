@@ -14,7 +14,7 @@ import subprocess
 from time import perf_counter
 
 from .assessment import Brain
-from .evaluation import Experiment,Toolbox,run_arm,score_answer,score_narrative
+from .evaluation import Experiment,Toolbox,run_arm,score_answer,score_narrative,policy_for
 from .extraction import RawSource,OpenRouterExtractor,ExtractionError,raw_source
 from .ingestion import extract_bundle
 from .models import Bundle,Scope
@@ -23,7 +23,7 @@ from .openrouter import (LUNA_MODEL,OpenRouterConfig,OpenRouterError,OpenRouterS
 from .store import FalkorStore,StoreUnavailable
 
 GRAPH='company_brain_demo_live_evaluation'
-PROTOCOL_REVISION='native-function-calls-v4.1-budget-aware-references'
+PROTOCOL_REVISION='native-function-calls-v4.2-arm-specific-policy'
 CASES=('initial','completion','migration','clear','invoice-owner-rationale','network-slip-billing')
 
 
@@ -111,6 +111,7 @@ def main():
     else:
         archive_report(output)
     report['selected_cases']=list(dict.fromkeys(args.cases or CASES))
+    report['arm_policies']={arm:policy_for(arm) for arm in ('graph','search')}
     report['implementation_commit']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()
     report['comparison_controls']={'output_tokens':1500,'turns':20,'tool_calls':12,'context_bytes':65536,
         'max_empty_retries':2,'max_final_repairs':2,'temperature':None,'reasoning_effort':'none'}

@@ -271,7 +271,7 @@ def native_tools(descriptions):
             'strict':True,'parameters':{'type':'object','properties':props,'required':list(props),'additionalProperties':False}}})
     from .evaluation import FinalAnswer
     result.append({'type':'function','function':{'name':'finish_answer',
-        'description':'Return the final answer for local validation. Use exact retrieved IDs, separate source_references, preserve assessment disposition, and resolve empty lookups within retry budgets. Put prose only in explanation/gaps/conflicts.',
+        'description':'Return the final answer for local validation. Use exact retrieved IDs, separate source_references, preserve any disposition actually returned by a tool, otherwise derive your verdict from retrieved records for this arm, and resolve empty lookups within retry budgets. Put prose only in explanation/gaps/conflicts.',
         'strict':True,'parameters':FinalAnswer.model_json_schema()}})
     return result
 
