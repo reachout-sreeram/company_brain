@@ -1,0 +1,148 @@
+{
+  "service_id": "legacy-runner",
+  "scope": {
+    "environment": "production",
+    "region": "eu"
+  },
+  "planned_at": "2026-10-18T06:48:16.904275+00:00",
+  "known_at": "2026-10-18T06:48:16.904275+00:00",
+  "graph_revision": "41bb695c873ee9d21ee7eac86ef5020a3e2c42bdc5a94b125aa8be530eb0046b",
+  "disposition": "blocked",
+  "affected_workflows": [
+    "monthly-billing"
+  ],
+  "dependency_paths": [
+    {
+      "consumer_id": "invoice-export",
+      "assertion_ids": [
+        "approved-1012bfbcf67d213a3c8811fd"
+      ],
+      "fresh": true
+    },
+    {
+      "consumer_id": "monthly-billing",
+      "assertion_ids": [
+        "approved-32111ed916a8462e072f8bc7",
+        "approved-1012bfbcf67d213a3c8811fd"
+      ],
+      "fresh": true
+    }
+  ],
+  "blockers": [
+    {
+      "kind": "active_dependency",
+      "assertion_ids": [
+        "approved-1012bfbcf67d213a3c8811fd"
+      ],
+      "entity_id": "invoice-export",
+      "permissions": [
+        {
+          "decision_id": "temporary-exception",
+          "assertion_id": "approved-47df17077454c7f7672e1212",
+          "until": "2026-11-01T00:00:00+00:00"
+        }
+      ]
+    },
+    {
+      "kind": "active_dependency",
+      "assertion_ids": [
+        "approved-32111ed916a8462e072f8bc7"
+      ],
+      "entity_id": "monthly-billing"
+    }
+  ],
+  "conflicts": [],
+  "owners": [
+    {
+      "entity_id": "invoice-export",
+      "owner_id": "data-platform",
+      "assertion_id": "approved-5796a3614138e9c54a3df5b9"
+    }
+  ],
+  "decisions": [
+    {
+      "decision_id": "temporary-exception",
+      "assertion_id": "approved-47df17077454c7f7672e1212",
+      "permits_consumer_id": "invoice-export",
+      "effective_until": "2026-11-01T00:00:00+00:00"
+    }
+  ],
+  "coverage": {
+    "gaps": [
+      "consumer verification missing or stale: report-job"
+    ],
+    "truncated": false,
+    "inventory_source": "inventory-initial@1",
+    "declared_consumer_count": 2
+  },
+  "evidence": [
+    {
+      "assertion_id": "approved-1012bfbcf67d213a3c8811fd",
+      "source_id": "source-run-invoice-legacy",
+      "version": "1",
+      "content_hash": "f7ba313ca82d636d8324f27164eb792ec62892c385f641e8198b47d9924a7a68",
+      "span_start": 48,
+      "span_end": 101,
+      "quote": "invoice-export runs on legacy-runner in production/eu",
+      "method": "extracted",
+      "time_basis": "observed",
+      "effective_from": "2026-10-17T09:00:00+00:00",
+      "effective_until": null,
+      "approval_id": "review-24fcc90b59157bfd1611712b",
+      "approval_kind": "demonstration",
+      "approved_at": "2026-10-18T06:48:16.904275+00:00",
+      "observed_at": "2026-10-17T09:00:00+00:00"
+    },
+    {
+      "assertion_id": "approved-32111ed916a8462e072f8bc7",
+      "source_id": "source-requires-billing-invoice",
+      "version": "2",
+      "content_hash": "d1fadec993e57b1f9449bdfa3ed93e99f65836bf5093f11b56ee907064869ef9",
+      "span_start": 0,
+      "span_end": 57,
+      "quote": "Monthly billing requires invoice-export in production/eu.",
+      "method": "extracted",
+      "time_basis": "validity",
+      "effective_from": "2026-10-17T10:00:00+00:00",
+      "effective_until": null,
+      "approval_id": "review-24fcc90b59157bfd1611712b",
+      "approval_kind": "demonstration",
+      "approved_at": "2026-10-18T06:48:16.904275+00:00",
+      "observed_at": null
+    },
+    {
+      "assertion_id": "approved-47df17077454c7f7672e1212",
+      "source_id": "source-permits-invoice",
+      "version": "1",
+      "content_hash": "952d154fd75eda9b256e8cb93409ccc15ce8f3f356390a4d3ee0412355c429fc",
+      "span_start": 112,
+      "span_end": 202,
+      "quote": "invoice-export may continue using its current runner while network approval is outstanding",
+      "method": "extracted",
+      "time_basis": "observed",
+      "effective_from": "2026-10-01T00:00:00+00:00",
+      "effective_until": "2026-11-01T00:00:00+00:00",
+      "approval_id": "review-24fcc90b59157bfd1611712b",
+      "approval_kind": "demonstration",
+      "approved_at": "2026-10-18T06:48:16.904275+00:00",
+      "observed_at": null
+    },
+    {
+      "assertion_id": "approved-5796a3614138e9c54a3df5b9",
+      "source_id": "source-owns-invoice",
+      "version": "1",
+      "content_hash": "abe5b4542ad8ee5a07f325187ff744734a7862bfabc363bdc3c58a8bbf13210f",
+      "span_start": 0,
+      "span_end": 77,
+      "quote": "The approved roster assigns invoice-export to data-platform in production/eu.",
+      "method": "extracted",
+      "time_basis": "observed",
+      "effective_from": "2026-10-17T10:00:00+00:00",
+      "effective_until": null,
+      "approval_id": "review-24fcc90b59157bfd1611712b",
+      "approval_kind": "demonstration",
+      "approved_at": "2026-10-18T06:48:16.904275+00:00",
+      "observed_at": null
+    }
+  ]
+}

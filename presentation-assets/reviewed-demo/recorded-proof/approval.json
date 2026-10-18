@@ -1,0 +1,38 @@
+{
+  "output": "/Users/sakethsreeram/Downloads/hackathons/falkordb_hackathon/company-brain/.local/reviewed-demo-proof/reviewed.json",
+  "review": {
+    "id": "review-24fcc90b59157bfd1611712b",
+    "actor": "demo:synthetic-source-validation",
+    "actor_kind": "demonstration",
+    "reviewed_at": "2026-10-18T06:48:16.904275Z",
+    "input_revision": "6015beebb2f52e59a1f4bb00d77a91bfc3e8395e9de5c6d7f5c2a9a533d83f13",
+    "selections": [
+      {
+        "proposal_id": "extract-1f030345bfd89a795d1be50c",
+        "approved_id": "approved-47df17077454c7f7672e1212",
+        "source_key": "source-permits-invoice@1",
+        "claim_digest": "408477b95852ba9ad7c4a80eb77ed08cae950f2ff28d256e02636f262560bdc2"
+      },
+      {
+        "proposal_id": "extract-82af5c14e512875540990c30",
+        "approved_id": "approved-5796a3614138e9c54a3df5b9",
+        "source_key": "source-owns-invoice@1",
+        "claim_digest": "6fda1e667736cbf91d66f37a010fdca4852b19be6b2b2a2ca3eb3d51060ca50a"
+      },
+      {
+        "proposal_id": "extract-e1439acc053738b33e07aeb4",
+        "approved_id": "approved-1012bfbcf67d213a3c8811fd",
+        "source_key": "source-run-invoice-legacy@1",
+        "claim_digest": "4eaf5249a4bd03be47ab8617ffea1b86dc84373476baa157d1836867d94b73e3"
+      },
+      {
+        "proposal_id": "extract-ed1de0ddfaf3e889e164c98b",
+        "approved_id": "approved-32111ed916a8462e072f8bc7",
+        "source_key": "source-requires-billing-invoice@2",
+        "claim_digest": "c3bc5b6f8e1884172a576fcd5a7cc2de4b28fc9f45441aab829247bdff27252e"
+      }
+    ],
+    "note": "Synthetic demonstration, not a real human approval: manually checked these four exact candidates against full source/version, quote/span, subject/object and production/eu scope. Runtime observation is explicitly 17 October 09:00 UTC; the version-2 billing prerequisite uses declared validity, not an invented observation. Roster assigns invoice-export to data-platform. Decision permits use from 1 October until 1 November exclusively. Remaining proposals are deliberately unapproved; missing extraction facts are not invented."
+  },
+  "revision": "41bb695c873ee9d21ee7eac86ef5020a3e2c42bdc5a94b125aa8be530eb0046b"
+}

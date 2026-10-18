@@ -1,0 +1,142 @@
+{
+  "status": "passed",
+  "paid_calls": 0,
+  "review_kind": "demonstration; not human acceptance",
+  "selected_proposals": [
+    "extract-e1439acc053738b33e07aeb4",
+    "extract-ed1de0ddfaf3e889e164c98b",
+    "extract-82af5c14e512875540990c30",
+    "extract-1f030345bfd89a795d1be50c"
+  ],
+  "review_id": "review-4f686d4fae0d95f21f5e336c",
+  "reviewed_at": "2026-10-18T06:50:57.206074+00:00",
+  "before_revision": "6015beebb2f52e59a1f4bb00d77a91bfc3e8395e9de5c6d7f5c2a9a533d83f13",
+  "after_revision": "5f7340f33f844352572ea9d7b50c549a52be02f8c9e0eb55f2467d83146dece4",
+  "before_disposition": "needs_verification",
+  "after_disposition": "blocked",
+  "earlier_knowledge_disposition": "needs_verification",
+  "unapproved_proposals_retained": 7,
+  "commands": [
+    {
+      "step": "candidates",
+      "argv": [
+        "-m",
+        "company_brain.cli",
+        "proposals",
+        "/Users/sakethsreeram/Downloads/hackathons/falkordb_hackathon/company-brain/presentation-assets/reviewed-demo/pending.json"
+      ],
+      "result": "candidates.json"
+    },
+    {
+      "step": "ingest-pending",
+      "argv": [
+        "-m",
+        "company_brain.cli",
+        "ingest",
+        "/Users/sakethsreeram/Downloads/hackathons/falkordb_hackathon/company-brain/presentation-assets/reviewed-demo/pending.json"
+      ],
+      "result": "ingest-pending.json"
+    },
+    {
+      "step": "before",
+      "argv": [
+        "-m",
+        "company_brain.cli",
+        "assess",
+        "legacy-runner",
+        "--environment",
+        "production",
+        "--region",
+        "eu",
+        "--planned-at",
+        "2026-10-18T06:50:57.206074+00:00",
+        "--known-at",
+        "2026-10-18T06:50:57.206074+00:00"
+      ],
+      "result": "before.json"
+    },
+    {
+      "step": "approval",
+      "argv": [
+        "-m",
+        "company_brain.cli",
+        "approve-proposals",
+        "/Users/sakethsreeram/Downloads/hackathons/falkordb_hackathon/company-brain/presentation-assets/reviewed-demo/pending.json",
+        "--proposal",
+        "extract-e1439acc053738b33e07aeb4",
+        "--proposal",
+        "extract-ed1de0ddfaf3e889e164c98b",
+        "--proposal",
+        "extract-82af5c14e512875540990c30",
+        "--proposal",
+        "extract-1f030345bfd89a795d1be50c",
+        "--actor",
+        "demo:synthetic-source-validation",
+        "--demonstration",
+        "--reviewed-at",
+        "2026-10-18T06:50:57.206074+00:00",
+        "--note",
+        "Synthetic demonstration, not a real human approval: manually checked these four exact candidates against full source/version, quote/span, subject/object and production/eu scope. Runtime observation is explicitly 17 October 09:00 UTC; the version-2 billing prerequisite uses declared validity, not an invented observation. Roster assigns invoice-export to data-platform. Decision permits use from 1 October until 1 November exclusively. Remaining proposals are deliberately unapproved; missing extraction facts are not invented.",
+        "--output",
+        "/Users/sakethsreeram/Downloads/hackathons/falkordb_hackathon/company-brain/.local/reviewed-demo-handoff-check/reviewed.json"
+      ],
+      "result": "approval.json"
+    },
+    {
+      "step": "review-history",
+      "argv": [
+        "-m",
+        "company_brain.cli",
+        "review-history",
+        "/Users/sakethsreeram/Downloads/hackathons/falkordb_hackathon/company-brain/.local/reviewed-demo-handoff-check/reviewed.json"
+      ],
+      "result": "review-history.json"
+    },
+    {
+      "step": "ingest-reviewed",
+      "argv": [
+        "-m",
+        "company_brain.cli",
+        "ingest",
+        "/Users/sakethsreeram/Downloads/hackathons/falkordb_hackathon/company-brain/.local/reviewed-demo-handoff-check/reviewed.json"
+      ],
+      "result": "ingest-reviewed.json"
+    },
+    {
+      "step": "after",
+      "argv": [
+        "-m",
+        "company_brain.cli",
+        "assess",
+        "legacy-runner",
+        "--environment",
+        "production",
+        "--region",
+        "eu",
+        "--planned-at",
+        "2026-10-18T06:50:57.206074+00:00",
+        "--known-at",
+        "2026-10-18T06:50:57.206074+00:00"
+      ],
+      "result": "after.json"
+    },
+    {
+      "step": "before-review-knowledge",
+      "argv": [
+        "-m",
+        "company_brain.cli",
+        "assess",
+        "legacy-runner",
+        "--environment",
+        "production",
+        "--region",
+        "eu",
+        "--planned-at",
+        "2026-10-18T06:50:57.206074+00:00",
+        "--known-at",
+        "2026-10-18T06:50:57.206073+00:00"
+      ],
+      "result": "before-review-knowledge.json"
+    }
+  ]
+}

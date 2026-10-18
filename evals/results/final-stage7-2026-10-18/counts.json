@@ -1,0 +1,467 @@
+{
+  "implementation_commit": "985f0c7c554d748c50cfb1f9187938ec9330e6d9",
+  "protocol": "native-function-calls-v5-fidelity-reviewed-validity",
+  "arms": [
+    {
+      "case": "initial",
+      "arm": "graph",
+      "status": "completed",
+      "disposition": "blocked",
+      "tool_calls": 2,
+      "remaining_data_tool_calls": 10,
+      "context_bytes": 15406,
+      "latency_ms": 10026.32333303336,
+      "counts": {
+        "disposition_correct": true,
+        "required_workflows": 1,
+        "correct_workflows": 1,
+        "unsupported_evidence": 0,
+        "gap_handling_correct": true
+      },
+      "rejected_finals": 0,
+      "rejection_codes": {}
+    },
+    {
+      "case": "initial",
+      "arm": "search",
+      "status": "completed",
+      "disposition": "blocked",
+      "tool_calls": 12,
+      "remaining_data_tool_calls": 0,
+      "context_bytes": 25839,
+      "latency_ms": 32577.406083000824,
+      "counts": {
+        "disposition_correct": true,
+        "required_workflows": 1,
+        "correct_workflows": 1,
+        "unsupported_evidence": 0,
+        "gap_handling_correct": true
+      },
+      "rejected_finals": 1,
+      "rejection_codes": {
+        "entity_kind": 2,
+        "unsupported_finding_role": 3
+      }
+    },
+    {
+      "case": "completion",
+      "arm": "search",
+      "status": "completed",
+      "disposition": "blocked",
+      "tool_calls": 12,
+      "remaining_data_tool_calls": 0,
+      "context_bytes": 27177,
+      "latency_ms": 33978.78116706852,
+      "counts": {
+        "disposition_correct": true,
+        "required_workflows": 1,
+        "correct_workflows": 0,
+        "unsupported_evidence": 0,
+        "gap_handling_correct": true
+      },
+      "rejected_finals": 1,
+      "rejection_codes": {
+        "unretrieved_entity": 1,
+        "unsupported_finding_role": 1
+      }
+    },
+    {
+      "case": "completion",
+      "arm": "graph",
+      "status": "completed",
+      "disposition": "blocked",
+      "tool_calls": 2,
+      "remaining_data_tool_calls": 10,
+      "context_bytes": 16472,
+      "latency_ms": 9702.088874997571,
+      "counts": {
+        "disposition_correct": true,
+        "required_workflows": 1,
+        "correct_workflows": 1,
+        "unsupported_evidence": 0,
+        "gap_handling_correct": true
+      },
+      "rejected_finals": 0,
+      "rejection_codes": {}
+    },
+    {
+      "case": "migration",
+      "arm": "graph",
+      "status": "completed",
+      "disposition": "needs_verification",
+      "tool_calls": 4,
+      "remaining_data_tool_calls": 8,
+      "context_bytes": 13821,
+      "latency_ms": 13029.181875055656,
+      "counts": {
+        "disposition_correct": true,
+        "required_workflows": 0,
+        "correct_workflows": 0,
+        "unsupported_evidence": 0,
+        "gap_handling_correct": true
+      },
+      "rejected_finals": 0,
+      "rejection_codes": {}
+    },
+    {
+      "case": "migration",
+      "arm": "search",
+      "status": "completed",
+      "disposition": "blocked",
+      "tool_calls": 12,
+      "remaining_data_tool_calls": 0,
+      "context_bytes": 25377,
+      "latency_ms": 27908.67600007914,
+      "counts": {
+        "disposition_correct": false,
+        "required_workflows": 0,
+        "correct_workflows": 0,
+        "unsupported_evidence": 0,
+        "gap_handling_correct": true
+      },
+      "rejected_finals": 0,
+      "rejection_codes": {}
+    },
+    {
+      "case": "clear",
+      "arm": "search",
+      "status": "completed",
+      "disposition": "blocked",
+      "tool_calls": 12,
+      "remaining_data_tool_calls": 0,
+      "context_bytes": 26497,
+      "latency_ms": 31096.437541069463,
+      "counts": {
+        "disposition_correct": false,
+        "required_workflows": 0,
+        "correct_workflows": 0,
+        "unsupported_evidence": 0,
+        "gap_handling_correct": false
+      },
+      "rejected_finals": 0,
+      "rejection_codes": {}
+    },
+    {
+      "case": "clear",
+      "arm": "graph",
+      "status": "completed",
+      "disposition": "no_known_blockers",
+      "tool_calls": 2,
+      "remaining_data_tool_calls": 10,
+      "context_bytes": 7947,
+      "latency_ms": 6189.527084003203,
+      "counts": {
+        "disposition_correct": true,
+        "required_workflows": 0,
+        "correct_workflows": 0,
+        "unsupported_evidence": 0,
+        "gap_handling_correct": true
+      },
+      "rejected_finals": 0,
+      "rejection_codes": {}
+    },
+    {
+      "case": "invoice-owner-rationale",
+      "arm": "graph",
+      "status": "completed",
+      "disposition": "blocked",
+      "tool_calls": 5,
+      "remaining_data_tool_calls": 7,
+      "context_bytes": 25288,
+      "latency_ms": 19752.371832961217,
+      "counts": {
+        "required_evidence": 8,
+        "correct_required_evidence": 8,
+        "unsupported_evidence": 0,
+        "required_workflows": 1,
+        "correct_workflows": 1,
+        "extra_workflows": 0,
+        "required_blockers": 2,
+        "correct_blockers": 2,
+        "extra_blockers": 0,
+        "required_owners": 2,
+        "correct_owners": 2,
+        "disposition_correct": true,
+        "gap_reported": true,
+        "required_decisions": 1,
+        "correct_decisions": 1
+      },
+      "rejected_finals": 1,
+      "rejection_codes": {
+        "assessment_field_mismatch": 1
+      }
+    },
+    {
+      "case": "invoice-owner-rationale",
+      "arm": "search",
+      "status": "completed",
+      "disposition": "blocked",
+      "tool_calls": 11,
+      "remaining_data_tool_calls": 1,
+      "context_bytes": 28036,
+      "latency_ms": 33461.28529193811,
+      "counts": {
+        "required_evidence": 8,
+        "correct_required_evidence": 6,
+        "unsupported_evidence": 0,
+        "required_workflows": 1,
+        "correct_workflows": 0,
+        "extra_workflows": 0,
+        "required_blockers": 2,
+        "correct_blockers": 1,
+        "extra_blockers": 0,
+        "required_owners": 2,
+        "correct_owners": 1,
+        "disposition_correct": true,
+        "gap_reported": true,
+        "required_decisions": 1,
+        "correct_decisions": 0
+      },
+      "rejected_finals": 1,
+      "rejection_codes": {
+        "entity_kind": 1,
+        "unsupported_finding_role": 2
+      }
+    },
+    {
+      "case": "network-slip-billing",
+      "arm": "search",
+      "status": "completed",
+      "disposition": "blocked",
+      "tool_calls": 11,
+      "remaining_data_tool_calls": 1,
+      "context_bytes": 23365,
+      "latency_ms": 29002.237166045234,
+      "counts": {
+        "required_evidence": 7,
+        "correct_required_evidence": 4,
+        "unsupported_evidence": 0,
+        "required_workflows": 1,
+        "correct_workflows": 1,
+        "extra_workflows": 0,
+        "required_blockers": 2,
+        "correct_blockers": 1,
+        "extra_blockers": 0,
+        "required_owners": 2,
+        "correct_owners": 0,
+        "disposition_correct": true,
+        "gap_reported": true,
+        "required_decisions": 1,
+        "correct_decisions": 0
+      },
+      "rejected_finals": 0,
+      "rejection_codes": {}
+    },
+    {
+      "case": "network-slip-billing",
+      "arm": "graph",
+      "status": "completed",
+      "disposition": "blocked",
+      "tool_calls": 6,
+      "remaining_data_tool_calls": 6,
+      "context_bytes": 27026,
+      "latency_ms": 25544.48487504851,
+      "counts": {
+        "required_evidence": 7,
+        "correct_required_evidence": 7,
+        "unsupported_evidence": 0,
+        "required_workflows": 1,
+        "correct_workflows": 1,
+        "extra_workflows": 0,
+        "required_blockers": 2,
+        "correct_blockers": 2,
+        "extra_blockers": 0,
+        "required_owners": 2,
+        "correct_owners": 2,
+        "disposition_correct": true,
+        "gap_reported": true,
+        "required_decisions": 1,
+        "correct_decisions": 1
+      },
+      "rejected_finals": 1,
+      "rejection_codes": {
+        "assessment_field_mismatch": 1
+      }
+    }
+  ],
+  "raw_extraction": {
+    "records": 13,
+    "validated_records": 13,
+    "proposals": 11,
+    "approved_automatically": 0,
+    "limits": "No fact-accuracy denominator; migration-tracking record emitted no fact. Status effective-date mismatch remains in separate narrative scoring."
+  },
+  "narrative": {
+    "expected": 2,
+    "proposed": 2,
+    "true_positive": 1,
+    "false_positive": 1,
+    "false_negative": 1
+  },
+  "review_demonstration": {
+    "status": "passed",
+    "paid_calls": 0,
+    "review_kind": "demonstration; not human acceptance",
+    "selected_proposals": [
+      "extract-e1439acc053738b33e07aeb4",
+      "extract-ed1de0ddfaf3e889e164c98b",
+      "extract-82af5c14e512875540990c30",
+      "extract-1f030345bfd89a795d1be50c"
+    ],
+    "review_id": "review-24fcc90b59157bfd1611712b",
+    "reviewed_at": "2026-10-18T06:48:16.904275+00:00",
+    "before_revision": "6015beebb2f52e59a1f4bb00d77a91bfc3e8395e9de5c6d7f5c2a9a533d83f13",
+    "after_revision": "41bb695c873ee9d21ee7eac86ef5020a3e2c42bdc5a94b125aa8be530eb0046b",
+    "before_disposition": "needs_verification",
+    "after_disposition": "blocked",
+    "earlier_knowledge_disposition": "needs_verification",
+    "unapproved_proposals_retained": 7,
+    "commands": [
+      {
+        "step": "candidates",
+        "argv": [
+          "-m",
+          "company_brain.cli",
+          "proposals",
+          "/Users/sakethsreeram/Downloads/hackathons/falkordb_hackathon/company-brain/presentation-assets/reviewed-demo/pending.json"
+        ],
+        "result": "candidates.json"
+      },
+      {
+        "step": "ingest-pending",
+        "argv": [
+          "-m",
+          "company_brain.cli",
+          "ingest",
+          "/Users/sakethsreeram/Downloads/hackathons/falkordb_hackathon/company-brain/presentation-assets/reviewed-demo/pending.json"
+        ],
+        "result": "ingest-pending.json"
+      },
+      {
+        "step": "before",
+        "argv": [
+          "-m",
+          "company_brain.cli",
+          "assess",
+          "legacy-runner",
+          "--environment",
+          "production",
+          "--region",
+          "eu",
+          "--planned-at",
+          "2026-10-18T06:48:16.904275+00:00",
+          "--known-at",
+          "2026-10-18T06:48:16.904275+00:00"
+        ],
+        "result": "before.json"
+      },
+      {
+        "step": "approval",
+        "argv": [
+          "-m",
+          "company_brain.cli",
+          "approve-proposals",
+          "/Users/sakethsreeram/Downloads/hackathons/falkordb_hackathon/company-brain/presentation-assets/reviewed-demo/pending.json",
+          "--proposal",
+          "extract-e1439acc053738b33e07aeb4",
+          "--proposal",
+          "extract-ed1de0ddfaf3e889e164c98b",
+          "--proposal",
+          "extract-82af5c14e512875540990c30",
+          "--proposal",
+          "extract-1f030345bfd89a795d1be50c",
+          "--actor",
+          "demo:synthetic-source-validation",
+          "--demonstration",
+          "--reviewed-at",
+          "2026-10-18T06:48:16.904275+00:00",
+          "--note",
+          "Synthetic demonstration, not a real human approval: manually checked these four exact candidates against full source/version, quote/span, subject/object and production/eu scope. Runtime observation is explicitly 17 October 09:00 UTC; the version-2 billing prerequisite uses declared validity, not an invented observation. Roster assigns invoice-export to data-platform. Decision permits use from 1 October until 1 November exclusively. Remaining proposals are deliberately unapproved; missing extraction facts are not invented.",
+          "--output",
+          "/Users/sakethsreeram/Downloads/hackathons/falkordb_hackathon/company-brain/.local/reviewed-demo-proof/reviewed.json"
+        ],
+        "result": "approval.json"
+      },
+      {
+        "step": "review-history",
+        "argv": [
+          "-m",
+          "company_brain.cli",
+          "review-history",
+          "/Users/sakethsreeram/Downloads/hackathons/falkordb_hackathon/company-brain/.local/reviewed-demo-proof/reviewed.json"
+        ],
+        "result": "review-history.json"
+      },
+      {
+        "step": "ingest-reviewed",
+        "argv": [
+          "-m",
+          "company_brain.cli",
+          "ingest",
+          "/Users/sakethsreeram/Downloads/hackathons/falkordb_hackathon/company-brain/.local/reviewed-demo-proof/reviewed.json"
+        ],
+        "result": "ingest-reviewed.json"
+      },
+      {
+        "step": "after",
+        "argv": [
+          "-m",
+          "company_brain.cli",
+          "assess",
+          "legacy-runner",
+          "--environment",
+          "production",
+          "--region",
+          "eu",
+          "--planned-at",
+          "2026-10-18T06:48:16.904275+00:00",
+          "--known-at",
+          "2026-10-18T06:48:16.904275+00:00"
+        ],
+        "result": "after.json"
+      },
+      {
+        "step": "before-review-knowledge",
+        "argv": [
+          "-m",
+          "company_brain.cli",
+          "assess",
+          "legacy-runner",
+          "--environment",
+          "production",
+          "--region",
+          "eu",
+          "--planned-at",
+          "2026-10-18T06:48:16.904275+00:00",
+          "--known-at",
+          "2026-10-18T06:48:16.904274+00:00"
+        ],
+        "result": "before-review-knowledge.json"
+      }
+    ]
+  },
+  "tests": {
+    "main_passed": 229,
+    "actual_database_in_main": 15,
+    "client_contract_passed_separately": 9,
+    "three_replays_golden_dispositions": 12
+  },
+  "cost": {
+    "round_actual_usd": "0.021175760",
+    "external_client_total_usd": "0.004000040",
+    "known_cumulative_usd": "0.072722620",
+    "prior_timeout_allowance_usd": "0.00468431250",
+    "accounted_upper_bound_usd": "0.07740693250",
+    "api_usage_usd": "0.073530795",
+    "api_remaining_usd": "2.926469205",
+    "cap_usd": "3",
+    "client_unused_allocation_released": true,
+    "note": "Overlapping receipt and API figures are not summed. Earlier USD0.000808175 remains unallocated; timeout allowance held."
+  },
+  "provenance": {
+    "prior_v4_2_sha256": "49f203ff8d6c9b9d07c4a731872bc709d108e49f6aaabfd8b3cef491f91821af",
+    "prior_v4_2_path": "../live-policy-2026-10-18/live-openrouter.json",
+    "prior_bytes_unchanged": true,
+    "strict_scorer_unchanged": true
+  }
+}

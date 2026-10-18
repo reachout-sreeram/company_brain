@@ -1,0 +1,182 @@
+[
+  {
+    "sequence": 1,
+    "status_code": 200,
+    "max_output_tokens": 4000,
+    "prompt_token_bound": 10412,
+    "request_bytes": 6316,
+    "id": "gen-1792305240-Cng4yccPyvr66ipxMKyh",
+    "model": "openai/gpt-6-luna",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "tool_calls",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "refusal": null,
+          "reasoning": null,
+          "tool_calls": [
+            {
+              "type": "function",
+              "index": 0,
+              "id": "call_AacDZdtPZIyibSMztOnrPTDH",
+              "function": {
+                "name": "find_entities",
+                "arguments": "{\"query\":\"legacy-runner\",\"kind\":\"Service\"}"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 889,
+      "completion_tokens": 24,
+      "total_tokens": 913,
+      "cost": 0.0001009,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0001009,
+        "upstream_inference_prompt_cost": 8.89e-05,
+        "upstream_inference_completions_cost": 1.2e-05
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  {
+    "sequence": 2,
+    "status_code": 200,
+    "max_output_tokens": 4000,
+    "prompt_token_bound": 11424,
+    "request_bytes": 7328,
+    "id": "gen-1792305241-8eNWFXWMvLNxscUn7PtO",
+    "model": "openai/gpt-6-luna",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "tool_calls",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "refusal": null,
+          "reasoning": null,
+          "tool_calls": [
+            {
+              "type": "function",
+              "index": 0,
+              "id": "call_ZUgI4gmq7k5pK95j3bSnzC69",
+              "function": {
+                "name": "assess_retirement",
+                "arguments": "{\"service_id\":\"legacy-runner\",\"scope\":{\"environment\":\"production\",\"region\":\"eu\"},\"planned_at\":\"2026-10-17T12:00:00Z\"}"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1112,
+      "completion_tokens": 51,
+      "total_tokens": 1163,
+      "cost": 0.0001367,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0001367,
+        "upstream_inference_prompt_cost": 0.0001112,
+        "upstream_inference_completions_cost": 2.55e-05
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  {
+    "sequence": 3,
+    "status_code": 200,
+    "max_output_tokens": 4000,
+    "prompt_token_bound": 24530,
+    "request_bytes": 20434,
+    "id": "gen-1792305244-idGmVN80QEX3misxafix",
+    "model": "openai/gpt-6-luna",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "tool_calls",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "refusal": null,
+          "reasoning": null,
+          "tool_calls": [
+            {
+              "type": "function",
+              "index": 0,
+              "id": "call_T27HwQXiGF0pg3kLNdwLCDRu",
+              "function": {
+                "name": "get_evidence",
+                "arguments": "{\"source_id\":\"source-permits-invoice\",\"version\":\"1\",\"span_id\":\"permits-invoice\"}"
+              }
+            },
+            {
+              "type": "function",
+              "index": 1,
+              "id": "call_8ANPWYP3zkszB3w90viPEmfs",
+              "function": {
+                "name": "get_history",
+                "arguments": "{\"entity_id\":\"invoice-export\",\"scope\":{\"environment\":\"production\",\"region\":\"eu\"}}"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 4674,
+      "completion_tokens": 79,
+      "total_tokens": 4753,
+      "cost": 0.0006206,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 4548,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0006206,
+        "upstream_inference_prompt_cost": 0.0005811,
+        "upstream_inference_completions_cost": 3.95e-05
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+]

@@ -1,0 +1,239 @@
+[
+  {
+    "sequence": 1,
+    "status_code": 200,
+    "max_output_tokens": 4000,
+    "prompt_token_bound": 11800,
+    "request_bytes": 7704,
+    "id": "gen-1792305584-jR22v0fo38sJeg1ACPP4",
+    "model": "openai/gpt-6-luna",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "tool_calls",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "refusal": null,
+          "reasoning": null,
+          "tool_calls": [
+            {
+              "type": "function",
+              "index": 0,
+              "id": "call_zCg3oRF86NmuTzrmOyBl7Fgl",
+              "function": {
+                "name": "find_entities",
+                "arguments": "{\"query\":\"legacy-runner\",\"kind\":\"Service\"}"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1024,
+      "completion_tokens": 24,
+      "total_tokens": 1048,
+      "cost": 0.0001144,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0001144,
+        "upstream_inference_prompt_cost": 0.0001024,
+        "upstream_inference_completions_cost": 1.2e-05
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  {
+    "sequence": 2,
+    "status_code": 200,
+    "max_output_tokens": 4000,
+    "prompt_token_bound": 12812,
+    "request_bytes": 8716,
+    "id": "gen-1792305586-x4Aj0fdCllpwd872s9bj",
+    "model": "openai/gpt-6-luna",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "tool_calls",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "refusal": null,
+          "reasoning": null,
+          "tool_calls": [
+            {
+              "type": "function",
+              "index": 0,
+              "id": "call_MvKJDJ0rO9zuw0vEdRjwnpHl",
+              "function": {
+                "name": "assess_retirement",
+                "arguments": "{\"service_id\":\"legacy-runner\",\"scope\":{\"environment\":\"production\",\"region\":\"eu\"},\"planned_at\":\"2026-10-17T12:00:00Z\"}"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1242,
+      "completion_tokens": 51,
+      "total_tokens": 1293,
+      "cost": 0.0001776,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 1116,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0001776,
+        "upstream_inference_prompt_cost": 0.0001521,
+        "upstream_inference_completions_cost": 2.55e-05
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  {
+    "sequence": 3,
+    "status_code": 200,
+    "max_output_tokens": 4000,
+    "prompt_token_bound": 27923,
+    "request_bytes": 23827,
+    "id": "gen-1792305588-i0p73sZVqkzt2D2sJGnP",
+    "model": "openai/gpt-6-luna",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "tool_calls",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "refusal": null,
+          "reasoning": null,
+          "tool_calls": [
+            {
+              "type": "function",
+              "index": 0,
+              "id": "call_DJcABVB8j0sAlUkSRUwn4gzH",
+              "function": {
+                "name": "get_evidence",
+                "arguments": "{\"source_id\":\"source-permits-invoice\",\"version\":\"1\",\"span_id\":null}"
+              }
+            },
+            {
+              "type": "function",
+              "index": 1,
+              "id": "call_nUnlDFJowuI3NhiHa2bBebSs",
+              "function": {
+                "name": "get_history",
+                "arguments": "{\"entity_id\":\"invoice-export\",\"scope\":{\"environment\":\"production\",\"region\":\"eu\"}}"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 5361,
+      "completion_tokens": 76,
+      "total_tokens": 5437,
+      "cost": 0.000576635,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 1116,
+        "cache_write_tokens": 4119,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000576635,
+        "upstream_inference_prompt_cost": 0.000538635,
+        "upstream_inference_completions_cost": 3.8e-05
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  {
+    "sequence": 4,
+    "status_code": 200,
+    "max_output_tokens": 4000,
+    "prompt_token_bound": 35534,
+    "request_bytes": 31438,
+    "id": "gen-1792305590-trfcJMc6RJmUyrrvaN6T",
+    "model": "openai/gpt-6-luna",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "tool_calls",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "refusal": null,
+          "reasoning": null,
+          "tool_calls": [
+            {
+              "type": "function",
+              "index": 0,
+              "id": "call_Y5LhWalyeE5sQBklSqiQh9Ae",
+              "function": {
+                "name": "finish_answer",
+                "arguments": "{\"disposition\":\"blocked\",\"explanation\":\"No\u2014retirement of legacy-runner in production/eu at 2026-10-17T12:00:00Z is blocked by the assessment. Known indirect business chain: legacy-runner hosts invoice-export, which monthly-billing requires; it also hosts report-job, which monthly-reporting requires. The invoice path has fresh configuration evidence. The report path is based on stale dependency evidence, so its current runtime status needs verification, not assumption. The invoice-export owner is data-platform; report-job owner is data-platform; security owns the open network-approval prerequisite. The assessment reports no current owner for invoice-migration. Migration blockers: invoice-migration has conflicting open versus claimed-complete status, and it is blocked by open network-approval. The claimed completion ticket explicitly is not runtime verification; observed invoice-export usage on legacy-runner conflicts with treating that migration as complete. A temporary exception permits continued invoice-export use through 2026-11-01T00:00:00Z; it is permission for use, not retirement clearance, and expires after the proposed retirement time. The exception evidence was inspected and is approved, scoped to production/eu, and not revoked. Invoice-export history shows no superseding assertion among the returned records. Before reconsidering retirement, verify the invoice migration in runtime, resolve the conflicting task statuses, obtain/resolve network approval, verify report-job's current dependency and consumer status, and secure any required approvals; these are next steps, not recorded clearances. Coverage is incomplete: stale report-job and monthly-reporting dependency evidence, missing/stale report-job consumer verification, missing current invoice-migration owner, and conflicting evidence requiring verification. Assessment coverage is not truncated and inventory declares 2 consumers.\",\"coverage\":{\"gaps\":[\"stale dependency evidence: report-job\",\"stale dependency evidence: monthly-reporting\",\"current owner missing: invoice-migration\",\"consumer verification missing or stale: report-job\",\"conflicting evidence requires verification\"],\"truncated\":false,\"inventory_source\":\"inventory-initial@1\",\"declared_consumer_count\":2},\"conflicts\":[{\"kind\":\"task_status_conflict\",\"entity_id\":\"invoice-migration\",\"assertion_ids\":[\"status-migration-claimed-complete\",\"status-migration-open\"]},{\"kind\":\"completion_vs_usage\",\"entity_id\":\"invoice-export\",\"assertion_ids\":[\"status-migration-claimed-complete\",\"run-invoice-legacy\"]}],\"permissions\":[{\"decision_id\":\"temporary-exception\",\"assertion_id\":\"permits-invoice\",\"until\":\"2026-11-01T00:00:00+00:00\"}],\"citations\":[{\"assertion_id\":\"blocked-network\",\"source_id\":\"source-blocked-network\",\"version\":\"1\",\"quote\":\"invoice-migration is blocked by network-approval in production/eu.\"},{\"assertion_id\":\"owns-invoice\",\"source_id\":\"source-owns-invoice\",\"version\":\"1\",\"quote\":\"The approved roster assigns invoice-export to data-platform in production/eu.\"},{\"assertion_id\":\"owns-network\",\"source_id\":\"source-owns-network\",\"version\":\"1\",\"quote\":\"The approved roster assigns network-approval to security in production/eu.\"},{\"assertion_id\":\"owns-report\",\"source_id\":\"source-owns-report\",\"version\":\"1\",\"quote\":\"The approved roster assigns report-job to data-platform in production/eu.\"},{\"assertion_id\":\"permits-invoice\",\"source_id\":\"source-permits-invoice\",\"version\":\"1\",\"quote\":\"Decision effective 2026-10-01T00:00:00Z through 2026-11-01T00:00:00Z: temporary-exception permits continued use by invoice-export in production/eu.\"},{\"assertion_id\":\"requires-billing-invoice\",\"source_id\":\"source-requires-billing-invoice\",\"version\":\"1\",\"quote\":\"Monthly billing requires invoice-export in production/eu.\"},{\"assertion_id\":\"requires-reporting-report\",\"source_id\":\"source-requires-reporting-report\",\"version\":\"1\",\"quote\":\"Monthly reporting requires report-job in production/eu.\"},{\"assertion_id\":\"run-invoice-legacy\",\"source_id\":\"source-run-invoice-legacy\",\"version\":\"1\",\"quote\":\"Configuration observation 2026-10-17T09:00:00Z: invoice-export runs on legacy-runner in production/eu.\"},{\"assertion_id\":\"run-report-legacy\",\"source_id\":\"source-run-report-legacy\",\"version\":\"1\",\"quote\":\"Configuration observation 2026-09-01T09:00:00Z: report-job runs on legacy-runner in production/eu.\"},{\"assertion_id\":\"status-migration-claimed-complete\",\"source_id\":\"source-status-migration-claimed-complete\",\"version\":\"1\",\"quote\":\"Ticket invoice-migration claims complete in production/eu as of 2026-10-16T12:00:00Z. This ticket is not a runtime verification.\"},{\"assertion_id\":\"status-migration-open\",\"source_id\":\"source-status-migration-open\",\"version\":\"1\",\"quote\":\"Ticket invoice-migration is open in production/eu.\"},{\"assertion_id\":\"status-network-open\",\"source_id\":\"source-status-network-open\",\"version\":\"1\",\"quote\":\"Ticket network-approval is open in production/eu.\"},{\"assertion_id\":\"tracks-invoice-migration\",\"source_id\":\"source-tracks-invoice-migration\",\"version\":\"1\",\"quote\":\"invoice-export migration is tracked by invoice-migration in production/eu.\"}] }"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 7211,
+      "completion_tokens": 1130,
+      "total_tokens": 8341,
+      "cost": 0.0008612,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 5235,
+        "cache_write_tokens": 1850,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0008612,
+        "upstream_inference_prompt_cost": 0.0002962,
+        "upstream_inference_completions_cost": 0.000565
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+]

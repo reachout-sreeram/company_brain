@@ -1,0 +1,27 @@
+{
+  "service_id": "legacy-runner",
+  "scope": {
+    "environment": "production",
+    "region": "eu"
+  },
+  "planned_at": "2026-10-18T06:48:16.904275+00:00",
+  "known_at": "2026-10-18T06:48:16.904274+00:00",
+  "graph_revision": "41bb695c873ee9d21ee7eac86ef5020a3e2c42bdc5a94b125aa8be530eb0046b",
+  "disposition": "needs_verification",
+  "affected_workflows": [],
+  "dependency_paths": [],
+  "blockers": [],
+  "conflicts": [],
+  "owners": [],
+  "decisions": [],
+  "coverage": {
+    "gaps": [
+      "consumer verification missing or stale: invoice-export",
+      "consumer verification missing or stale: report-job"
+    ],
+    "truncated": false,
+    "inventory_source": "inventory-initial@1",
+    "declared_consumer_count": 2
+  },
+  "evidence": []
+}

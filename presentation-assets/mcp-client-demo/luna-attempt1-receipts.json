@@ -1,0 +1,230 @@
+[
+  {
+    "sequence": 1,
+    "status_code": 200,
+    "max_output_tokens": 4000,
+    "prompt_token_bound": 10197,
+    "request_bytes": 6101,
+    "id": "gen-1792305187-tT8PnWjYakCMoKs8kFYw",
+    "model": "openai/gpt-6-luna",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "tool_calls",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "refusal": null,
+          "reasoning": null,
+          "tool_calls": [
+            {
+              "type": "function",
+              "index": 0,
+              "id": "call_yIV1O8wZe9LJodxo3tEm8yTu",
+              "function": {
+                "name": "find_entities",
+                "arguments": "{\"query\":\"legacy-runner\",\"kind\":\"service\"}"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 848,
+      "completion_tokens": 24,
+      "total_tokens": 872,
+      "cost": 9.68e-05,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 9.68e-05,
+        "upstream_inference_prompt_cost": 8.48e-05,
+        "upstream_inference_completions_cost": 1.2e-05
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  {
+    "sequence": 2,
+    "status_code": 200,
+    "max_output_tokens": 4000,
+    "prompt_token_bound": 10865,
+    "request_bytes": 6769,
+    "id": "gen-1792305189-lSmfJzKd3MyHcKLGD2VZ",
+    "model": "openai/gpt-6-luna",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "tool_calls",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "refusal": null,
+          "reasoning": null,
+          "tool_calls": [
+            {
+              "type": "function",
+              "index": 0,
+              "id": "call_a456GB3R5DD8Gx7qrGfIEfkj",
+              "function": {
+                "name": "find_entities",
+                "arguments": "{\"query\":\"legacy\",\"kind\":\"service\"}"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 993,
+      "completion_tokens": 22,
+      "total_tokens": 1015,
+      "cost": 0.0001103,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0001103,
+        "upstream_inference_prompt_cost": 9.93e-05,
+        "upstream_inference_completions_cost": 1.1e-05
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  {
+    "sequence": 3,
+    "status_code": 200,
+    "max_output_tokens": 4000,
+    "prompt_token_bound": 11526,
+    "request_bytes": 7430,
+    "id": "gen-1792305191-eZjJQYPPtaiFPJPAb8Zq",
+    "model": "openai/gpt-6-luna",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "tool_calls",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "refusal": null,
+          "reasoning": null,
+          "tool_calls": [
+            {
+              "type": "function",
+              "index": 0,
+              "id": "call_ubGC4w9blqRd8TjvtQ5rxTIn",
+              "function": {
+                "name": "find_entities",
+                "arguments": "{\"query\":\"runner\",\"kind\":\"service\"}"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1136,
+      "completion_tokens": 22,
+      "total_tokens": 1158,
+      "cost": 0.0001246,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0001246,
+        "upstream_inference_prompt_cost": 0.0001136,
+        "upstream_inference_completions_cost": 1.1e-05
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  },
+  {
+    "sequence": 4,
+    "status_code": 200,
+    "max_output_tokens": 4000,
+    "prompt_token_bound": 12187,
+    "request_bytes": 8091,
+    "id": "gen-1792305194-NToFBRK2SAHUxX0ugnp0",
+    "model": "openai/gpt-6-luna",
+    "choices": [
+      {
+        "index": 0,
+        "logprobs": null,
+        "finish_reason": "tool_calls",
+        "native_finish_reason": "completed",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "refusal": null,
+          "reasoning": null,
+          "tool_calls": [
+            {
+              "type": "function",
+              "index": 0,
+              "id": "call_v5b8HooKGaLBbhPR0RdcAaT8",
+              "function": {
+                "name": "finish_answer",
+                "arguments": "{\"disposition\":\"Unable to assess\",\"explanation\":\"The service could not be resolved: searches for \u201clegacy-runner\u201d and the shorter independent names \u201clegacy\u201d and \u201crunner\u201d returned no candidates. I therefore could not run a retirement assessment or investigate the exception evidence, invoice-export history, dependencies, blockers, owners, or expiry. No conclusion that shutdown is permitted can be drawn. Please provide the exact service name/ID or another identifying detail, and I can retry.\",\"coverage\":{\"service\":\"not resolved\",\"scope\":{\"environment\":\"production\",\"region\":\"eu\"},\"planned_at\":\"2026-10-17T12:00:00Z\",\"assessment\":\"not performed\",\"gaps\":[\"Service entity resolution returned no candidates; no assessment evidence is available.\",\"Important exception evidence and invoice-export history were not retrievable without resolving the service.\"]},\"conflicts\":[],\"permissions\":[],\"citations\":[]}"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 1279,
+      "completion_tokens": 194,
+      "total_tokens": 1473,
+      "cost": 0.000253725,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 1153,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.000253725,
+        "upstream_inference_prompt_cost": 0.000156725,
+        "upstream_inference_completions_cost": 9.7e-05
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    }
+  }
+]

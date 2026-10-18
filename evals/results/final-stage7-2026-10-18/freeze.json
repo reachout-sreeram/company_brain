@@ -1,0 +1,33 @@
+{
+  "core_commit": "985f0c7",
+  "scope": "Local measured code freeze; not human acceptance or release",
+  "source_sha256": {
+    "src/company_brain/__init__.py": "af879bf12ebd43db4345d0ee80e5924604608759ce8d4236c4243474597ad71d",
+    "src/company_brain/assessment.py": "d569fdaa5fa7b2ec42a905ec36241683f6d4063c1a14a8e9e26a9f6de2da5963",
+    "src/company_brain/cli.py": "50697f393b23a0a943b1546a58bc9b5e379e95bee34fd218fd044b42f72e9d76",
+    "src/company_brain/evaluation.py": "dfd05b0fd29e8a997bc845693e5555294a723522cbe4926a085d2ed14b9f9e15",
+    "src/company_brain/extraction.py": "8c52d19a45eed40b00ac8749b25bd7d31aff087a66d8e955a32d807f341a22e9",
+    "src/company_brain/ingestion.py": "72dada789565c558cf9b10122498f87d8f82e5e85049777fe5ffc3b679c5cfef",
+    "src/company_brain/live_evaluation.py": "5eb76d37d86b945b90be7c9c0ca877a6ac1bff72b3f2710b7041621f2e639a8e",
+    "src/company_brain/models.py": "cf7094d42c106357aab5b144f4f67a071ef8186537ae5bb57938e0c0344416bb",
+    "src/company_brain/openrouter.py": "44dd07f3c6b505fa09a9ee9876949185e995dc0ae692dcbef0e449dd8274953d",
+    "src/company_brain/replay.py": "246ca56afe55d2ba67876cc83b013912c68967e34d12b43fd489ed3412657143",
+    "src/company_brain/review.py": "290cb2d45c46fbeb1a871fa61363e3f6fcec8422e74bc140a5f94609c111d73b",
+    "src/company_brain/server.py": "6c0ca8ce1056d9aa9f91c65147bc18d9d3a568abfc217a0712fb4c551684a67f",
+    "src/company_brain/store.py": "5fe643bdf8548cfc8487868c516468110d3344669d235c47649d6a7a258e061c"
+  },
+  "main_query_sha256": "1c7d3cc1875b9f3223456fed66926e2d21fbe443a0d62bc4f5a42c90248c34fb",
+  "readme_query_matches": true,
+  "verification": {
+    "core_command": "COMPANY_BRAIN_INTEGRATION=1 .venv/bin/python -m pytest -q tests",
+    "core_passed": 229,
+    "actual_falkordb_tests": 15,
+    "seconds": 68.31,
+    "client_command": ".venv/bin/python -m pytest -q presentation-assets/mcp-client-demo/test_luna_client.py",
+    "client_passed": 9,
+    "replay_runs": 3,
+    "replay_golden_dispositions": 12,
+    "live_arms_completed": 12,
+    "live_paid_run_active": false
+  }
+}
