@@ -6,6 +6,12 @@ Company Brain connects these records in **real FalkorDB**, then returns a determ
 
 The synthetic Lumora story follows **monthly billing → invoice export → legacy runner**. Invoice migration is blocked by network approval. Data Platform owns the export; Security owns the approval. A temporary exception permits continued use until **2026-11-01T00:00:00Z (exclusive)**. Permission to keep using a service does not prove migration or authorize retirement.
 
+## Interactive walkthrough
+
+[Open the public Company Brain walkthrough](https://company-brain-gules.vercel.app).
+
+Explore 17 scenes across graph construction, questions, evidence, change and trust. The walkthrough uses synthetic data and scripted animations. It does not call MCP or query a live database. To use the actual MCP tools with real FalkorDB, follow [Run locally](#run-locally). Vercel deploys the walkthrough from `main`; [deployment details](docs/development/walkthrough-deployment.md).
+
 ## Graph map
 
 Everything the brain knows lives in FalkorDB as a typed property graph. There are two layers: a readable **current graph** of business entities and their relationships, and an **evidence layer** that records where every relationship came from.
@@ -254,7 +260,7 @@ Tested implementation: **985f0c7**, with separate dated evidence in the [final S
 - This is a small, repeatedly debugged known set. Graph provides consolidated deterministic policy and response-fidelity checks while search reads records and derives policy. Call granularity, schemas, host assistance, ranking and model variation constrain comparison fairness. No ablation, scale, general superiority or production-reliability claim is made. Earlier cohorts, failures and the v4.1 policy confound remain preserved.
 - Combined settled API usage **USD 0.073530795** of the unchanged **USD 3** cap; this includes the separate MCP worker. Known receipts and the older unresolved timeout allowance are reported separately. No further paid run is needed for this handoff.
 
-Stage 7 remains under improvement and human acceptance; later framework gates are open. Search still misses migration/clear-state reasoning and completeness; reference validity does not prove every sentence true. No live company connector, web UI, authenticated production reviewer identity or infrastructure write tool is included.
+Stage 7 remains under improvement and human acceptance; later framework gates are open. Search still misses migration/clear-state reasoning and completeness; reference validity does not prove every sentence true. No live company connector, live web application, authenticated production reviewer identity or infrastructure write tool is included. The public walkthrough is a scripted explanation.
 
 AI assistance: Codex assisted planning, code, synthetic fixtures, tests and documentation. Seeded/parsed fixtures, deterministic mock extraction and live unreviewed model proposals are labeled separately. The exploratory model run used `openai/gpt-6-luna` through OpenRouter; this README requires no paid inference. Exact quote provenance and reviewed digests do not establish semantic correctness. Live company connectors, broader production identity and automatic infrastructure actions remain outside this slice.
 
