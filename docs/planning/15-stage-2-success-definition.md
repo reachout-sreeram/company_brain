@@ -223,6 +223,10 @@ The data is designed so the graph tells its own story. Every scenario leaves a v
 
 During the demo, one Cypher query in FalkorDB Browser shows the full evolution of a topic, for example the audit export path from the March doc through D-41 to D-52.
 
+## Out of scope for the hackathon
+
+Web app, Slack bot, helpdesk integration, live connectors, ChatGPT remote hosting, agent-initiated writes, real identity provider, user study. These are listed in the submission as next steps.
+
 ## Approval
 
 Approved by the user on 17 October 2026 for the hackathon build. This approval also fixes the direction for Stages 3 to 6 as a deliberate hackathon shortcut: graph resolver plus MCP server plus Claude skill. Revisit after the event.
