@@ -1,0 +1,329 @@
+{
+  "v4": {
+    "protocol_revision": "native-function-calls-v4-exact-references",
+    "implementation_commit": "363758f7850c09a7ddafeb38695631d8cd46d324",
+    "selected_cases": [
+      "clear",
+      "invoice-owner-rationale",
+      "network-slip-billing"
+    ],
+    "controls": {
+      "output_tokens": 1500,
+      "turns": 20,
+      "tool_calls": 12,
+      "context_bytes": 65536,
+      "max_empty_retries": 2,
+      "max_final_repairs": 2,
+      "temperature": null,
+      "reasoning_effort": "none"
+    },
+    "arms": [
+      {
+        "case": "clear",
+        "arm": "graph",
+        "status": "completed",
+        "disposition": "no_known_blockers",
+        "tool_calls": 4,
+        "context_bytes": 7695,
+        "latency_ms": 10606.904041022062,
+        "final_attempt_rejections": 0,
+        "rejection_codes": {},
+        "counts": {
+          "disposition_correct": true,
+          "required_workflows": 0,
+          "correct_workflows": 0,
+          "unsupported_evidence": 0,
+          "gap_handling_correct": true
+        },
+        "assessment_calls": 1
+      },
+      {
+        "case": "clear",
+        "arm": "search",
+        "status": "tool_budget_exhausted",
+        "disposition": null,
+        "tool_calls": 12,
+        "context_bytes": 18019,
+        "latency_ms": 25739.73183403723,
+        "final_attempt_rejections": 0,
+        "rejection_codes": {},
+        "counts": null,
+        "assessment_calls": 0
+      },
+      {
+        "case": "invoice-owner-rationale",
+        "arm": "search",
+        "status": "tool_budget_exhausted",
+        "disposition": null,
+        "tool_calls": 12,
+        "context_bytes": 18551,
+        "latency_ms": 30180.90729205869,
+        "final_attempt_rejections": 0,
+        "rejection_codes": {},
+        "counts": null,
+        "assessment_calls": 0
+      },
+      {
+        "case": "invoice-owner-rationale",
+        "arm": "graph",
+        "status": "completed",
+        "disposition": "blocked",
+        "tool_calls": 7,
+        "context_bytes": 16734,
+        "latency_ms": 17679.258666932583,
+        "final_attempt_rejections": 0,
+        "rejection_codes": {},
+        "counts": {
+          "required_evidence": 8,
+          "correct_required_evidence": 8,
+          "unsupported_evidence": 0,
+          "required_workflows": 1,
+          "correct_workflows": 1,
+          "extra_workflows": 0,
+          "required_blockers": 2,
+          "correct_blockers": 2,
+          "extra_blockers": 0,
+          "required_owners": 2,
+          "correct_owners": 2,
+          "disposition_correct": true,
+          "gap_reported": true,
+          "required_decisions": 1,
+          "correct_decisions": 1
+        },
+        "assessment_calls": 1
+      },
+      {
+        "case": "network-slip-billing",
+        "arm": "graph",
+        "status": "tool_budget_exhausted",
+        "disposition": null,
+        "tool_calls": 12,
+        "context_bytes": 16818,
+        "latency_ms": 22832.965082954615,
+        "final_attempt_rejections": 0,
+        "rejection_codes": {},
+        "counts": null,
+        "assessment_calls": 0
+      },
+      {
+        "case": "network-slip-billing",
+        "arm": "search",
+        "status": "tool_budget_exhausted",
+        "disposition": null,
+        "tool_calls": 12,
+        "context_bytes": 15409,
+        "latency_ms": 27650.16866591759,
+        "final_attempt_rejections": 0,
+        "rejection_codes": {},
+        "counts": null,
+        "assessment_calls": 0
+      }
+    ]
+  },
+  "v4.1": {
+    "protocol_revision": "native-function-calls-v4.1-budget-aware-references",
+    "implementation_commit": "c480beaa97ba4599dadb41ef10ff2ada4400ec11",
+    "selected_cases": [
+      "clear",
+      "invoice-owner-rationale",
+      "network-slip-billing"
+    ],
+    "controls": {
+      "output_tokens": 1500,
+      "turns": 20,
+      "tool_calls": 12,
+      "context_bytes": 65536,
+      "max_empty_retries": 2,
+      "max_final_repairs": 2,
+      "temperature": null,
+      "reasoning_effort": "none"
+    },
+    "arms": [
+      {
+        "case": "clear",
+        "arm": "graph",
+        "status": "completed",
+        "disposition": "no_known_blockers",
+        "tool_calls": 5,
+        "context_bytes": 11316,
+        "latency_ms": 12193.804541951977,
+        "final_attempt_rejections": 0,
+        "rejection_codes": {},
+        "counts": {
+          "disposition_correct": true,
+          "required_workflows": 0,
+          "correct_workflows": 0,
+          "unsupported_evidence": 0,
+          "gap_handling_correct": true
+        },
+        "assessment_calls": 1
+      },
+      {
+        "case": "clear",
+        "arm": "search",
+        "status": "completed",
+        "disposition": "needs_verification",
+        "tool_calls": 10,
+        "context_bytes": 18132,
+        "latency_ms": 21211.824500001967,
+        "final_attempt_rejections": 0,
+        "rejection_codes": {},
+        "counts": {
+          "disposition_correct": false,
+          "required_workflows": 0,
+          "correct_workflows": 0,
+          "unsupported_evidence": 0,
+          "gap_handling_correct": false
+        },
+        "assessment_calls": 0
+      },
+      {
+        "case": "invoice-owner-rationale",
+        "arm": "search",
+        "status": "completed",
+        "disposition": "blocked",
+        "tool_calls": 12,
+        "context_bytes": 23608,
+        "latency_ms": 30548.801959026605,
+        "final_attempt_rejections": 1,
+        "rejection_codes": {
+          "entity_kind": 1,
+          "unsupported_owner_pair": 1
+        },
+        "counts": {
+          "required_evidence": 8,
+          "correct_required_evidence": 4,
+          "unsupported_evidence": 0,
+          "required_workflows": 1,
+          "correct_workflows": 0,
+          "extra_workflows": 0,
+          "required_blockers": 2,
+          "correct_blockers": 1,
+          "extra_blockers": 0,
+          "required_owners": 2,
+          "correct_owners": 1,
+          "disposition_correct": true,
+          "gap_reported": true,
+          "required_decisions": 1,
+          "correct_decisions": 0
+        },
+        "assessment_calls": 0
+      },
+      {
+        "case": "invoice-owner-rationale",
+        "arm": "graph",
+        "status": "completed",
+        "disposition": "blocked",
+        "tool_calls": 5,
+        "context_bytes": 18449,
+        "latency_ms": 15527.39208296407,
+        "final_attempt_rejections": 0,
+        "rejection_codes": {},
+        "counts": {
+          "required_evidence": 8,
+          "correct_required_evidence": 8,
+          "unsupported_evidence": 0,
+          "required_workflows": 1,
+          "correct_workflows": 1,
+          "extra_workflows": 0,
+          "required_blockers": 2,
+          "correct_blockers": 2,
+          "extra_blockers": 0,
+          "required_owners": 2,
+          "correct_owners": 2,
+          "disposition_correct": true,
+          "gap_reported": true,
+          "required_decisions": 1,
+          "correct_decisions": 1
+        },
+        "assessment_calls": 1
+      },
+      {
+        "case": "network-slip-billing",
+        "arm": "graph",
+        "status": "completed",
+        "disposition": "blocked",
+        "tool_calls": 7,
+        "context_bytes": 20445,
+        "latency_ms": 17315.324417082593,
+        "final_attempt_rejections": 0,
+        "rejection_codes": {},
+        "counts": {
+          "required_evidence": 7,
+          "correct_required_evidence": 6,
+          "unsupported_evidence": 0,
+          "required_workflows": 1,
+          "correct_workflows": 1,
+          "extra_workflows": 0,
+          "required_blockers": 2,
+          "correct_blockers": 2,
+          "extra_blockers": 0,
+          "required_owners": 2,
+          "correct_owners": 2,
+          "disposition_correct": true,
+          "gap_reported": true,
+          "required_decisions": 1,
+          "correct_decisions": 1
+        },
+        "assessment_calls": 1
+      },
+      {
+        "case": "network-slip-billing",
+        "arm": "search",
+        "status": "completed",
+        "disposition": "blocked",
+        "tool_calls": 10,
+        "context_bytes": 16350,
+        "latency_ms": 20391.52904204093,
+        "final_attempt_rejections": 0,
+        "rejection_codes": {},
+        "counts": {
+          "required_evidence": 7,
+          "correct_required_evidence": 3,
+          "unsupported_evidence": 0,
+          "required_workflows": 1,
+          "correct_workflows": 1,
+          "extra_workflows": 0,
+          "required_blockers": 2,
+          "correct_blockers": 1,
+          "extra_blockers": 1,
+          "required_owners": 2,
+          "correct_owners": 0,
+          "disposition_correct": true,
+          "gap_reported": true,
+          "required_decisions": 1,
+          "correct_decisions": 0
+        },
+        "assessment_calls": 0
+      }
+    ]
+  },
+  "provenance": {
+    "original_v3_sha256": "e633eceee29ebd830331d52bf93a8e635c67791a83fabdea609e7c1749483206",
+    "v3_unchanged": true,
+    "original_v3_path": "../live-2026-10-18/live-openrouter.json",
+    "v4_path": "live-openrouter-archive-2.json",
+    "v4_1_path": "live-openrouter.json",
+    "reused_not_rerun": "smoke, raw extraction and narrative are inherited; only selected paired comparisons reran",
+    "scoring": "Original strict scoring functions unchanged; final contract checks and repairs are extra host assistance, not scoring normalization."
+  },
+  "cost": {
+    "known_receipts_usd": "0.037632905",
+    "v4_increment_usd": "0.007485295",
+    "v4_1_increment_usd": "0.008222845",
+    "both_correction_rounds_usd": "0.015708140",
+    "unresolved_timeout_allowance_usd": "0.00468431250",
+    "accounted_upper_bound_usd": "0.04231721750",
+    "key_usage_snapshot": {
+      "usage": 0.03844108,
+      "usage_daily": 0.031997935,
+      "usage_weekly": 0.03844108,
+      "usage_monthly": 0.03844108,
+      "limit": 3,
+      "limit_remaining": 2.96155892,
+      "limit_reset": null,
+      "byok_usage": 0
+    },
+    "note": "API usage may settle after response receipts. Do not sum overlapping figures or remove the old timeout allowance."
+  }
+}
