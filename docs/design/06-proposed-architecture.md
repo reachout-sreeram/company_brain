@@ -1,6 +1,6 @@
 # Proposed architecture
 
-Status: design only. No client version, model provider, Cypher query, or deployment below has been runtime-tested.
+Status: superseded. This was the architecture for the earlier PromiseGraph candidate (web UI, action inbox, agent loop). The current architecture is in [Stage 2: Architecture and harnesses](../planning/15-stage-2-success-definition.md#architecture-and-harnesses). The assertion model, temporal and authority rules, and failure behavior below remain useful reference. Nothing below has been runtime-tested.
 
 ## Keep the system small
 

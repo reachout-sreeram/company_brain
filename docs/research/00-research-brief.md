@@ -1,6 +1,6 @@
 # Research brief
 
-Status: earlier candidate analysis. The [concluded Stage 1 brief](../planning/11-stage-1-problem-understanding.md) governs current problem framing. PromiseGraph and its scores are provisional, not selected.
+Status: partly superseded. The PromiseGraph recommendation below was never selected; the current plan is the [Stage 2 success definition](../planning/15-stage-2-success-definition.md). The market findings in "What the research changed" remain current.
 
 Research checked on 15 October 2026. The event is already in its build window.
 

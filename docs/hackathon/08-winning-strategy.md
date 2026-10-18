@@ -1,5 +1,7 @@
 # Winning strategy
 
+Status: partly superseded. The proposition, build sequence, and demo below describe the earlier PromiseGraph candidate. The current build order and demo script are in the [Stage 2 success definition](../planning/15-stage-2-success-definition.md#build-order). The guidance on differentiation claims, the submission package, and the risks remains useful.
+
 Build a small, credible Company Brain workflow. Winning is uncertain. There is no published numeric rubric in the reviewed event pages, and research cannot guarantee a prize.
 
 ## The proposition
