@@ -10,23 +10,9 @@ The synthetic Lumora story follows **monthly billing → invoice export → lega
 
 Everything the brain knows lives in FalkorDB as a typed property graph. There are two layers: a readable **current graph** of business entities and their relationships, and an **evidence layer** that records where every relationship came from.
 
+![Company Brain graph map: billing requires invoice-export, which runs on legacy-runner; migration blocked by network approval; temporary exception; evidence layer](presentation-assets/readme-visuals/graph-map.png)
+
 ### Schema
-
-```mermaid
-flowchart LR
-    W[Workflow] -->|REQUIRES| J[Job]
-    J -->|RUNS_ON / DEPENDS_ON| S[Service]
-    J -->|MIGRATION_TRACKED_BY| T[MigrationTask]
-    T -->|BLOCKED_BY| T2[MigrationTask]
-    J -->|OWNED_BY| Team[Team / Person]
-    T2 -->|OWNED_BY| Team
-    D[Decision] -->|PERMITS_USE| J
-
-    A((Assertion)) -.->|SUBJECT / OBJECT| J
-    A -.->|EVIDENCE| Src[Source version]
-    A -.->|SUPERSEDES| A0((older Assertion))
-    R[ProposalReview] -.->|APPROVES| A
-```
 
 | Node label | What it is |
 |---|---|
@@ -48,23 +34,17 @@ flowchart LR
 
 Every business edge carries an `assertion_id`, so any line in an answer can be traced back to the exact source record and quote.
 
-### The demo graph (initial state)
+## How it writes and how it reads
 
-The synthetic Lumora graph that the four-state demo starts from. Edge labels show the `assertion_id` each edge carries.
+**Write path.** A record becomes a trusted fact. The LLM only proposes, code validates, an operator approves, and FalkorDB publishes a new immutable revision.
 
-```mermaid
-flowchart RL
-    billing[monthly-billing<br/>Workflow] -->|REQUIRES<br/>requires-billing-invoice| invoice[invoice-export<br/>Job]
-    reporting[monthly-reporting<br/>Workflow] -->|REQUIRES<br/>requires-reporting-report| report[report-job<br/>Job]
-    invoice -->|RUNS_ON<br/>run-invoice-legacy| legacy[(legacy-runner<br/>Service)]
-    report -->|RUNS_ON<br/>run-report-legacy| legacy
-    invoice -->|MIGRATION_TRACKED_BY| mig[invoice-migration<br/>MigrationTask: open]
-    mig -->|BLOCKED_BY| net[network-approval<br/>MigrationTask: open]
-    invoice -->|OWNED_BY| dp[data-platform<br/>Team]
-    report -->|OWNED_BY| dp
-    net -->|OWNED_BY| sec[security<br/>Team]
-    exc[temporary-exception<br/>Decision] -->|PERMITS_USE<br/>until 2026-11-01| invoice
-```
+![Write path: record, LLM proposal, validation, proposal, operator approval, FalkorDB revision](presentation-assets/readme-visuals/write-path.gif)
+
+**Read path.** An agent asks over MCP. FalkorDB walks the graph and filters in-query, fixed rules decide the verdict, and the agent explains it with citations.
+
+![Read path: agent question, find_entities, Cypher traversal, in-graph filters, rules, verdict with proof](presentation-assets/readme-visuals/read-path.gif)
+
+<sub>Visual sources live in `presentation-assets/readme-visuals/src/` (HTML rendered with Chromium; `gif.py` rebuilds the GIFs).</sub>
 
 ## The graph doing the work
 

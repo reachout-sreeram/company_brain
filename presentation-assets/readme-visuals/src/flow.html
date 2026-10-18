@@ -1,0 +1,106 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+:root{--bg:#0b1020;--panel:#111833;--ink:#e8ecff;--muted:#8e9bd0;--faint:#4f5b8a;--line:#26315c;
+ --wf:#a78bfa;--job:#2dd4bf;--svc:#fbbf24;--task:#fb7185;--dec:#f472b6;--ok:#34d399;--acc:#7dd3fc}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1280px;height:720px;background:var(--bg);font-family:Inter,sans-serif;color:var(--ink);overflow:hidden}
+.wrap{position:relative;width:1280px;height:720px;padding:34px 44px}
+.glow{position:absolute;inset:0;background:radial-gradient(640px 300px at 50% 20%,color-mix(in srgb,var(--theme) 14%,transparent),transparent 70%)}
+.top{position:relative;display:flex;align-items:baseline;gap:14px}
+.tag{font-size:12px;font-weight:800;letter-spacing:2px;padding:5px 11px;border-radius:8px;color:#0b1020;background:var(--theme)}
+h1{font-size:26px;font-weight:700;letter-spacing:-.4px}
+.sub{position:relative;color:var(--muted);font-size:14.5px;margin-top:6px}
+.stages{position:relative;display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:26px}
+.st{border-radius:14px;border:1.5px solid var(--line);background:rgba(17,24,51,.55);padding:12px 12px 14px;min-height:262px;opacity:.38;transition:none;position:relative}
+.st .n{font-size:11px;font-weight:800;letter-spacing:1.6px;color:var(--faint)}
+.st .h{font-size:15px;font-weight:700;margin-top:4px}
+.st .b{margin-top:10px;font-size:12px;line-height:1.5;color:var(--muted);visibility:hidden}
+.st.done{opacity:.85}
+.st.done .b,.st.on .b{visibility:visible}
+.st.on{opacity:1;border-color:var(--theme);background:#121a3a;box-shadow:0 0 0 4px color-mix(in srgb,var(--theme) 16%,transparent),0 12px 30px rgba(0,0,0,.4)}
+.st.on .n{color:var(--theme)}
+.st.done .n{color:var(--muted)}
+.st:not(:last-child)::after{content:"→";position:absolute;right:-12px;top:42%;font-size:16px;color:var(--faint);z-index:2}
+.mono{display:block;font-family:"DejaVu Sans Mono",monospace;font-size:11px;color:#cfd6ff;background:#0d1330;border:1px solid #232e5c;border-radius:8px;padding:7px 8px;margin-top:6px;line-height:1.45;word-break:break-word}
+.ck{display:block;color:var(--ok);font-weight:600}
+.x{color:var(--task);font-weight:600}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;margin-top:6px}
+.pill.prop{color:#c7d2fe;border:1px dashed #6b7bd6}
+.pill.appr{color:#0b1020;background:var(--ok)}
+.pill.blk{color:#0b1020;background:var(--task)}
+.hl{background:rgba(251,191,36,.2);color:#fde68a;border-radius:3px;padding:0 2px}
+/* mini graph */
+.graph{position:absolute;left:44px;right:44px;bottom:30px;height:250px;border-radius:16px;border:1px dashed #2c3870;background:rgba(13,19,48,.6)}
+.graph .cap{position:absolute;left:18px;top:12px;font-size:11px;font-weight:800;letter-spacing:1.8px;color:var(--muted)}
+.gn{position:absolute;padding:9px 13px;border-radius:12px;background:var(--panel);border:1.5px solid var(--c);font-family:"DejaVu Sans Mono",monospace;font-size:13.5px}
+.gn small{display:block;font-family:Inter;font-size:9.5px;font-weight:800;letter-spacing:1.4px;color:var(--c);margin-bottom:2px}
+.gn.lit{box-shadow:0 0 0 5px color-mix(in srgb,var(--c) 28%,transparent),0 0 28px color-mix(in srgb,var(--c) 55%,transparent)}
+svg.e{position:absolute;inset:0}
+svg.e path{fill:none;stroke-width:2.6}
+.el{position:absolute;font-size:10.5px;font-weight:700;letter-spacing:.8px;padding:2px 7px;border-radius:6px;background:#0b1020;border:1px solid currentColor;transform:translate(-50%,-50%)}
+.hide{display:none}
+.verdict{position:absolute;right:20px;top:60px;width:330px;border-radius:12px;border:1.5px solid var(--task);background:#1a1230;padding:10px 14px;font-size:12px;color:#fecdd3;line-height:1.55}
+.verdict b{display:block;font-size:15px;color:#fff;margin-bottom:2px}
+</style></head><body><div class="wrap" id="w"><div class="glow"></div>
+<div class="top"><span class="tag" id="tag"></span><h1 id="title"></h1></div>
+<div class="sub" id="sub"></div>
+<div class="stages" id="stages"></div>
+<div class="graph"><div class="cap" id="gcap"></div>
+ <svg class="e" width="1192" height="250">
+  <path id="e1" d="M192 142 L 348 142"/><path id="e2" d="M494 142 L 698 142"/>
+  <path id="e3" d="M421 86 L 421 118" /></svg>
+ <div class="gn" id="n1" style="--c:var(--wf);left:40px;top:118px"><small>WORKFLOW</small>monthly-billing</div>
+ <div class="gn" id="n2" style="--c:var(--job);left:350px;top:118px"><small>JOB</small>invoice-export</div>
+ <div class="gn" id="n3" style="--c:var(--svc);left:700px;top:118px"><small>SERVICE</small>legacy-runner</div>
+ <div class="gn" id="n4" style="--c:var(--task);left:300px;top:40px"><small>BLOCKER</small>network-approval · owner security</div>
+ <div class="el" id="l1" style="left:270px;top:142px;color:var(--wf)">REQUIRES</div>
+ <div class="el" id="l2" style="left:596px;top:118px;color:var(--job)">RUNS_ON</div>
+ <div class="verdict hide" id="verdict"></div>
+</div>
+</div>
+<script>
+const P=new URLSearchParams(location.search), mode=P.get('mode'), step=+P.get('step');
+const W={theme:'#34d399',tag:'WRITE',title:'How a record becomes a trusted fact',
+ sub:'Ingestion is operator-controlled. The LLM only proposes; code validates; a human approves; FalkorDB stores every revision.',
+ cap:'GRAPH · PUBLISHED REVISION',
+ st:[
+ ['Record arrives','<span class="mono">Configuration observation 2026-10-17T09:00Z: <span class="hl">invoice-export runs on legacy-runner</span> in production/eu.</span>'],
+ ['LLM proposes','Luna gets the record + entity catalog + scope.<div class="mono">{subject: invoice-export,<br>predicate: RUNS_ON,<br>object: legacy-runner,<br>observed_at: 17 Oct}</div>'],
+ ['Code validates','<span class="ck">✓ quote found in text</span><span class="ck">✓ ids in catalog</span><span class="ck">✓ dates have timezone</span><span class="ck">✓ scope from metadata</span><span class="x">✗ “approve shutdown” → ignored</span>'],
+ ['Stored as proposal','Inactive. Answers do not use it yet.<br><span class="pill prop">proposal</span><div class="mono">digest 4ba041f3…</div>'],
+ ['Operator approves','<span class="mono">approve-proposals<br>--ids run-invoice-legacy<br>--actor ops --note "checked"</span>Audit: <b style="color:#e8ecff">ProposalReview</b> node'],
+ ['FalkorDB publishes','New immutable <b style="color:#e8ecff">Revision</b>. Edge appears with its assertion_id.<br><span class="pill appr">approved</span><div class="mono">RUNS_ON {assertion_id:<br>run-invoice-legacy}</div>'],
+ ]};
+const R={theme:'#7dd3fc',tag:'READ',title:'How an agent gets an answer it can trust',
+ sub:'The agent (Claude, Luna, any MCP client) calls read-only tools. FalkorDB walks the graph; fixed rules decide; the agent only explains.',
+ cap:'GRAPH · TRAVERSAL IN FALKORDB',
+ st:[
+ ['Agent asks','<span class="mono">“Can we retire legacy-runner on Friday? What depends on it, and who must act?”</span>'],
+ ['find_entities','Resolves the name to an id and scope.<div class="mono">legacy-runner<br>Service · production/eu</div>'],
+ ['Cypher traversal','One bounded query walks backwards:<div class="mono">(c)-[:RUNS_ON|<br>DEPENDS_ON|REQUIRES<br>*1..8]->(legacy)</div>Then follows MIGRATION_TRACKED_BY / BLOCKED_BY'],
+ ['Filters in-graph','<span class="ck">✓ approved only</span><span class="ck">✓ scope + valid time</span><span class="ck">✓ not superseded</span><span class="ck">✓ caller can see source</span>'],
+ ['Rules decide','<span class="ck">runtime fresh ≤ 7 days</span><span class="ck">ticket ≠ runtime → conflict</span><span class="ck">exception = permission only</span><span class="ck">stale = gap, not clear</span>No LLM here.'],
+ ['Verdict + proof','<span class="pill blk">BLOCKED</span><div class="mono">billing → invoice-export → legacy-runner<br>blocker: network-approval (security)<br>exception until 1 Nov<br>13 citations</div>'],
+ ]};
+const M=mode==='write'?W:R;
+document.documentElement.style.setProperty('--theme',M.theme);
+tag.textContent=M.tag; title.textContent=M.title; sub.textContent=M.sub; gcap.textContent=M.cap;
+stages.innerHTML=M.st.map((s,i)=>`<div class="st ${i<step?'done':i===step?'on':''}"><div class="n">STEP ${i+1}</div><div class="h">${s[0]}</div><div class="b">${s[1]}</div></div>`).join('');
+const show=(id,on)=>document.getElementById(id).classList.toggle('hide',!on);
+const color=(id,c,dash)=>{const e=document.getElementById(id);e.setAttribute('stroke',c);e.setAttribute('stroke-dasharray',dash||'');};
+['e3','n4'].forEach(i=>show(i,false));
+if(mode==='write'){
+  color('e1','#a78bfa'); show('l1',true);
+  if(step<3){show('e2',false);show('l2',false);}
+  else if(step<5){color('e2','#6b7bd6','6 6');document.getElementById('l2').style.color='#6b7bd6';document.getElementById('l2').textContent='RUNS_ON · proposal (inactive)'}
+  else {color('e2','#2dd4bf');document.getElementById('l2').textContent='RUNS_ON · run-invoice-legacy';['n2','n3'].forEach(i=>document.getElementById(i).classList.add('lit'));}
+} else {
+  color('e1','#3a4677'); color('e2','#3a4677');
+  if(step>=1) document.getElementById('n3').classList.add('lit');
+  if(step>=2){color('e2','#2dd4bf');document.getElementById('n2').classList.add('lit');color('e1','#a78bfa');document.getElementById('n1').classList.add('lit');
+     show('n4',true);show('e3',true);color('e3','#fb7185');}
+  if(step>=5){const v=document.getElementById('verdict');v.classList.remove('hide');
+     v.innerHTML='<b>Blocked</b>Billing still needs invoice-export on legacy-runner. Migration waits on network-approval (Security). Exception allows use until 1 Nov. Reporting evidence stale → gap.';}
+}
+</script></body></html>

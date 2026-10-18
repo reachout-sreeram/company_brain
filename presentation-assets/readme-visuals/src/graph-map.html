@@ -1,0 +1,117 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+:root{
+  --bg:#0b1020; --panel:#111833; --line:#2a3563; --ink:#e8ecff; --muted:#8e9bd0; --faint:#56628f;
+  --wf:#a78bfa; --job:#2dd4bf; --svc:#fbbf24; --task:#fb7185; --team:#60a5fa; --dec:#f472b6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1800px;height:920px;background:var(--bg);font-family:Inter,sans-serif;color:var(--ink);overflow:hidden}
+.wrap{position:relative;width:1800px;height:920px;padding:44px 56px}
+.glow{position:absolute;inset:0;background:
+  radial-gradient(700px 420px at 72% 46%, rgba(251,191,36,.10), transparent 60%),
+  radial-gradient(600px 380px at 22% 40%, rgba(45,212,191,.08), transparent 60%);}
+h1{font-size:30px;font-weight:700;letter-spacing:-.5px;position:relative}
+h1 span{color:var(--svc)}
+.sub{color:var(--muted);font-size:16px;margin-top:6px;position:relative}
+svg.edges{position:absolute;left:0;top:0}
+.node{position:absolute;border-radius:16px;padding:14px 18px;background:var(--panel);border:1.5px solid var(--c);
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 10%,transparent),0 10px 30px rgba(0,0,0,.35);min-width:230px}
+.kind{font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--c)}
+.id{font-family:"DejaVu Sans Mono",monospace;font-size:17px;margin-top:5px;color:var(--ink)}
+.chips{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
+.chip{font-size:11.5px;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.06);color:var(--muted);border:1px solid rgba(255,255,255,.08)}
+.chip b{color:var(--ink);font-weight:600}
+.chip.warn{color:#fecdd3;border-color:rgba(251,113,133,.45);background:rgba(251,113,133,.12)}
+.chip.ok{color:#fde68a;border-color:rgba(251,191,36,.45);background:rgba(251,191,36,.12)}
+.target{padding:22px 26px;min-width:280px}
+.target .id{font-size:22px}
+.lbl{position:absolute;font-size:11.5px;font-weight:700;letter-spacing:.8px;padding:4px 10px;border-radius:8px;background:#0b1020;border:1px solid var(--c);color:var(--c);transform:translate(-50%,-50%);white-space:nowrap}
+.lbl i{font-style:normal;font-weight:500;color:var(--faint);font-family:"DejaVu Sans Mono",monospace;letter-spacing:0;margin-left:6px}
+.evidence{position:absolute;left:56px;right:56px;bottom:40px;height:168px;border-radius:18px;border:1px dashed #33407a;background:rgba(17,24,51,.6);padding:18px 24px}
+.evidence h3{font-size:12px;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);font-weight:700}
+.row{display:flex;align-items:center;gap:14px;margin-top:16px}
+.box{border-radius:12px;padding:10px 14px;background:#0e1430;border:1px solid #2c3870;font-size:13px}
+.box .t{font-size:10.5px;letter-spacing:1.4px;text-transform:uppercase;color:var(--faint);font-weight:700}
+.box .v{font-family:"DejaVu Sans Mono",monospace;font-size:13px;margin-top:4px}
+.arrow{color:#4b5a99;font-size:22px}
+.quote{flex:1;font-family:"DejaVu Sans Mono",monospace;font-size:13px;color:#cfd6ff}
+.quote em{background:rgba(251,191,36,.18);color:#fde68a;font-style:normal;border-radius:4px;padding:0 3px}
+.legend{position:absolute;right:56px;top:50px;display:flex;gap:16px;font-size:12.5px;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--c);margin-right:7px;vertical-align:-1px}
+</style></head><body><div class="wrap"><div class="glow"></div>
+<h1>The graph behind “can we retire <span>legacy-runner</span>?”</h1>
+<div class="sub">Live <code>CurrentEntity</code> view in FalkorDB · initial demo state · every edge carries the assertion that supports it</div>
+<div class="legend">
+ <span style="--c:var(--wf)">Workflow</span><span style="--c:var(--job)">Job</span><span style="--c:var(--svc)">Service</span>
+ <span style="--c:var(--task)">Migration task</span><span style="--c:var(--dec)">Decision</span><span style="--c:var(--team)">Team</span>
+</div>
+
+<svg class="edges" width="1800" height="920">
+ <defs>
+  <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker>
+ </defs>
+ <g fill="none" stroke-width="2.4" marker-end="url(#a)">
+  <path d="M340 352 C 400 352, 400 352, 476 352" stroke="#a78bfa"/>
+  <path d="M340 600 C 400 600, 400 600, 476 600" stroke="#a78bfa"/>
+  <path d="M770 352 C 900 352, 920 470, 1046 478" stroke="#2dd4bf"/>
+  <path d="M770 600 C 900 600, 920 520, 1046 512" stroke="#2dd4bf"/>
+  <path d="M620 210 C 620 240, 620 250, 620 300" stroke="#f472b6"/>
+  <path d="M770 330 C 860 300, 900 210, 1046 205" stroke="#fb7185"/>
+  <path d="M1346 205 C 1400 205, 1420 205, 1468 205" stroke="#fb7185"/>
+ </g>
+</svg>
+
+<div class="lbl" style="left:408px;top:352px;--c:var(--wf)">REQUIRES</div>
+<div class="lbl" style="left:408px;top:600px;--c:var(--wf)">REQUIRES</div>
+<div class="lbl" style="left:905px;top:410px;--c:var(--job)">RUNS_ON<i>run-invoice-legacy</i></div>
+<div class="lbl" style="left:905px;top:566px;--c:var(--job)">RUNS_ON<i>run-report-legacy</i></div>
+<div class="lbl" style="left:620px;top:258px;--c:var(--dec)">PERMITS_USE</div>
+<div class="lbl" style="left:890px;top:252px;--c:var(--task)">MIGRATION_TRACKED_BY</div>
+<div class="lbl" style="left:1407px;top:205px;--c:var(--task)">BLOCKED_BY</div>
+
+<div class="node" style="--c:var(--dec);left:476px;top:120px">
+  <div class="kind">Decision</div><div class="id">temporary-exception</div>
+  <div class="chips"><span class="chip ok">permits use until <b>2026-11-01</b></span></div></div>
+
+<div class="node" style="--c:var(--wf);left:100px;top:308px;min-width:240px">
+  <div class="kind">Workflow</div><div class="id">monthly-billing</div>
+  <div class="chips"><span class="chip">business critical</span></div></div>
+<div class="node" style="--c:var(--wf);left:100px;top:556px;min-width:240px">
+  <div class="kind">Workflow</div><div class="id">monthly-reporting</div></div>
+
+<div class="node" style="--c:var(--job);left:476px;top:302px;min-width:294px">
+  <div class="kind">Job</div><div class="id">invoice-export</div>
+  <div class="chips"><span class="chip">owner <b>data-platform</b></span><span class="chip">observed 17 Oct</span></div></div>
+<div class="node" style="--c:var(--job);left:476px;top:550px;min-width:294px">
+  <div class="kind">Job</div><div class="id">report-job</div>
+  <div class="chips"><span class="chip">owner <b>data-platform</b></span><span class="chip warn">observed 1 Sep · stale</span></div></div>
+
+<div class="node target" style="--c:var(--svc);left:1046px;top:430px">
+  <div class="kind">Service · retirement target</div><div class="id">legacy-runner</div>
+  <div class="chips"><span class="chip">production / eu</span></div></div>
+
+<div class="node" style="--c:var(--task);left:1046px;top:158px;min-width:284px">
+  <div class="kind">Migration task</div><div class="id">invoice-migration</div>
+  <div class="chips"><span class="chip warn">status open</span></div></div>
+<div class="node" style="--c:var(--task);left:1468px;top:158px;min-width:260px">
+  <div class="kind">Migration task</div><div class="id">network-approval</div>
+  <div class="chips"><span class="chip warn">status open</span><span class="chip">owner <b>security</b></span></div></div>
+
+<div class="evidence">
+ <h3>Evidence layer · how one edge is backed</h3>
+ <div class="row">
+  <div class="box" style="border-color:#2dd4bf55"><div class="t">Edge</div><div class="v">invoice-export —RUNS_ON→ legacy-runner</div></div>
+  <div class="arrow">→</div>
+  <div class="box"><div class="t">Assertion · run-invoice-legacy</div><div class="v">approved · production/eu · observed 2026-10-17T09:00Z</div></div>
+  <div class="arrow">→</div>
+  <div class="box" style="flex:1"><div class="t">Source · source-run-invoice-legacy@1</div>
+   <div class="quote">“Configuration observation 2026-10-17T09:00:00Z: <em>invoice-export runs on legacy-runner in production/eu.</em>”</div></div>
+ </div>
+ <div class="row" style="margin-top:14px;color:var(--faint);font-size:12.5px;gap:22px">
+  <span>New facts never overwrite: <b style="color:var(--muted)">SUPERSEDES</b> links keep history</span>
+  <span>Extracted facts stay <b style="color:var(--muted)">proposals</b> until a <b style="color:var(--muted)">ProposalReview</b> approves them</span>
+  <span>Each publish is an immutable <b style="color:var(--muted)">Revision</b></span>
+ </div>
+</div>
+</div></body></html>

@@ -1,5 +1,5 @@
 {
-  "output": "/Users/sakethsreeram/Downloads/hackathons/falkordb_hackathon/company-brain/.local/reviewed-demo-proof/reviewed.json",
+  "output": "<repo>/.local/reviewed-demo-proof/reviewed.json",
   "review": {
     "id": "review-24fcc90b59157bfd1611712b",
     "actor": "demo:synthetic-source-validation",

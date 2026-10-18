@@ -14,7 +14,7 @@
       {
         "name": "graph",
         "ver": 41803,
-        "path": "/Users/sakethsreeram/Downloads/hackathons/falkordb_hackathon/company-brain/.venv/lib/python3.13/site-packages/redislite/bin/falkordb.so",
+        "path": "<repo>/.venv/lib/python3.13/site-packages/redislite/bin/falkordb.so",
         "args": []
       },
       {
