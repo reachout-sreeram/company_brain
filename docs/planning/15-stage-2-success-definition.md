@@ -1,12 +1,14 @@
 # Stage 2: Success definition
 
-Revised: 17 October 2026, IST. Status: approved by the user for the hackathon build. Supersedes the 16 October draft (support-engineer scenario with a 40-case corpus).
+Revised: 18 October 2026, IST. Status: approved by the user for the hackathon build. Supersedes the 16 October draft (support-engineer scenario with a 40-case corpus).
 
 ## What changed in this revision
 
 1. **Delivery shape.** The product is a context layer, not a web app. It ingests and curates company records into FalkorDB and exposes resolved answers to existing agents (Claude Desktop first) through an MCP server. We do not build a chat UI or pay for answer generation.
 2. **Evaluation shape.** Corpus size is not a goal. Success is three scripted scenarios that replay identically from a clean database and visibly prove each capability. Each step has a golden expected verdict.
 3. **Read path is deterministic.** Answering a question requires no LLM on our side. LLM calls happen only at ingestion (extracting facts from text). The client agent writes the final prose from our verdict.
+4. **Architecture and harnesses (added 18 October).** Write and read sides meet only at FalkorDB. Three harnesses (extraction, Claude, test) constrain the risky steps. See [Architecture and harnesses](#architecture-and-harnesses).
+5. **Enhancements (added 18 October).** Five optional additions in priority order, built only after Scenario 1 passes. See [Enhancements](#enhancements).
 
 ## Scenario and user
 
@@ -48,6 +50,51 @@ Verdict object:
 | `open_proposals` | Unapproved suggestions, marked as not changing the answer |
 | `evidence` | Source ID, version, and supporting span for every material claim |
 | `graph_revision` | Revision the verdict was computed at |
+
+## Architecture and harnesses
+
+Added 18 October 2026, IST. The system has a write side (operator-run ingestion) and a read side (Claude asks through MCP). Both meet only at FalkorDB. Three small harnesses keep each risky step reliable. A harness is code wrapped around an AI step or the whole system that constrains and checks it.
+
+```text
+ WRITE SIDE (operator runs it)            READ SIDE (Claude asks)
+
+ records/ (synthetic docs, Slack)         Claude Desktop + skill  <- 2. Claude harness
+        |                                         | MCP call
+ extract.py  (LLM proposes facts)         mcp_server.py (3 read-only tools)
+        |                                         |
+ validate.py <- 1. Extraction harness     resolver.py (rules only, no LLM)
+        |                                         |
+        +--------------->  FalkorDB  <------------+
+                               ^
+               replay.py + golden/*.json  <- 3. Test harness
+```
+
+| Harness | Wraps | Checks | Prevents |
+| --- | --- | --- | --- |
+| 1. Extraction | The ingestion LLM call | Output matches a strict schema; quoted span exists in source text; referenced IDs exist; unchanged source hash is skipped. Failures are quarantined with a readable reason | The LLM inventing or duplicating facts |
+| 2. Claude | Claude's use of the tools | Tool descriptions say when to call; verdict carries a fixed `disposition` and `evidence`; skill instructs Claude to repeat the disposition, cite sources, and never override the verdict | Claude overriding or embellishing the answer |
+| 3. Test | The whole system | One command resets the database, seeds step 0, ingests each step, calls the tools, and diffs every verdict against its golden JSON | Silent regressions and an unrepeatable demo |
+
+Design rules:
+
+- **The resolver is a pure function.** Facts in, verdict out. No LLM calls and no database writes. This keeps it fast, testable, and deterministic.
+- **Every ingestion run increments `graph_revision`.** Every verdict returns it, so a live update is visible (for example, revision 3 to revision 4).
+
+Do not add for the hackathon: agent frameworks (LangGraph, CrewAI), multiple agents, free-form text-to-Cypher, vector search, or caching. They add work without strengthening the three scenarios.
+
+## Enhancements
+
+Added 18 October 2026, IST. Build these only after Scenario 1 passes its golden replay. Each uses data the graph already stores. Listed in priority order.
+
+| # | Enhancement | What it does | Contract change | Why it helps |
+| --- | --- | --- | --- | --- |
+| 1 | Proof query | Every verdict includes the exact read-only Cypher that produced its evidence chain. Pasting it into FalkorDB Browser draws the chain (e.g. March doc → D-41 → D-52) | Adds `proof_query` to the verdict object | Shows FalkorDB is essential and every answer is inspectable |
+| 2 | "As of" questions | Answers what applied on a past date, e.g. "audit export rule on 1 September" | Adds optional `as_of` (ISO date) to `get_current_truth` | Uses stored validity dates; shows something document search cannot do |
+| 3 | Ingest summary | After each record, ingestion prints a one-line diff, e.g. `revision 3 → 4 · +1 fact · superseded A2 · 1 open proposal` | None (CLI output only) | Makes the live update visible during the demo |
+| 4 | Conflict alert on ingest | If a new record creates a conflict between equally authoritative facts, ingestion prints the conflict and the owner who must decide, e.g. `conflict: needs owner decision (Compliance)` | None (CLI output only) | The brain flags problems before anyone asks |
+| 5 | Owner-left check (stretch) | If the current owner is inactive, the verdict says so and names the team escalation path instead of a departed person | `owner` includes `active` status | Prevents routing questions to someone who has left |
+
+`as_of` covers business validity only (what applied on that date). It does not claim "as known at that time" correctness; that would need bitemporal evaluation and stays out of scope.
 
 ## The three demo scenarios
 
