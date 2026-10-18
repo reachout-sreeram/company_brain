@@ -8,7 +8,9 @@ The synthetic Lumora story follows **monthly billing → invoice export → lega
 
 ## See the graph
 
-[Current architecture diagram](presentation-assets/company-brain-architecture-current/company-brain-current-architecture.svg) · [Interactive architecture](presentation-assets/company-brain-architecture-current/company-brain-current-architecture.html)
+![Current architecture diagram](presentation-assets/company-brain-architecture-current/company-brain-current-architecture.svg)
+
+[Interactive architecture](presentation-assets/company-brain-architecture-current/company-brain-current-architecture.html)
 
 The architecture is a high-level map. Dated verification below is the measurement source; the diagram is not a benchmark.
 
