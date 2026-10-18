@@ -140,10 +140,10 @@ def merge_bundle(old: Bundle, incoming: Bundle) -> Bundle:
 
 def extract_bundle(manifest: Bundle, adapter) -> Bundle:
     """Trusted metadata comes from manifest; extraction produces candidates only."""
-    from .extraction import RawSource
+    from .extraction import raw_source
     assertions = list(manifest.assertions)
     for source in manifest.sources:
-        for candidate in adapter.extract(RawSource(source_id=source.id, version=source.version, text=source.text)):
+        for candidate in adapter.extract(raw_source(source, manifest.entities)):
             fields = candidate.model_dump(mode="json")
             identity = sha256((source.key + candidate.model_dump_json()).encode()).hexdigest()[:24]
             if candidate.supersedes and claim_digest(candidate) not in source.reviewed_claims:

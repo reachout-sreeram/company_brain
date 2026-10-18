@@ -72,7 +72,7 @@ class RecordSearch:
 @dataclass(frozen=True)
 class Experiment:
     model: str  # supplied only after model/cap/credential approval for a real run
-    temperature: float = 0
+    temperature: float | None = None
     max_turns: int = 20
     max_tool_calls: int = 12
     max_context_bytes: int = 65536
@@ -82,7 +82,7 @@ class Experiment:
 class Client(Protocol):
     execution_label: str
 
-    def step(self, *, model: str, temperature: float, max_output_tokens: int,
+    def step(self, *, model: str, temperature: float | None, max_output_tokens: int,
              messages: list[dict], tools: list[dict]) -> dict:
         """Return {'tool':name,'arguments':{...}} or {'final':structured_answer}."""
 
@@ -111,7 +111,7 @@ class Toolbox:
             return [{'name':'search_records','arguments':'query: str, offset: int=0, limit: int=5'},
                     {'name':'read_record','arguments':'source_key: str'}]
         if arm!='graph': raise ValueError('unknown arm')
-        return [{'name':'find_entities','arguments':'query: str, kind?: str'},
+        return [{'name':'find_entities','arguments':'query: str, kind?: Service | Job | Workflow | Team | Person | MigrationTask | Decision (case-sensitive); omit kind when uncertain'},
                 {'name':'assess_retirement','arguments':'service_id: str, scope: {environment,region}, planned_at: timezone-aware ISO string'},
                 {'name':'get_evidence','arguments':'source_id: str, version: str, span_id?: assertion ID'},
                 {'name':'get_history','arguments':'entity_id: str, scope: {environment,region}'}]
@@ -176,7 +176,7 @@ def run_pair(client, experiment, toolbox, question, planned_at):
     """Both arms share the same immutable config, scope, records, model and budgets.
 
     Client implementations must be stateless between calls except for messages.
-    Counterbalance arm order over future repeated real runs. No live client ships.
+    Counterbalance arm order over future repeated real runs. The guarded OpenRouter client shares its durable spend ledger across arms.
     """
     return {arm:run_arm(client,experiment,toolbox,arm,question,planned_at) for arm in ('graph','search')}
 
@@ -273,7 +273,7 @@ references iteratively. It has no relationship expansion and is not an MCP tool.
 Both arms may inspect dated historical/future records; shared policy restricts
 what may support an assessment known at the requested time.
 
-`run_pair` uses one frozen `Experiment`: identical model ID, temperature (0),
+`run_pair` uses one frozen `Experiment`: identical model ID, temperature omitted (unsupported by Luna),
 output cap (4096 tokens), 20 turns, 12 tool calls and 65536 serialized context
 bytes for each arm. Context counts include tool descriptions and messages.
 Records digest, graph revision, tool events, calls and context bytes are retained.
@@ -283,7 +283,7 @@ Source order/record IDs, caller, scope, planned_at and known_at must also match.
 No gold answer is supplied to either arm. A graph response may not be overridden.
 
 The provider-neutral client interface accepts a single structured tool action or
-final answer per step. No live inference adapter is supplied or invoked. Automated
+final answer per step. A guarded OpenRouter adapter is available; preparation never invokes it. Automated
 scripted harness probes are explicitly test doubles, not model/client transcripts.
 The official MCP protocol tests separately exercise the four server tools.
 
@@ -296,7 +296,7 @@ does not establish assertion support. Independently review prose entailment,
 unsupported causal claims, conflicts and exception expiry; counts alone do not
 prove correct explanations. Record token usage, provider-reported dollar cost,
 model/endpoint configuration, tool latency and end-to-end latency separately in
-an eventual real run. The current harness does not enforce a dollar budget.
+an eventual real run. The OpenRouter client enforces a shared USD 3 ledger with conservative retry reservations; preparation makes no provider requests.
 
 `score_narrative` checks exact subject, predicate, object/value, target, scope,
 effective dates and supersession with duplicate-aware TP/FP/FN counts. Normal

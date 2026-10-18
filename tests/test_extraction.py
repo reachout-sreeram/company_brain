@@ -28,7 +28,7 @@ def extractor(handler, **overrides):
 
 
 def success(payload, finish_reason="stop"):
-    return httpx.Response(200, json={"choices": [{"finish_reason": finish_reason, "message": {"content": json.dumps(payload)}}]})
+    return httpx.Response(200, json={"model":"test/model","usage":{"prompt_tokens":120,"completion_tokens":50,"cost":"0.000037"},"choices": [{"finish_reason": finish_reason, "message": {"content": json.dumps(payload)}}]})
 
 
 def test_openrouter_contract(source, candidate):
@@ -42,7 +42,8 @@ def test_openrouter_contract(source, candidate):
         assert body["model"] == "test/model"
         assert body["temperature"] == 0
         assert body["max_tokens"] == 3000
-        assert body["response_format"] == {"type": "json_object"}
+        assert body["response_format"]["type"] == "json_schema"
+        assert body["response_format"]["json_schema"]["strict"] is True
         assert body["provider"]["allow_fallbacks"] is False
         assert json.loads(body["messages"][1]["content"]) == source.model_dump()
         assert "untrusted" in body["messages"][0]["content"]
@@ -153,3 +154,87 @@ def test_env_is_opt_in_and_config_hides_key(monkeypatch):
     assert "SECRET_TEST_KEY" not in config.model_dump_json()
     monkeypatch.setenv("COMPANY_BRAIN_ALLOW_OPENROUTER", "1")
     assert OpenRouterConfig.from_env().allow_live is True
+
+
+# --- Lean model output: the model supplies semantics; code supplies scope, spans and defaults.
+
+CATALOG = [{"id": "invoice-export", "kind": "Job", "name": "Invoice export"},
+           {"id": "legacy-runner", "kind": "Service", "name": "Legacy runner"},
+           {"id": "invoice-migration", "kind": "MigrationTask", "name": "Invoice runner migration"},
+           {"id": "temporary-exception", "kind": "Decision", "name": "Temporary invoice exception"}]
+
+
+def contextual(text):
+    return RawSource(source_id="rec", version="1", text=text, scope={"environment": "production", "region": "eu"},
+                     recorded_at="2026-10-17T10:00:00+00:00", entities=CATALOG)
+
+
+def lean(**fields):
+    base = {"subject_id": "invoice-export", "predicate": "RUNS_ON", "object_id": "legacy-runner", "value": None,
+            "target_service_id": None, "quote": "invoice-export runs on legacy-runner", "effective_from": None,
+            "effective_until": None, "observed_at": None}
+    return {**base, **fields}
+
+
+def test_lean_output_is_completed_from_trusted_context():
+    source = contextual("Configuration observation 2026-10-17T09:00:00Z: invoice-export runs on legacy-runner in production/eu.")
+    result = extractor(lambda _: success({"assertions": [lean(observed_at="2026-10-17T09:00:00Z")]})).extract(source)[0]
+    assert result.scope == {"environment": "production", "region": "eu"}
+    assert source.text[result.span_start:result.span_end] == result.quote
+    assert result.observed_at == "2026-10-17T09:00:00Z" and result.effective_from == "2026-10-17T09:00:00Z"
+
+
+def test_lean_undated_dependency_does_not_turn_recording_into_observation():
+    source = contextual("invoice-export runs on legacy-runner in production/eu.")
+    with pytest.raises(ExtractionError,match="explicit observation"):
+        extractor(lambda _: success({"assertions": [lean()]})).extract(source)
+
+
+@pytest.mark.parametrize("change,message", [
+    ({"quote": "invoice-export runs on new-runner"}, "quote"),
+    ({"object_id": "made-up-service"}, "catalog"),
+])
+def test_lean_rejections(change, message):
+    source = contextual("invoice-export runs on legacy-runner in production/eu.")
+    with pytest.raises(ExtractionError, match=message):
+        extractor(lambda _: success({"assertions": [lean(observed_at="2026-10-17T09:00:00Z",**change)]})).extract(source)
+
+
+def test_lean_ambiguous_quote_rejected():
+    source = contextual("invoice-export runs on legacy-runner. Again: invoice-export runs on legacy-runner.")
+    with pytest.raises(ExtractionError, match="ambiguous"):
+        extractor(lambda _: success({"assertions": [lean()]})).extract(source)
+
+
+def test_lean_requires_trusted_context():
+    source = RawSource(source_id="rec", version="1", text="invoice-export runs on legacy-runner.")
+    with pytest.raises(ExtractionError, match="trusted source scope"):
+        extractor(lambda _: success({"assertions": [lean()]})).extract(source)
+
+
+def test_prompt_carries_catalog_metadata_and_example():
+    seen = {}
+    def handler(request):
+        seen.update(json.loads(request.content)); return success({"assertions": []})
+    extractor(handler).extract(contextual("Nothing here."))
+    system, user = seen["messages"][0]["content"], json.loads(seen["messages"][1]["content"])
+    assert "PERMITS_USE" in system and "untrusted" in system and "Example" in system
+    assert user["scope"] == {"environment": "production", "region": "eu"}
+    assert {e["id"] for e in user["entities"]} >= {"invoice-export", "legacy-runner"}
+
+
+def test_ideal_lean_outputs_satisfy_narrative_gold():
+    from pathlib import Path
+    from company_brain.evaluation import score_narrative
+    gold = {c["source_key"]: c["expected"] for c in json.loads(Path("evals/gold/narrative.json").read_text())["cases"]}
+    permit = contextual("Decision record for temporary-exception in production/eu: from 2026-10-01T00:00:00Z until 2026-11-01T00:00:00Z, invoice-export may continue using its current runner while network approval is outstanding.")
+    out = lean(subject_id="temporary-exception", predicate="PERMITS_USE", object_id="invoice-export",
+               quote="from 2026-10-01T00:00:00Z until 2026-11-01T00:00:00Z, invoice-export may continue using its current runner",
+               effective_from="2026-10-01T00:00:00Z", effective_until="2026-11-01T00:00:00Z")
+    got = extractor(lambda _: success({"assertions": [out]})).extract(permit)
+    assert score_narrative(got, gold["source-permits-invoice@1"])["true_positive"] == 1
+    claim = contextual("Ticket invoice-migration claims complete in production/eu as of 2026-10-16T12:00:00Z. This ticket is not a runtime verification.")
+    out = lean(subject_id="invoice-migration", predicate="STATUS", object_id=None, value="complete",
+               quote="invoice-migration claims complete in production/eu as of 2026-10-16T12:00:00Z", effective_from="2026-10-16T12:00:00Z")
+    got = extractor(lambda _: success({"assertions": [out]})).extract(claim)
+    assert score_narrative(got, gold["source-status-migration-claimed-complete@1"])["true_positive"] == 1
