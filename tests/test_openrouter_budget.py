@@ -151,7 +151,7 @@ def test_evaluation_client_keeps_same_model_settings_and_json_action_protocol():
             messages=MESSAGES,tools=[{'name':name,'arguments':'read only'}])['final']['disposition']=='blocked'
     assert {w['model'] for w in wire}=={LUNA_MODEL}
     assert all('temperature' not in w for w in wire)
-    assert all(w['tool_choice']=='required' and w['parallel_tool_calls'] is False for w in wire)
+    assert all(w['tool_choice']=='required' and 'parallel_tool_calls' not in w for w in wire)
     assert all('response_format' not in w for w in wire)
     assert 'mocked' in client.execution_label
     assert len(next(iter(client.session.ledger.snapshot()['reservations'].values()))['attempts'])==1

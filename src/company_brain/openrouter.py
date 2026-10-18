@@ -199,7 +199,7 @@ class OpenRouterSession:
                           'max_price':{'prompt':0.1,'completion':0.5,'request':0}}}
         if tools is not None:
             body.pop('response_format',None)
-            body.update(tools=tools,tool_choice='required',parallel_tool_calls=False)
+            body.update(tools=tools,tool_choice='required')
         if self.config.model==LUNA_MODEL:
             body['reasoning']={'effort':'none'}
         else: body['temperature']=0  # Existing synthetic HTTP-contract fixture only.
