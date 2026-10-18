@@ -130,7 +130,7 @@ Queries 1–3 can be pasted into FalkorDB Browser or run with `GRAPH.RO_QUERY co
 
 ## Architecture
 
-![Current architecture diagram](presentation-assets/company-brain-architecture-current/company-brain-current-architecture.svg)
+![Architecture: operators write facts into FalkorDB; agents read verdicts through read-only MCP tools](presentation-assets/readme-visuals/architecture.png)
 
 [Interactive architecture](presentation-assets/company-brain-architecture-current/company-brain-current-architecture.html)
 
